@@ -1,11 +1,11 @@
 package com.example;
 import javafx.scene.image.Image;
 
-enum direction {
-    UP, DOWN, LEFT, RIGHT, NONE
-}
-
 public class Block {
+
+    enum direction {
+        UP, DOWN, LEFT, RIGHT, NONE
+    }
 
     int defaultVelocity = 5;
     int slowVelocity = 2;

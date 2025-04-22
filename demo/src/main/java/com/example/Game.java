@@ -104,7 +104,7 @@ public class Game extends Application {
         }
     }
 
-    public void draw(GraphicsContext gc) {
+    public void drawInit(GraphicsContext gc) {
         // Draw the game elements here
         for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < columCount; col++) {
@@ -115,7 +115,14 @@ public class Game extends Application {
                         gc.drawImage(wallImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case 'P':
-                        gc.drawImage(pacmanImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Block pacman = new Block.BlockBuilder()
+                                                .setX(1)
+                                                .setY(1)
+                                                .setImage(pacmanImage)
+                                                .setCurrentDirection(null) // Replace with null or a valid Direction value
+                                                .build();
+                        gc.drawImage(pacman.image, col * tileSize, row * tileSize, tileSize, tileSize);
+                        
                         break;
                     case 'r':
                         gc.drawImage(redGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
@@ -141,10 +148,51 @@ public class Game extends Application {
                     default:
                         break;
                 }
-                    
             }
         }
     }
+
+
+    public void drawUpdates(GraphicsContext gc) {
+        // Draw the game elements here
+        for (int row = 0; row < rowCount; row++) {
+            for (int col = 0; col < columCount; col++) {
+                char tile = tileMap[row].charAt(col);
+                // Draw the tile based on its type
+                switch (tile) {
+                    case 'P':
+                        gc.drawImage(pacmanImage, pacman.x * tileSize, pacman.y * tileSize, tileSize, tileSize);
+                        break;
+                    case 'r':
+                        gc.drawImage(redGhostImage, redGhost.x * tileSize, redGhost.y * tileSize, tileSize, tileSize);
+                        break;
+                    case 'b':
+                        gc.drawImage(blueGhostImage, blueGhost.x * tileSize, blueGhost.y * tileSize, tileSize, tileSize);
+                        break;
+                    case 'p':
+                        gc.drawImage(pinkGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        break;
+                    case 'o':
+                        gc.drawImage(orangeGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        break;
+                    case ' ':
+                        gc.drawImage(smallFoodImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        break;
+                    case 'B':
+                        gc.drawImage(bigFoodImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        break;
+                    case 'D':
+                        gc.drawImage(doorClosed, col * tileSize, row * tileSize, tileSize, tileSize);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+
+
 
     public static void main(String[] args) {
         launch(args);
