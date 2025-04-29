@@ -3,11 +3,8 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 
 
 public class Game extends Application {
@@ -17,44 +14,36 @@ public class Game extends Application {
         stage.setTitle("Pacman Game");
         stage.setResizable(false);
 
-        Group root = new Group();
-        Scene scene = new Scene(root, Color.BLACK);
+        // Define the dimensions of the game
+        int tileSize = 32;
+        int rowCount = 21;
+        int columCount = 19;
+        int canvasWidth = columCount * tileSize;
+        int canvasHeight = rowCount * tileSize;
 
-        
+        Group root = new Group();
+        Scene scene = new Scene(root, canvasWidth, canvasHeight, Color.BLACK);
+
+        // Create a Canvas
+        Canvas canvas = new Canvas(canvasWidth, canvasHeight);
+
+        // Create an instance of Map and load the map onto the Canvas
+        IMap map = new Map();
+        map.loadmap(canvas);
+
+        // Add the Canvas to the root group
+        root.getChildren().add(canvas);
+
         stage.setScene(scene);
         stage.centerOnScreen(); // Center the stage on the screen
         stage.show();
-    }
-    
-    //load music
-    //load sound effects
 
-    //public play() {
-    //    
-    //}
-
-    public void keyPressed(KeyEvent e) {
-        //System.out.println("KeyEvent: " + keyCode);
-        switch (e.getCode()) {
-            case UP:
-                // Move up
-                break;
-            case DOWN:
-                // Move down
-                break;
-            case LEFT:
-                // Move left
-                break;
-            case RIGHT:
-                // Move right
-                break;
-            default:
-                break;
-        }
+        System.out.println("Game started now looping");
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    
 }

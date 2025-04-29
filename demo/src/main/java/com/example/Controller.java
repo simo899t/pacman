@@ -2,7 +2,7 @@ package com.example;
 
 import javafx.scene.input.KeyEvent;
 
-public class Controller {
+public class Controller implements IController {
     private Pacman pacman;
 
     public Controller(Pacman pacman) {

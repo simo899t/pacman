@@ -1,7 +1,7 @@
 package com.example;
 import javafx.scene.image.Image;
 
-public abstract class Block implements Collideable, Updateable, Drawable {
+public abstract class Block {
 
     enum direction {
         UP, DOWN, LEFT, RIGHT, NONE
@@ -11,32 +11,18 @@ public abstract class Block implements Collideable, Updateable, Drawable {
     protected double y;
     protected double width;
     protected double height;
-    protected double speed;
+    protected double stepSize;
     protected Image image;
-    protected direction dir;
+    protected direction direction;
 
     public Block(double x, double y, double width, double height, double speed, Image image) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = speed;
+        this.stepSize = stepSize;
         this.image = image;
-        this.dir = direction.NONE;
-    }
-
-    public boolean isColliding(Block other) {
-        return this.x < other.x + other.width && this.x + this.width > other.x &&
-               this.y < other.y + other.height && this.y + this.height > other.y;
-    }
-
-    public void draw() {
-        
-    }
-    
-    public void update() {
-        // Implement update logic based on direction and speed
-        
+        this.direction = direction.NONE;
     }
 
     public double getX() {
@@ -47,9 +33,25 @@ public abstract class Block implements Collideable, Updateable, Drawable {
         return y;
     }
 
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getStepSize() {
+        return stepSize;
+    }
+
     public void setPos(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    void setDirection(direction direction) {
+        this.direction = direction;
     }
 
 }

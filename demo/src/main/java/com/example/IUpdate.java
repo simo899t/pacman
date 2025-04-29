@@ -1,5 +1,5 @@
 package com.example;
 
-public interface Updateable {
+public interface IUpdate {
     void update();
 } 

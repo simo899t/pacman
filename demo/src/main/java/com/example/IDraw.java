@@ -1,5 +1,5 @@
 package com.example;
 
-public interface Drawable {
+public interface IDraw {
     void draw();
 }
