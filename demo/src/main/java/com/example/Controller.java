@@ -14,15 +14,19 @@ public class Controller implements IController {
         switch (e.getCode()) {
             case UP:
                 pacman.setDirection(pacman.direction.UP);
+                System.out.println("UP");
                 break;
             case DOWN:
                 pacman.setDirection(pacman.direction.DOWN);
+                System.out.println("DOWN");
                 break;
             case LEFT:
                 pacman.setDirection(pacman.direction.LEFT);
+                System.out.println("LEFT");
                 break;
             case RIGHT:
                 pacman.setDirection(pacman.direction.RIGHT);
+                System.out.println("RIGHT");
                 break;
             default:
                 break;

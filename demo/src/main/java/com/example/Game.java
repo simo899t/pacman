@@ -1,10 +1,14 @@
 package com.example;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyEvent;
 
 
 public class Game extends Application {
@@ -23,22 +27,41 @@ public class Game extends Application {
 
         Group root = new Group();
         Scene scene = new Scene(root, canvasWidth, canvasHeight, Color.BLACK);
-
-        // Create a Canvas
         Canvas canvas = new Canvas(canvasWidth, canvasHeight);
+        root.getChildren().add(canvas);
 
         // Create an instance of Map and load the map onto the Canvas
         IMap map = new Map();
         map.loadmap(canvas);
 
-        // Add the Canvas to the root group
-        root.getChildren().add(canvas);
+        Pacman pacman = new Pacman();
+        Controller controller = new Controller(pacman);
+        
 
+        // show the scene
         stage.setScene(scene);
         stage.centerOnScreen(); // Center the stage on the screen
         stage.show();
 
-        System.out.println("Game started now looping");
+        
+
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                controller.keyPressed(event);
+            }
+        });
+
+        AnimationTimer gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Update the game state
+                //pacman.update();;
+                //pacman.draw(canvas);
+            }
+        };
+        gameLoop.start();
     }
 
     public static void main(String[] args) {

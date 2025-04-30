@@ -59,48 +59,48 @@ public class Map implements IMap {
                 char tile = tileMap[row].charAt(col);
                 switch (tile) {
                     case 'X':
-                        System.out.println("Drawing wall at: " + col + ", " + row);
+                        //System.out.println("Drawing wall at: " + col + ", " + row);
                         // Draw wall
                         gc.drawImage(wallImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case 'P':
-                        System.out.println("Drawing Pacman at: " + col + ", " + row);
+                        //System.out.println("Drawing Pacman at: " + col + ", " + row);
                         // Draw Pacman
                         gc.drawImage(pacmanImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         
                         break;
                     case 'r':
-                        System.out.println("Drawing red ghost at: " + col + ", " + row);
+                        //System.out.println("Drawing red ghost at: " + col + ", " + row);
                         // Draw red ghost
                         gc.drawImage(redGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case 'b':
-                        System.out.println("Drawing blue ghost at: " + col + ", " + row);
+                        //System.out.println("Drawing blue ghost at: " + col + ", " + row);
                         // Draw blue ghost
                         gc.drawImage(blueGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case 'p':
-                        System.out.println("Drawing pink ghost at: " + col + ", " + row);
+                        //System.out.println("Drawing pink ghost at: " + col + ", " + row);
                         // Draw pink ghost
                         gc.drawImage(pinkGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case 'o':
-                        System.out.println("Drawing orange ghost at: " + col + ", " + row);
+                        //System.out.println("Drawing orange ghost at: " + col + ", " + row);
                         // Draw orange ghost
                         gc.drawImage(orangeGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case ' ':
-                        System.out.println("Drawing empty space at: " + col + ", " + row);
+                        //System.out.println("Drawing empty space at: " + col + ", " + row);
                         // Draw empty space
                         gc.drawImage(smallFoodImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case 'B':
-                        System.out.println("Drawing big food at: " + col + ", " + row);
+                        //System.out.println("Drawing big food at: " + col + ", " + row);
                         // Draw big food
                         gc.drawImage(bigFoodImage, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;
                     case 'D':
-                        System.out.println("Drawing door at: " + col + ", " + row);
+                        //System.out.println("Drawing door at: " + col + ", " + row);
                         // Draw door
                         gc.drawImage(doorClosed, col * tileSize, row * tileSize, tileSize, tileSize);
                         break;

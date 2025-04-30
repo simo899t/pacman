@@ -15,13 +15,7 @@ public abstract class Block {
     protected Image image;
     protected direction direction;
 
-    public Block(double x, double y, double width, double height, double speed, Image image) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.stepSize = stepSize;
-        this.image = image;
+    public Block() {
         this.direction = direction.NONE;
     }
 
@@ -50,7 +44,11 @@ public abstract class Block {
         this.y = y;
     }
 
-    void setDirection(direction direction) {
+    public direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(direction direction) {
         this.direction = direction;
     }
 
