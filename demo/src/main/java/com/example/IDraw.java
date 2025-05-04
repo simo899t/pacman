@@ -1,5 +1,8 @@
 package com.example;
 
+import java.util.ArrayList;
+
 public interface IDraw {
-    void draw();
+    void drawAllBlocks();
+    // void drawMoveableBlocks();
 }

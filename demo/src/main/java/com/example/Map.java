@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.ArrayList;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -9,15 +11,27 @@ public class Map implements IMap {
     String[] tileMap;
     int rowCount;
     int columCount;
-    int tileSize = 32; // each tile is 16 pixels wide
     GraphicsContext gc;
+
+    public Map() {
+        loadAllBlocks();
+    }
+
+    private Pacman pacman;
+    public Pacman getPacman() {
+        return pacman;
+    }
+
+    private int tileSize = 32; // each tile is 16 pixels wide
+    public int getTileSize() {
+        return tileSize;
+    }
     
-    @Override
-    public void loadmap(Canvas canvas) {
+    private void loadAllBlocks() {
         tileMap = new String[] {
             "XXXXXXXXXXXXXXXXXXX",
             "X        X        X",
-            "XBXX XXX X xXX XXBX",
+            "XBXX XXX X XXX XXBX",
             "X                 X",
             "X XX X XXXXX X XX X",
             "X    X   X   X    X",
@@ -40,7 +54,6 @@ public class Map implements IMap {
 
         rowCount = 21; // Gameboard is 21 rows
         columCount = 19; // Gameboard is 19 columns
-        gc = canvas.getGraphicsContext2D(); // Initialize the GraphicsContext from the Canvas
 
         // Load images
         Image pacmanImage = new Image(getClass().getResource("/com/example/images/pacman.png").toExternalForm());
@@ -53,61 +66,70 @@ public class Map implements IMap {
         Image smallFoodImage = new Image(getClass().getResource("/com/example/images/smallFood.png").toExternalForm());
         Image bigFoodImage = new Image(getClass().getResource("/com/example/images/bigFood.png").toExternalForm());
 
+        allBlocks = new ArrayList<>(new ArrayList<>());
+        //moveableBlocks = new ArrayList<>();
+
         // Draw the map
         for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < columCount; col++) {
                 char tile = tileMap[row].charAt(col);
                 switch (tile) {
                     case 'X':
-                        //System.out.println("Drawing wall at: " + col + ", " + row);
-                        // Draw wall
-                        gc.drawImage(wallImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Block wall = new Block(wallImage, col * tileSize, row * tileSize);
+                        allBlocks.add(wall);
                         break;
                     case 'P':
-                        //System.out.println("Drawing Pacman at: " + col + ", " + row);
-                        // Draw Pacman
-                        gc.drawImage(pacmanImage, col * tileSize, row * tileSize, tileSize, tileSize);
-                        
+                        pacman = new Pacman(pacmanImage, col * tileSize, row * tileSize);
+                        allBlocks.add(pacman);
+                        //moveableBlocks.add(pacman);
                         break;
                     case 'r':
-                        //System.out.println("Drawing red ghost at: " + col + ", " + row);
-                        // Draw red ghost
-                        gc.drawImage(redGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Ghost redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize);
+                        allBlocks.add(redGhost);
+                        //moveableBlocks.add(redGhost);
                         break;
                     case 'b':
-                        //System.out.println("Drawing blue ghost at: " + col + ", " + row);
-                        // Draw blue ghost
-                        gc.drawImage(blueGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Ghost blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize);
+                        allBlocks.add(blueGhost);
+                        //moveableBlocks.add(blueGhost);
                         break;
                     case 'p':
-                        //System.out.println("Drawing pink ghost at: " + col + ", " + row);
-                        // Draw pink ghost
-                        gc.drawImage(pinkGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Ghost pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize);
+                        allBlocks.add(pinkGhost);
+                        //moveableBlocks.add(pinkGhost);
                         break;
                     case 'o':
-                        //System.out.println("Drawing orange ghost at: " + col + ", " + row);
-                        // Draw orange ghost
-                        gc.drawImage(orangeGhostImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Ghost orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize);
+                        allBlocks.add(orangeGhost);
+                        //moveableBlocks.add(orangeGhost);
                         break;
                     case ' ':
-                        //System.out.println("Drawing empty space at: " + col + ", " + row);
-                        // Draw empty space
-                        gc.drawImage(smallFoodImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Block pellet = new Block(smallFoodImage, col * tileSize, row * tileSize);
+                        allBlocks.add(pellet);
                         break;
                     case 'B':
-                        //System.out.println("Drawing big food at: " + col + ", " + row);
-                        // Draw big food
-                        gc.drawImage(bigFoodImage, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Block bigPellet = new Block(bigFoodImage, col * tileSize, row * tileSize);
+                        allBlocks.add(bigPellet);
                         break;
                     case 'D':
-                        //System.out.println("Drawing door at: " + col + ", " + row);
-                        // Draw door
-                        gc.drawImage(doorClosed, col * tileSize, row * tileSize, tileSize, tileSize);
+                        Block door = new Block(doorClosed, col * tileSize, row * tileSize);
+                        allBlocks.add(door);
                         break;
                     default:
                         break;
                 }
             }
+
         }
+    }
+
+    private ArrayList<Block> allBlocks;
+    public ArrayList<Block> getAllBlocks() {
+        return allBlocks;
+    }
+
+    private ArrayList<MoveableBlock> moveableBlocks;
+    public ArrayList<MoveableBlock> getMoveableBlocks() {
+        return moveableBlocks;
     }
 }

@@ -1,22 +1,17 @@
 package com.example;
 import javafx.scene.image.Image;
 
-public abstract class Block {
-
-    enum direction {
-        UP, DOWN, LEFT, RIGHT, NONE
-    }
-
+public class Block {
     protected double x;
     protected double y;
     protected double width;
     protected double height;
-    protected double stepSize;
     protected Image image;
-    protected direction direction;
 
-    public Block() {
-        this.direction = direction.NONE;
+    public Block(Image image, double x, double y) {
+        this.image = image;
+        this.x = x;
+        this.y = y;
     }
 
     public double getX() {
@@ -34,22 +29,13 @@ public abstract class Block {
     public double getHeight() {
         return height;
     }
-
-    public double getStepSize() {
-        return stepSize;
+    
+    public Image getImage() {
+        return image;
     }
 
     public void setPos(double x, double y) {
         this.x = x;
         this.y = y;
     }
-
-    public direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(direction direction) {
-        this.direction = direction;
-    }
-
 }

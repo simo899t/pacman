@@ -1,8 +1,10 @@
 package com.example;
 
-public class Pacman extends Block {
+import javafx.scene.image.Image;
 
-    public Pacman() {
-        super();
+public class Pacman extends MoveableBlock {
+
+    public Pacman(Image image, int x, int y) {
+        super(image, x, y);
     }
 }

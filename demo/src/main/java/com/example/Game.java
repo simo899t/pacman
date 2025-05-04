@@ -8,7 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.input.KeyEvent;
 
 
 public class Game extends Application {
@@ -30,35 +29,30 @@ public class Game extends Application {
         Canvas canvas = new Canvas(canvasWidth, canvasHeight);
         root.getChildren().add(canvas);
 
-        // Create an instance of Map and load the map onto the Canvas
-        IMap map = new Map();
-        map.loadmap(canvas);
-
-        Pacman pacman = new Pacman();
-        Controller controller = new Controller(pacman);
-        
-
         // show the scene
         stage.setScene(scene);
         stage.centerOnScreen(); // Center the stage on the screen
         stage.show();
 
         
-
-
+        IMap map = new Map();
+     
+        IController controller = new Controller(map.getPacman());
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 controller.keyPressed(event);
             }
         });
-
+       
+        IDraw draw = new Draw(map, canvas);
+        IUpdateGamePositions update = new UpdateGamePositions(map);
+        
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                // Update the game state
-                //pacman.update();;
-                //pacman.draw(canvas);
+                draw.drawAllBlocks();
+                update.updateGamePositions();
             }
         };
         gameLoop.start();
