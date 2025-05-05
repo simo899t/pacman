@@ -26,6 +26,12 @@ public class Map implements IMap {
     public int getTileSize() {
         return tileSize;
     }
+    public int getCols() {
+        return columCount;
+    }
+    public int getRows() {
+        return rowCount;
+    }
     
     private void loadAllBlocks() {
         tileMap = new String[] {

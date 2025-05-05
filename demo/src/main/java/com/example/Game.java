@@ -17,10 +17,13 @@ public class Game extends Application {
         stage.setTitle("Pacman Game");
         stage.setResizable(false);
 
-        // Define the dimensions of the game
-        int tileSize = 32;
-        int rowCount = 21;
-        int columCount = 19;
+        // Load the map
+        IMap map = new Map();
+
+        // Define the dimensions of the game with current map
+        int tileSize = map.getTileSize();
+        int rowCount = map.getRows();
+        int columCount = map.getCols();
         int canvasWidth = columCount * tileSize;
         int canvasHeight = rowCount * tileSize;
 
@@ -33,9 +36,6 @@ public class Game extends Application {
         stage.setScene(scene);
         stage.centerOnScreen(); // Center the stage on the screen
         stage.show();
-
-        
-        IMap map = new Map();
      
         IController controller = new Controller(map.getPacman());
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -47,11 +47,23 @@ public class Game extends Application {
        
         IDraw draw = new Draw(map, canvas);
         IUpdateGamePositions update = new UpdateGamePositions(map);
+        IGrid grid = new Grid(map);
+        //ICollide collision = new Collide();
         
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
+
+                Block nextBlock = grid.nextBlock(map.getPacman());
+                if (nextBlock != null) {
+                    for (Block block : map.getAllBlocks()) {
+                        if (nextBlock.equals(block)) {
+                            System.out.println("Collision detected!");
+                        }
+                    }
+                }
+
                 update.updateGamePositions();
             }
         };

@@ -9,4 +9,6 @@ public interface IMap {
     // public ArrayList<MoveableBlock> getMoveableBlocks();
     public Pacman getPacman();
     public int getTileSize();
+    public int getCols();
+    public int getRows();
 }

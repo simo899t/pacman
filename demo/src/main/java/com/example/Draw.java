@@ -10,7 +10,6 @@ public class Draw implements IDraw {
     public Draw(IMap map, Canvas canvas) {
         this.canvas = canvas;
         this.map = map;
-
     }
 
     @Override
@@ -24,13 +23,6 @@ public class Draw implements IDraw {
             draw(block);
         }
     }
-
-    //  @Override
-    //  public void drawMoveableBlocks() {
-    //      for (MoveableBlock block : map.getMoveableBlocks()) {
-    //          draw(block);
-    //      }
-    //  }
 
     private void draw(Block block) {
         canvas.getGraphicsContext2D().drawImage(block.getImage(), block.getX(), block.getY(), map.getTileSize(), map.getTileSize());
