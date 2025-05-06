@@ -56,13 +56,6 @@ public class Game extends Application {
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
-
-                Block nextBlock = grid.nextBlock(map.getPacman());
-                if (nextBlock != null) {
-                    if (grid.nextBlock(map.getPacman()).getType() == "wall") 
-                        map.getPacman().setDirection(direction.NONE);
-
-                }
                 update.updateGamePositions();
             }
         };

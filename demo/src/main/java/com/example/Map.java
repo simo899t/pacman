@@ -1,20 +1,43 @@
 package com.example;
 
 import java.util.ArrayList;
-
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Map implements IMap {
 
-    String[] tileMap;
-    int rowCount;
-    int columCount;
-    GraphicsContext gc;
+    String[] map = new String[] {
+        "XXXXXXXXXXXXXXXXXXX",
+        "X        X        X",
+        "XBXX XXX X XXX XXBX",
+        "X                 X",
+        "X XX X XXXXX X XX X",
+        "X    X   X   X    X",
+        "XXXX XXX X XXX XXXX",
+        "OOOX X   r   X XOOO",
+        "XXXX X XXDXX X XXXX",
+        "O      XbpoX      O",
+        "XXXX X XXXXX X XXXX",
+        "OOOX X       X XOOO",
+        "XXXX X XXXXX X XXXX",
+        "X        X        X",
+        "X XX XXX X XXX XX X",
+        "XB X     P     X BX",
+        "XX X X XXXXX X X XX",
+        "X    X   X   X    X",
+        "X XXXXXX X XXXXXX X",
+        "X                 X",
+        "XXXXXXXXXXXXXXXXXXX"
+    };
+
+    int rowCount = map.length; // Gameboard is 21 rows
+    int columCount = map[0].length(); // Gameboard is 19 columns
 
     public Map() {
-        loadAllBlocks();
+        loadAllBlocks(map);
+    }
+
+    public String[] getMap() {
+        return map;
     }
 
     private Pacman pacman;
@@ -33,33 +56,9 @@ public class Map implements IMap {
         return rowCount;
     }
     
-    private void loadAllBlocks() {
-        tileMap = new String[] {
-            "XXXXXXXXXXXXXXXXXXX",
-            "X        X        X",
-            "XBXX XXX X XXX XXBX",
-            "X                 X",
-            "X XX X XXXXX X XX X",
-            "X    X   X   X    X",
-            "XXXX XXX X XXX XXXX",
-            "OOOX X   r   X XOOO",
-            "XXXX X XXDXX X XXXX",
-            "O      XbpoX      O",
-            "XXXX X XXXXX X XXXX",
-            "OOOX X       X XOOO",
-            "XXXX X XXXXX X XXXX",
-            "X        X        X",
-            "X XX XXX X XXX XX X",
-            "XB X     P     X BX",
-            "XX X X XXXXX X X XX",
-            "X    X   X   X    X",
-            "X XXXXXX X XXXXXX X",
-            "X                 X",
-            "XXXXXXXXXXXXXXXXXXX"
-        };
-
-        rowCount = 21; // Gameboard is 21 rows
-        columCount = 19; // Gameboard is 19 columns
+    private void loadAllBlocks(String[] map) {
+        String[] tileMap = map;
+        
 
         // Load images
         Image pacmanImage = new Image(getClass().getResource("/com/example/images/pacman.png").toExternalForm());

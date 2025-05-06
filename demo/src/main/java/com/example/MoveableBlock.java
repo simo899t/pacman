@@ -9,10 +9,12 @@ public class MoveableBlock extends Block {
 
     protected int stepSize = 2;
     protected direction direction;
+    protected direction bufferDirection;
 
     public MoveableBlock(Image image, int x, int y, String type) {
         super(image, x, y, type);
         this.direction = direction.NONE;
+        this.bufferDirection = direction.NONE;
     }
 
     public int getStepSize() {

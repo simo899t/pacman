@@ -9,4 +9,5 @@ public interface IMap {
     public int getTileSize();
     public int getCols();
     public int getRows();
+    public String[] getMap();
 }
