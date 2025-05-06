@@ -55,14 +55,8 @@ public class Game extends Application {
             public void handle(long now) {
                 draw.drawAllBlocks();
 
-                Block nextBlock = grid.nextBlock(map.getPacman());
-                if (nextBlock != null) {
-                    for (Block block : map.getAllBlocks()) {
-                        if (nextBlock.equals(block)) {
-                            System.out.println("Collision detected!");
-                        }
-                    }
-                }
+                if (grid.nextBlock(map.getPacman().getType()) == "wall") 
+                        system.out.println("Collision detected");
 
                 update.updateGamePositions();
             }

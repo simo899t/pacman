@@ -2,7 +2,7 @@ package com.example;
 
 public class Grid implements IGrid {
     private final IMap map;
-    private final MoveableBlock[][] grid;
+    private final Block[][] grid;
     private final int cols;
     private final int rows;
     private final int tileSize;
@@ -12,11 +12,20 @@ public class Grid implements IGrid {
         this.cols  = map.getCols();
         this.rows  = map.getRows();
         this.tileSize = map.getTileSize();
-        this.grid  = new MoveableBlock[cols][rows];
+        this.grid  = new Block[cols][rows];
+        makeGrid();
+    }
+
+    public void makeGrid() {
+        for (Block block : map.getAllBlocks()) {
+            int col = toCol(block.getX());
+            int row = toRow(block.getY());
+            grid[col][row] = block;
+        }
     }
 
     /** place a block into the grid at tile‐coords (col,row) */
-    public void setBlock(MoveableBlock b, int col, int row) {
+    public void setBlock(Block b, int col, int row) {
         if (col < 0 || col >= cols || row < 0 || row >= rows) {
             return;
         }
@@ -25,7 +34,7 @@ public class Grid implements IGrid {
     }
 
     /** lookup the block at tile‐coords (col,row), or null */
-    public MoveableBlock getBlock(int col, int row) {
+    public Block getBlock(int col, int row) {
         if (col < 0 || col >= cols || row < 0 || row >= rows) {
             return null;
         }
@@ -50,12 +59,12 @@ public class Grid implements IGrid {
         return (int) y / map.getTileSize();
     }
 
-    public MoveableBlock nextBlock(MoveableBlock b) {
+    public Block nextBlock(MoveableBlock b) {
         int col = toCol(b.getX());
         int row = toRow(b.getY());
         switch (b.getDirection()) {
             case UP:
-                System.out.println("up");
+                System.out.println(getBlock(col, row).getX());
                 return getBlock(col, row - 1);
             case DOWN:
                 System.out.println("down");
@@ -65,10 +74,7 @@ public class Grid implements IGrid {
                 return getBlock(col - 1, row);
             case RIGHT:
                 System.out.println("right");
-                return getBlock(col + 1, row); 
-            case NONE:
-                System.out.println("No direction set yet");
-                return getBlock(col, row);       
+                return getBlock(col + 1, row);      
             default:
                 System.out.println("No direction set");
                 return null;
