@@ -3,7 +3,7 @@ package com.example;
 import javafx.scene.image.Image;
 
 public class Pellet extends Block {
-    public Pellet(Image image, int x, int y) {
-        super(image, x, y);
+    public Pellet(Image image, int x, int y, String type) {
+        super(image, x, y, type);
     }
 }

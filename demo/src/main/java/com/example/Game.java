@@ -1,4 +1,6 @@
 package com.example;
+import com.example.MoveableBlock.direction;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -55,9 +57,12 @@ public class Game extends Application {
             public void handle(long now) {
                 draw.drawAllBlocks();
 
-                if (grid.nextBlock(map.getPacman().getType()) == "wall") 
-                        system.out.println("Collision detected");
+                Block nextBlock = grid.nextBlock(map.getPacman());
+                if (nextBlock != null) {
+                    if (grid.nextBlock(map.getPacman()).getType() == "wall") 
+                        map.getPacman().setDirection(direction.NONE);
 
+                }
                 update.updateGamePositions();
             }
         };

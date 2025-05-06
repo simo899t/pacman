@@ -81,44 +81,44 @@ public class Map implements IMap {
                 char tile = tileMap[row].charAt(col);
                 switch (tile) {
                     case 'X':
-                        Block wall = new Block(wallImage, col * tileSize, row * tileSize);
+                        Block wall = new Block(wallImage, col * tileSize, row * tileSize, "wall");
                         allBlocks.add(wall);
                         break;
                     case 'P':
-                        pacman = new Pacman(pacmanImage, col * tileSize, row * tileSize);
+                        pacman = new Pacman(pacmanImage, col * tileSize, row * tileSize, "pacman");
                         allBlocks.add(pacman);
                         //moveableBlocks.add(pacman);
                         break;
                     case 'r':
-                        Ghost redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize);
+                        Ghost redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize, "redGhost");
                         allBlocks.add(redGhost);
                         //moveableBlocks.add(redGhost);
                         break;
                     case 'b':
-                        Ghost blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize);
+                        Ghost blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize, "blueGhost");
                         allBlocks.add(blueGhost);
                         //moveableBlocks.add(blueGhost);
                         break;
                     case 'p':
-                        Ghost pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize);
+                        Ghost pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize, "pinkGhost");
                         allBlocks.add(pinkGhost);
                         //moveableBlocks.add(pinkGhost);
                         break;
                     case 'o':
-                        Ghost orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize);
+                        Ghost orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize, "orangeGhost");
                         allBlocks.add(orangeGhost);
                         //moveableBlocks.add(orangeGhost);
                         break;
                     case ' ':
-                        Block pellet = new Block(smallFoodImage, col * tileSize, row * tileSize);
+                        Block pellet = new Block(smallFoodImage, col * tileSize, row * tileSize, "pellet");
                         allBlocks.add(pellet);
                         break;
                     case 'B':
-                        Block bigPellet = new Block(bigFoodImage, col * tileSize, row * tileSize);
+                        Block bigPellet = new Block(bigFoodImage, col * tileSize, row * tileSize, "bigPellet");
                         allBlocks.add(bigPellet);
                         break;
                     case 'D':
-                        Block door = new Block(doorClosed, col * tileSize, row * tileSize);
+                        Block door = new Block(doorClosed, col * tileSize, row * tileSize, "door");
                         allBlocks.add(door);
                         break;
                     default:

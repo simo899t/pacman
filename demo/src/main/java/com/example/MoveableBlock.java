@@ -10,8 +10,8 @@ public class MoveableBlock extends Block {
     protected int stepSize = 2;
     protected direction direction;
 
-    public MoveableBlock(Image image, int x, int y) {
-        super(image, x, y);
+    public MoveableBlock(Image image, int x, int y, String type) {
+        super(image, x, y, type);
         this.direction = direction.NONE;
     }
 
@@ -34,5 +34,4 @@ public class MoveableBlock extends Block {
     public void setDirection(direction direction) {
         this.direction = direction;
     }
-
 }

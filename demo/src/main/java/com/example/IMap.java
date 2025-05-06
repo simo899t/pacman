@@ -2,8 +2,6 @@ package com.example;
 
 import java.util.ArrayList;
 
-import javafx.scene.canvas.Canvas;
-
 public interface IMap {
     public ArrayList<Block> getAllBlocks();
     // public ArrayList<MoveableBlock> getMoveableBlocks();

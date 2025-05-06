@@ -64,23 +64,16 @@ public class Grid implements IGrid {
         int row = toRow(b.getY());
         switch (b.getDirection()) {
             case UP:
-                System.out.println(getBlock(col, row).getX());
                 return getBlock(col, row - 1);
             case DOWN:
-                System.out.println("down");
                 return getBlock(col, row + 1);
             case LEFT:
-                System.out.println("left");
                 return getBlock(col - 1, row);
             case RIGHT:
-                System.out.println("right");
                 return getBlock(col + 1, row);      
             default:
-                System.out.println("No direction set");
                 return null;
         }
-        
-        
     }
 }
 
