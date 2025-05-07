@@ -27,6 +27,10 @@ public class Block {
         return image;
     }   
 
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
     public void setPos(double x, double y) {
         this.x = x;
         this.y = y;

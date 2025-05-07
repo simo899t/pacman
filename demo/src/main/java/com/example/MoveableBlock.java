@@ -32,6 +32,10 @@ public class MoveableBlock extends Block {
     public direction getDirection() {
         return direction;
     }
+    
+    public direction getBufferDirection() {
+        return bufferDirection;
+    }
 
     public void setDirection(direction direction) {
         this.direction = direction;

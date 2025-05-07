@@ -50,12 +50,18 @@ public class Game extends Application {
         IDraw draw = new Draw(map, canvas);
         IUpdateGamePositions update = new UpdateGamePositions(map);
         IGrid grid = new Grid(map);
+        for (Node node : grid.getAllNodes()) {
+            if (map.getPacman().getX() == node.getX() && map.getPacman().getY() == node.getY()) {
+                Node currentNode = node;
+            }
+        }
         //ICollide collision = new Collide();
         
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
+                
                 update.updateGamePositions();
             }
         };

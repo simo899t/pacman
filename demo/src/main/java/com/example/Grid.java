@@ -1,11 +1,14 @@
 package com.example;
 
+import java.util.ArrayList;
+
 public class Grid implements IGrid {
     private final IMap map;
     private final Node[][] grid;
     private final int cols;
     private final int rows;
     private final int tileSize;
+    private Node currentNode;
 
     public Grid(IMap map) {
         this.map = map;
@@ -14,21 +17,42 @@ public class Grid implements IGrid {
         this.tileSize = map.getTileSize();
         this.grid  = new Node[cols][rows];
         makeGrid();
-        printGrid();
     }
 
     public void makeGrid() {
+        String[] gridMap = map.getMap();  
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                if (map.getMap()[row].charAt(col) != 'X') {
+                if (gridMap[row].charAt(col) != 'X') {
                     grid[col][row] = new Node(toCol(col), toRow(row));
+                    if (gridMap[row].charAt(col) == 'P') {
+                        currentNode = grid[col][row];
+                    }
                     surroundingNodes(getNode(col, row));
                 }
             }
-            
         }
     }
 
+    public Node getCurrentNode() {
+        return currentNode;
+    }
+
+    public ArrayList<Node> getAllNodes() {
+        ArrayList<Node> allNodes = new ArrayList<>();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (grid[col][row] != null) {
+                    allNodes.add(grid[col][row]);
+                }
+            }
+        }
+        return allNodes;
+    }
+
+    /**
+     * 
+     */
     public void printGrid() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
