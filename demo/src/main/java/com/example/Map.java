@@ -80,44 +80,53 @@ public class Map implements IMap {
                 char tile = tileMap[row].charAt(col);
                 switch (tile) {
                     case 'X':
-                        Block wall = new Block(wallImage, col * tileSize, row * tileSize, "wall");
+                        Block wall = new Block(wallImage, col * tileSize, row * tileSize);
+                        wall.setType(BlockType.WALL);
                         allBlocks.add(wall);
                         break;
                     case 'P':
-                        pacman = new Pacman(pacmanImage, col * tileSize, row * tileSize, "pacman");
+                        pacman = new Pacman(pacmanImage, col * tileSize, row * tileSize);
+                        pacman.setType(BlockType.PACMAN);
                         allBlocks.add(pacman);
                         //moveableBlocks.add(pacman);
                         break;
                     case 'r':
-                        Ghost redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize, "redGhost");
+                        Ghost redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize);
+                        redGhost.setType(BlockType.GHOST);
                         allBlocks.add(redGhost);
                         //moveableBlocks.add(redGhost);
                         break;
                     case 'b':
-                        Ghost blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize, "blueGhost");
+                        Ghost blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize);
+                        blueGhost.setType(BlockType.GHOST);
                         allBlocks.add(blueGhost);
                         //moveableBlocks.add(blueGhost);
                         break;
                     case 'p':
-                        Ghost pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize, "pinkGhost");
+                        Ghost pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize);
+                        pinkGhost.setType(BlockType.GHOST);
                         allBlocks.add(pinkGhost);
                         //moveableBlocks.add(pinkGhost);
                         break;
                     case 'o':
-                        Ghost orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize, "orangeGhost");
+                        Ghost orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize);
+                        orangeGhost.setType(BlockType.GHOST);
                         allBlocks.add(orangeGhost);
                         //moveableBlocks.add(orangeGhost);
                         break;
                     case ' ':
-                        Block pellet = new Block(smallFoodImage, col * tileSize, row * tileSize, "pellet");
+                        Block pellet = new Block(smallFoodImage, col * tileSize, row * tileSize);
+                        pellet.setType(BlockType.PELLET);
                         allBlocks.add(pellet);
                         break;
                     case 'B':
-                        Block bigPellet = new Block(bigFoodImage, col * tileSize, row * tileSize, "bigPellet");
+                        Block bigPellet = new Block(bigFoodImage, col * tileSize, row * tileSize);
+                        bigPellet.setType(BlockType.BIGPELLET);
                         allBlocks.add(bigPellet);
                         break;
                     case 'D':
-                        Block door = new Block(doorClosed, col * tileSize, row * tileSize, "door");
+                        Block door = new Block(doorClosed, col * tileSize, row * tileSize);
+                        door.setType(BlockType.DOOR);
                         allBlocks.add(door);
                         break;
                     default:
@@ -136,5 +145,14 @@ public class Map implements IMap {
     private ArrayList<MoveableBlock> moveableBlocks;
     public ArrayList<MoveableBlock> getMoveableBlocks() {
         return moveableBlocks;
+    }
+
+    public Block getBlock(int x, int y) {
+        for (Block block : allBlocks) {
+            if (block.getX() == x && block.getY() == y) {
+                return block;
+            }
+        }
+        return null;
     }
 }

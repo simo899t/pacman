@@ -1,25 +1,33 @@
 package com.example;
 import javafx.scene.image.Image;
 
+enum BlockType {
+    PACMAN,
+    WALL,
+    GHOST,
+    BIGPELLET,
+    PELLET,
+    DOOR
+}
+
 public class Block {
-    protected double x;
-    protected double y;
-    protected String type;
+    protected int x;
+    protected int y;
+    protected BlockType type;
     protected Image image;
 
-    public Block(Image image, double x, double y, String type) {
+    public Block(Image image, int x, int y) {
         this.type = type;
         this.image = image;
         this.x = x;
         this.y = y;
-
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
     
@@ -31,12 +39,20 @@ public class Block {
         this.image = image;
     }
 
-    public void setPos(double x, double y) {
+    public void setPos(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public String getType() {
+    public BlockType getType() {
         return type;
+    }
+
+    public void setType(BlockType type) {
+        this.type = type;
+    }
+
+    public void getBlock() {
+
     }
 }

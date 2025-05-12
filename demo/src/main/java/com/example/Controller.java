@@ -13,20 +13,20 @@ public class Controller implements IController {
         //System.out.println("KeyEvent: " + keyCode);
         switch (e.getCode()) {
             case UP:
-                pacman.setDirection(pacman.bufferDirection.UP);
-                System.out.println("setDirection UP");
+                pacman.setBufferDirection(pacman.bufferDirection.UP);
+                System.out.println("setBufferDirection UP");
                 break;
             case DOWN:
-                pacman.setDirection(pacman.bufferDirection.DOWN);
-                System.out.println("setDirection DOWN");
+                pacman.setBufferDirection(pacman.bufferDirection.DOWN);
+                System.out.println("setBufferDirection DOWN");
                 break;
             case LEFT:
-                pacman.setDirection(pacman.bufferDirection.LEFT);
-                System.out.println("setDirection LEFT");
+                pacman.setBufferDirection(pacman.bufferDirection.LEFT);
+                System.out.println("setBufferDirection LEFT");
                 break;
             case RIGHT:
-                pacman.setDirection(pacman.bufferDirection.RIGHT);
-                System.out.println("setDirection RIGHT");
+                pacman.setBufferDirection(pacman.bufferDirection.RIGHT);
+                System.out.println("setBufferDirection RIGHT");
                 break;
             default:
                 break;

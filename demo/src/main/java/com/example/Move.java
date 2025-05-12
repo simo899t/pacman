@@ -1,28 +1,14 @@
 package com.example;
 
-public class UpdateGamePositions implements IUpdateGamePositions {
-
-    private IMap map;
-    public UpdateGamePositions(IMap map) {
-        this.map = map;
-    }
+public class Move implements IMove {
 
     @Override
-    public void updateGamePositions() {
-        for (Block block : map.getAllBlocks()) {
-            if (block instanceof MoveableBlock) {
-                MoveableBlock moveableBlock = (MoveableBlock) block;
-                move(moveableBlock);
-            }
-        }
-    }
-
     public void move(MoveableBlock entity) {
+        System.out.println(entity.getDirection() + " move");
         switch (entity.getDirection()) {
             case UP:
                 entity.setPos(entity.getX(), entity.getY() - entity.getStepSize());
                 
-                // System.out.println(entity.getX() + " " + entity.getY());
                 break;
             case DOWN:
                 entity.setPos(entity.getX(), entity.getY() + entity.getStepSize());

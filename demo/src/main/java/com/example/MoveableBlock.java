@@ -11,8 +11,8 @@ public class MoveableBlock extends Block {
     protected direction direction;
     protected direction bufferDirection;
 
-    public MoveableBlock(Image image, int x, int y, String type) {
-        super(image, x, y, type);
+    public MoveableBlock(Image image, int x, int y) {
+        super(image, x, y);
         this.direction = direction.NONE;
         this.bufferDirection = direction.NONE;
     }
@@ -32,12 +32,18 @@ public class MoveableBlock extends Block {
     public direction getDirection() {
         return direction;
     }
+
+    public void setDirection(direction direction) {
+        this.direction = direction;
+    }
     
     public direction getBufferDirection() {
         return bufferDirection;
     }
 
-    public void setDirection(direction direction) {
-        this.direction = direction;
+    public void setBufferDirection(direction bufferDirection) {
+        this.bufferDirection = bufferDirection;
     }
+
+    
 }

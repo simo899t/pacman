@@ -10,4 +10,5 @@ public interface IMap {
     public int getCols();
     public int getRows();
     public String[] getMap();
+    public Block getBlock(int x, int y);
 }
