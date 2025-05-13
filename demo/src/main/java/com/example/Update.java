@@ -25,18 +25,23 @@ public class Update implements IUpdate {
     public void updateEntity(MoveableBlock entity) {
         direction bufferDirection = entity.getBufferDirection();
         direction currentDirection = entity.getDirection();
-        Block bufferedNextBlock = nextBlock(entity, bufferDirection);
-        Block currentNextBlock = nextBlock(entity, currentDirection);
+        
 
-        whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
 
-        if (bufferedNextBlock == null) {            
-            move.move(entity);
-            return;
-        }
 
         if (canITurn(entity, bufferDirection)) {
+            Block currentNextBlock = nextBlock(entity, currentDirection);
+            whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
+            Block bufferedNextBlock = nextBlock(entity, bufferDirection);
             whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
+            whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
+            for (Block block : map.getAllBlocks()) {
+                if (collide.isColliding(entity, block, map)) {
+                    if (block.getType() == BlockType.WALL) {
+                        System.out.println("collision");
+                    }   
+                }
+            }
         }
         move.move(entity);
     }
@@ -53,7 +58,7 @@ public class Update implements IUpdate {
             case RIGHT:
                 return map.getBlock(entity.getX() + map.getTileSize(), entity.getY());
             default:
-                return null;
+                return map.getBlock(entity.getX(), entity.getY());
         }
     }
 
@@ -69,30 +74,27 @@ public class Update implements IUpdate {
     public boolean canITurn(MoveableBlock entity, direction bufferDirection) {
         switch (entity.getDirection()) {
             case UP:
-                if (bufferDirection == direction.DOWN || entity.getX() % tileSize == 0) {
+                if (entity.getX() % tileSize == 0 && entity.getY() % tileSize == 0) {
                     return true;
                 }
                 break;
             case DOWN:
-                if (bufferDirection == direction.UP || entity.getX() % tileSize == 0) {
+                if (entity.getX() % tileSize == 0 && entity.getY() % tileSize == 0) {
                     return true;
                 }
                 break;
             case LEFT:
-                if (bufferDirection == direction.RIGHT || entity.getY() % tileSize == 0) {
+                if (entity.getY() % tileSize == 0 && entity.getX() % tileSize == 0) {
                     return true;
                 }
             break;
             case RIGHT:
-                if (bufferDirection == direction.LEFT || entity.getY() % tileSize == 0) {
+                if (entity.getY() % tileSize == 0 && entity.getX() % tileSize == 0) {
                     return true;
                 }
                 break;
             case NONE:
-                if (entity.getY() % tileSize == 0) {
                     return true;
-                }
-                break;
             default:
                 return false;
         }
@@ -102,34 +104,8 @@ public class Update implements IUpdate {
     public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, direction currentDirection, direction bufferDirection) {
         switch (bufferedNextBlock.getType()) {
             case WALL:
-                if (bufferDirection == currentDirection) {
-                    entity.setDirection(direction.NONE);
-                }
-                break;
-            case GHOST:
-                if (entity.getType() == BlockType.PACMAN) {
-                    // ghostCollision(nextblock);
-                }
-                entity.setDirection(bufferDirection);
-                break;
-            case PELLET:
-                if (entity.getType() == BlockType.PACMAN) {
-                    // pelletCollision(nextblock);
-                }
-                entity.setDirection(bufferDirection);
-                break;
-            case BIGPELLET:
-                if (entity.getType() == BlockType.PACMAN) {
-                    // bigPelletCollision(nextblock);
-                }
-                entity.setDirection(bufferDirection);
                 break;
             case DOOR:
-                if (entity.getType() == BlockType.GHOST) {
-                }
-                if (entity.getType() == BlockType.PACMAN) {
-                    entity.setDirection(direction.NONE);
-                }
                 break;
             default:
                 entity.setDirection(bufferDirection);
@@ -138,11 +114,8 @@ public class Update implements IUpdate {
     }
 
     public void whatToDCurrent(MoveableBlock entity, Block currentNextBlock, direction currentDirection, direction bufferDirection) {
+    
         switch (currentNextBlock.getType()) {
-            case null:
-                entity.setDirection(bufferDirection);
-                return;
-
             case WALL:
                 if (bufferDirection == currentDirection) {
                     entity.setDirection(direction.NONE);
@@ -152,19 +125,18 @@ public class Update implements IUpdate {
                 if (entity.getType() == BlockType.PACMAN) {
                     // ghostCollision(nextblock);
                 }
-                entity.setDirection(bufferDirection);
+
                 break;
             case PELLET:
                 if (entity.getType() == BlockType.PACMAN) {
                     // pelletCollision(nextblock);
                 }
-                entity.setDirection(bufferDirection);
+                // System.out.println("pellet collision");
                 break;
             case BIGPELLET:
                 if (entity.getType() == BlockType.PACMAN) {
                     // bigPelletCollision(nextblock);
                 }
-                entity.setDirection(bufferDirection);
                 break;
             case DOOR:
                 if (entity.getType() == BlockType.GHOST) {
@@ -174,7 +146,6 @@ public class Update implements IUpdate {
                 }
                 break;
             default:
-                entity.setDirection(bufferDirection);
                 break;
         }
     }

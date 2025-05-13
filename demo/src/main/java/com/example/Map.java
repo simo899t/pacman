@@ -153,6 +153,7 @@ public class Map implements IMap {
                 return block;
             }
         }
+        System.err.println("Block not found at coordinates: " + x + ", " + y);
         return null;
     }
 }
