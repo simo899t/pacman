@@ -1,6 +1,6 @@
 package com.example;
-import com.example.MoveableBlock.direction;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -48,15 +48,22 @@ public class Game extends Application {
         });
         
         
-        
+        final AtomicInteger animationTimer = new AtomicInteger();
 
         IDraw draw = new Draw(map, canvas);
         IUpdate update = new Update();
+        IUpdateImages updateImages = new UpdateImages(map);
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
                 update.Update(map);
+                animationTimer.incrementAndGet(); // Increment the AtomicInteger
+                if (animationTimer.get() == 10) {
+                    animationTimer.set(0);
+                    updateImages.animateAllBlocks();
+                }
+                updateImages.updateAllImages();
             }
         };
         gameLoop.start();

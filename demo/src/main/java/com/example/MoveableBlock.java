@@ -10,11 +10,13 @@ public class MoveableBlock extends Block {
     protected int stepSize = 2;
     protected direction direction;
     protected direction bufferDirection;
+    protected int animationImage;
 
     public MoveableBlock(Image image, int x, int y) {
         super(image, x, y);
         this.direction = direction.NONE;
         this.bufferDirection = direction.NONE;
+        this.animationImage = 0;
     }
 
     public int getStepSize() {
@@ -45,5 +47,11 @@ public class MoveableBlock extends Block {
         this.bufferDirection = bufferDirection;
     }
 
+    public int getAnimationImage() {
+        return animationImage;
+    }
+    public void setAnimationImage(int animationImage) {
+        this.animationImage = animationImage;
+    }
     
 }
