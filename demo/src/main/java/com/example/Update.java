@@ -25,57 +25,25 @@ public class Update implements IUpdate {
     public void updateEntity(MoveableBlock entity) {
         direction bufferDirection = entity.getBufferDirection();
         direction currentDirection = entity.getDirection();
-        Block nextblock = nextBlock(entity, bufferDirection);
+        Block bufferedNextBlock = nextBlock(entity, bufferDirection);
+        Block currentNextBlock = nextBlock(entity, currentDirection);
 
-        if (nextblock == null) {
+        whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
+
+        if (bufferedNextBlock == null) {            
             move.move(entity);
             return;
         }
 
         if (canITurn(entity, bufferDirection)) {
-            switch (nextblock.getType()) {
-                case WALL:
-                    if (bufferDirection == currentDirection) {
-                        entity.setDirection(direction.NONE);
-                    }
-                    break;
-                case GHOST:
-                    if (entity.getType() == BlockType.PACMAN) {
-                        // ghostCollision(nextblock);
-                    }
-                    entity.setDirection(bufferDirection);
-                    break;
-                case PELLET:
-                    if (entity.getType() == BlockType.PACMAN) {
-                        // pelletCollision(nextblock);
-                    }
-                    entity.setDirection(bufferDirection);
-                    break;
-                case BIGPELLET:
-                    if (entity.getType() == BlockType.PACMAN) {
-                        // bigPelletCollision(nextblock);
-                    }
-                    entity.setDirection(bufferDirection);
-                    break;
-                case DOOR:
-                    if (entity.getType() == BlockType.GHOST) {
-                    }
-                    if (entity.getType() == BlockType.PACMAN) {
-                        entity.setDirection(direction.NONE);
-                    }
-                    break;
-                default:
-                    entity.setDirection(bufferDirection);
-                    break;
-            }
+            whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
         }
-        // System.out.println(entity.getDirection() + " updateEntity");
         move.move(entity);
     }
 
     @Override
-    public Block nextBlock(MoveableBlock entity, direction bufferDirection) {
-        switch (bufferDirection) {
+    public Block nextBlock(MoveableBlock entity, direction direction) {
+        switch (direction) {
             case UP:
                 return map.getBlock(entity.getX(), entity.getY() - map.getTileSize());
             case DOWN:
@@ -129,5 +97,85 @@ public class Update implements IUpdate {
                 return false;
         }
         return false;
+    }
+
+    public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, direction currentDirection, direction bufferDirection) {
+        switch (bufferedNextBlock.getType()) {
+            case WALL:
+                if (bufferDirection == currentDirection) {
+                    entity.setDirection(direction.NONE);
+                }
+                break;
+            case GHOST:
+                if (entity.getType() == BlockType.PACMAN) {
+                    // ghostCollision(nextblock);
+                }
+                entity.setDirection(bufferDirection);
+                break;
+            case PELLET:
+                if (entity.getType() == BlockType.PACMAN) {
+                    // pelletCollision(nextblock);
+                }
+                entity.setDirection(bufferDirection);
+                break;
+            case BIGPELLET:
+                if (entity.getType() == BlockType.PACMAN) {
+                    // bigPelletCollision(nextblock);
+                }
+                entity.setDirection(bufferDirection);
+                break;
+            case DOOR:
+                if (entity.getType() == BlockType.GHOST) {
+                }
+                if (entity.getType() == BlockType.PACMAN) {
+                    entity.setDirection(direction.NONE);
+                }
+                break;
+            default:
+                entity.setDirection(bufferDirection);
+                break;        
+        }
+    }
+
+    public void whatToDCurrent(MoveableBlock entity, Block currentNextBlock, direction currentDirection, direction bufferDirection) {
+        switch (currentNextBlock.getType()) {
+            case null:
+                entity.setDirection(bufferDirection);
+                return;
+
+            case WALL:
+                if (bufferDirection == currentDirection) {
+                    entity.setDirection(direction.NONE);
+                }
+                break;
+            case GHOST:
+                if (entity.getType() == BlockType.PACMAN) {
+                    // ghostCollision(nextblock);
+                }
+                entity.setDirection(bufferDirection);
+                break;
+            case PELLET:
+                if (entity.getType() == BlockType.PACMAN) {
+                    // pelletCollision(nextblock);
+                }
+                entity.setDirection(bufferDirection);
+                break;
+            case BIGPELLET:
+                if (entity.getType() == BlockType.PACMAN) {
+                    // bigPelletCollision(nextblock);
+                }
+                entity.setDirection(bufferDirection);
+                break;
+            case DOOR:
+                if (entity.getType() == BlockType.GHOST) {
+                }
+                if (entity.getType() == BlockType.PACMAN) {
+                    entity.setDirection(direction.NONE);
+                }
+                break;
+            default:
+                entity.setDirection(bufferDirection);
+                break;
+        }
     }
 }
