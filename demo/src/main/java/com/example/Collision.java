@@ -8,7 +8,7 @@ public class Collision {
         this.map = map;
     }
 
-    public boolean checkCollision(MoveableBlock entity, Block block) {
+    public boolean checkCollision(Pacman entity, Block block) {
         if (entity.getX() < block.getX() + map.getTileSize() &&
             entity.getX() + map.getTileSize() > block.getX() &&
             entity.getY() < block.getY() + map.getTileSize() &&

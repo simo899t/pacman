@@ -6,7 +6,6 @@ public class Update implements IUpdate {
     IMap map;
     IMove move;
     int tileSize;
-
     Collision collision = new Collision(map);
     CollideHandler collideHandler = new CollideHandler(map);
     
@@ -14,8 +13,12 @@ public class Update implements IUpdate {
         this.tileSize = map.getTileSize();
         this.move = new Move();
         this.map = map;
+        System.out.println("Map initialized again: " + (map != null));
     }
 
+    {}
+
+    @Override
     public void updateGame(IMap map) {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
@@ -59,28 +62,28 @@ public class Update implements IUpdate {
         } else {
             entity.setDirection(direction.NONE);
         }
-
-        for (Block block : map.getAllBlocks()) {
-            switch (block.getType()) {
-                case PELLET:
-                    if (collision.checkCollision(entity, block)) {
-                        collideHandler.pelletCollision(entity, block);
-                    }
-                    break;
-                case PACMAN:
-                    if (collision.checkCollision(entity, block)) {
-                        collideHandler.ghostCollision((Ghost) entity, (Pacman) block);
-                    }
-                    break;
-                case BIGPELLET:
-                    if (collision.checkCollision(entity, block)) {
-                        collideHandler.bigPelletCollision(entity, block);
-                    }
-                    break;
-                default:
-                    break;
+        if (entity instanceof Pacman) {
+            for (Block block : map.getAllBlocks()) {
+                switch (block.getType()) {
+                    case PELLET:
+                        if (collision.checkCollision((Pacman) entity, block)) {
+                            collideHandler.pelletCollision(entity, block);
+                        }
+                        break;
+                    case PACMAN:
+                        if (collision.checkCollision((Pacman) entity, block)) {
+                            collideHandler.ghostCollision((Pacman) block, (Ghost) block);
+                        }
+                        break;
+                    case BIGPELLET:
+                        if (collision.checkCollision((Pacman) entity, block)) {
+                            collideHandler.bigPelletCollision(entity, block);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-
         }
     }
 

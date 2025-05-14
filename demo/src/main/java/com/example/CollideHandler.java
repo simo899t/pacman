@@ -3,14 +3,16 @@ package com.example;
 public class CollideHandler implements ICollideHandler {
 
     IMap map;
+    IKillEntity killEntity;
 
     public CollideHandler(IMap map) {
         this.map = map;
+        this.killEntity = new KillEntity(map);
     }
-    IKillEntity killEntity = new KillEntity(map);
+    
 
     @Override
-    public void ghostCollision(Ghost ghost, Pacman pacman) {
+    public void ghostCollision(Pacman pacman, Ghost ghost) {
         switch (ghost.getState()) {
             case CHASE:
                 killEntity.killPlayer();

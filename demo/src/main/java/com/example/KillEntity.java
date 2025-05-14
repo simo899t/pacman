@@ -4,8 +4,8 @@ import com.example.Ghost.states;
 
 public class KillEntity implements IKillEntity {
 
-    GameLives gameLives = new GameLives();
-    GameScore gameScore = new GameScore();
+    GameLives gameLives;
+    GameScore gameScore;
 
     IMap map;
     Pacman pacman;
@@ -21,6 +21,8 @@ public class KillEntity implements IKillEntity {
         this.blueGhost = map.getBlueGhost();
         this.pinkGhost = map.getPinkGhost();
         this.orangeGhost = map.getOrangeGhost();
+        this.gameLives = new GameLives();
+        this.gameScore = new GameScore();
     }
         
     @Override
