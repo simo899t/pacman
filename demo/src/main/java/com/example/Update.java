@@ -42,9 +42,7 @@ public class Update implements IUpdate {
 
         if (canITurn(entity, bufferDirection)) {
             Block bufferedNextBlock = nextBlock(entity, bufferDirection);
-            if (bufferedNextBlock != null && bufferedNextBlock.getType() != BlockType.WALL) {
-                entity.setDirection(bufferDirection);
-            }
+            whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
         }
 
         Block moveNextBlock = nextBlock(entity, entity.getDirection());
@@ -88,15 +86,9 @@ public class Update implements IUpdate {
     }
 
     public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, direction currentDirection, direction bufferDirection) {
-        if (!canITurn(entity, bufferDirection)) return;
-
-        switch (bufferedNextBlock.getType()) {
-            case WALL:
-            case DOOR:
-                break;
-            default:
-                entity.setDirection(bufferDirection);
-                break;
+        if (bufferedNextBlock.getType() != BlockType.WALL && bufferedNextBlock.getType() != BlockType.DOOR) {
+            entity.setDirection(bufferDirection);
+            return;
         }
     }
 
@@ -118,7 +110,6 @@ public class Update implements IUpdate {
                 if (entity.getType() == BlockType.PACMAN) {
                     // pelletCollision(nextblock);
                 }
-                // System.out.println("pellet collision");
                 break;
             case BIGPELLET:
                 if (entity.getType() == BlockType.PACMAN) {

@@ -12,6 +12,6 @@ public class Eater {
     }
 
     public void eatOn(MoveableBlock pacman) {
-        for 
+        
     }
 }
