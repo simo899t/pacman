@@ -15,7 +15,6 @@ public class Controller implements IController {
     }
 
     public void keyPressed1(KeyEvent key) {
-        //System.out.println("KeyEvent: " + keyCode);
         switch (key.getCode()) {
             case UP:
                 pacman.setBufferDirection(pacman.bufferDirection.UP);

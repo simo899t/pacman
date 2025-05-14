@@ -5,8 +5,8 @@ import com.example.MoveableBlock.direction;
 
 public class KillEntity implements IKillEntity {
 
-    GameLives gameLives;
-    GameScore gameScore;
+    GameLives gameLives = new GameLives();
+    GameScore gameScore = new GameScore();
 
     IMap map;
     Pacman pacman;
@@ -22,8 +22,6 @@ public class KillEntity implements IKillEntity {
         this.blueGhost = map.getBlueGhost();
         this.pinkGhost = map.getPinkGhost();
         this.orangeGhost = map.getOrangeGhost();
-        this.gameLives = new GameLives();
-        this.gameScore = new GameScore();
     }
         
     @Override

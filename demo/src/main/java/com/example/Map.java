@@ -19,7 +19,7 @@ public class Map implements IMap {
         "XXXX X XXDXX X XXXX",
         "O      XbpoX      O",
         "XXXX X XXXXX X XXXX",
-        "OOOX X       X XOOO",
+        "...X X       X X...",
         "XXXX X XXXXX X XXXX",
         "X        X        X",
         "X XX XXX X XXX XX X",
@@ -63,12 +63,6 @@ public class Map implements IMap {
         return orangeGhost;
     }
 
-    private HashMap<String, Ghost> ghosts = new HashMap<>();
-
-    public HashMap<String, Block> pellets = new HashMap<>();
-
-
-
     private int tileSize = 32; // each tile is 16 pixels wide
     public int getTileSize() {
         return tileSize;
@@ -96,7 +90,6 @@ public class Map implements IMap {
         Image bigFoodImage = new Image(getClass().getResource("/com/example/images/bigFood.png").toExternalForm());
 
         allBlocks = new ArrayList<>(new ArrayList<>());
-        //moveableBlocks = new ArrayList<>();
 
         // Draw the map
         for (int row = 0; row < rowCount; row++) {
@@ -146,12 +139,12 @@ public class Map implements IMap {
                         //moveableBlocks.add(orangeGhost);
                         break;
                     case ' ':
-                        Block pellet = new Block(smallFoodImage, col * tileSize, row * tileSize);
+                        Pellet pellet = new Pellet(smallFoodImage, col * tileSize, row * tileSize);
                         pellet.setType(BlockType.PELLET);
                         allBlocks.add(pellet);
                         break;
                     case 'B':
-                        Block bigPellet = new Block(bigFoodImage, col * tileSize, row * tileSize);
+                        Pellet bigPellet = new Pellet(bigFoodImage, col * tileSize, row * tileSize);
                         bigPellet.setType(BlockType.BIGPELLET);
                         allBlocks.add(bigPellet);
                         break;
@@ -160,6 +153,10 @@ public class Map implements IMap {
                         door.setType(BlockType.DOOR);
                         allBlocks.add(door);
                         break;
+                    case 'O':
+                        Block teleporter = new Block(null, col * tileSize, row * tileSize);
+                        teleporter.setType(BlockType.TELEPORTER);
+                        allBlocks.add(teleporter);
                     default:
                         break;
                 }

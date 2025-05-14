@@ -32,26 +32,41 @@ public class Update implements IUpdate {
     public void updateEntity(MoveableBlock entity) {
         direction bufferDirection = entity.getBufferDirection();
         direction currentDirection = entity.getDirection();
+        BlockType entityType = entity.getType();
+        BlockType blockType;
         
         for (Block block : map.getAllBlocks()) {
-            if (!collision.checkCollision((Pacman) entity, block)) {
+            blockType = block.getType();
+            if (!collision.checkCollision(entity, block)) {
                 continue;
             }
-
-            // 1) Ghost runs into Pacman
-            if (entity.getType() == BlockType.PACMAN
-            && block.getType()  == BlockType.GHOST) {
-                collideHandler.ghostCollision((Pacman) entity, (Ghost) block);
-            }
-            // 2) Pacman eats a normal pellet
-            else if (entity.getType() == BlockType.PACMAN
-                && block.getType()  == BlockType.PELLET) {
-                collideHandler.pelletCollision(entity, block);
-            }
-            // 3) Pacman eats a big pellet
-            else if (entity.getType() == BlockType.PACMAN
-                && block.getType()  == BlockType.BIGPELLET) {
-                collideHandler.bigPelletCollision(entity, block);
+            
+            if (entityType == BlockType.PACMAN) {
+                switch (blockType) {
+                    case PELLET:
+                        collideHandler.pelletCollision((Pellet) block);
+                        break;
+                    case BIGPELLET:
+                        collideHandler.bigPelletCollision((Pellet) block);
+                        break;
+                    case GHOST:
+                        collideHandler.ghostCollision((Ghost) block);
+                        break;
+                    case FRUIT:
+                        // collideHandler.fruitCollision(entity, block);
+                        break;
+                    case TELEPORTER:
+                        for (Block otherTeleporter : map.getAllBlocks()) {
+                            if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
+                                Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
+                                entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
+                                System.out.println("Pacman teleported to another teleporter");
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         // 4) (optional) Pacman eats fruit, etc.
@@ -93,7 +108,7 @@ public class Update implements IUpdate {
 
 
     @Override
-    public Block nextBlock(MoveableBlock entity, direction direction) {
+    public Block nextBlock(Block entity, direction direction) {
         switch (direction) {
             case UP:
                 return map.getBlock(entity.getX(), entity.getY() - map.getTileSize());

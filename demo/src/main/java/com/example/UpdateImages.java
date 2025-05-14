@@ -39,26 +39,29 @@ public class UpdateImages implements IUpdateImages {
     @Override
     public void updateAllImages() {
         for (Block block : map.getAllBlocks()) {
-            updateImage(block);
+            if (block instanceof MoveableBlock) {
+                updateImage((MoveableBlock) block);
+            }
         }
     }
 
-    public void updateImage(Block block) {
+    public void updateImage(MoveableBlock block) {
+        int animationImage = block.getAnimationImage();
         switch (block.getType()) {
             case PACMAN:
                 switch (((MoveableBlock) block).getDirection()) {
                     case UP:
-                        block.setImage(pacmanImageUp);
+                        block.setImage(animationImage == 0 ? pacmanImageUp : pacmanImage);
                         break;
                     case DOWN:
-                        block.setImage(pacmanImageDown);
+                        block.setImage(animationImage == 0 ? pacmanImageDown : pacmanImage);
                         break;
                     case LEFT:
-                        block.setImage(pacmanImageLeft);
+                        block.setImage(animationImage == 0 ? pacmanImageLeft : pacmanImage);
                         break;
                     case RIGHT:
-                        block.setImage(pacmanImageRight);
-                    break;
+                        block.setImage(animationImage == 0 ? pacmanImageRight : pacmanImage);
+                        break;
                     default:
                         block.setImage(pacmanImage);
                         break;
@@ -77,12 +80,13 @@ public class UpdateImages implements IUpdateImages {
         switch (entity.getType()) {
             case PACMAN:
                 if (((MoveableBlock) entity).getAnimationImage() == 0 && ((MoveableBlock) entity).getDirection() != direction.NONE) {
+                    System.out.println("Animate Pacman");
                     ((MoveableBlock) entity).setImage(pacmanImage); 
                 break;
                 }
             default:
                     break;
-        }
+        }   
     }
 }
 

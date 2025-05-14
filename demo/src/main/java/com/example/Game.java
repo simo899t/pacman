@@ -49,26 +49,31 @@ public class Game extends Application {
         });
         
         
-        final AtomicInteger animationTimer = new AtomicInteger();
 
         IDraw draw = new Draw(map, canvas);
         System.out.println("Map initialized: " + (map != null));
         IUpdate update = new Update(map);
         IUpdateImages updateImages = new UpdateImages(map);
+        
         AnimationTimer gameLoop = new AnimationTimer() {
+            private int tick = 0;
+            private final int EVENT_INTERVAL = 30;
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
                 update.updateGame(map);
-                animationTimer.incrementAndGet(); // Increment the AtomicInteger
-                if (animationTimer.get() == 10) {
-                    animationTimer.set(0);
+                tick++;
+                System.out.println("Tick: " + tick);
+                if (tick == EVENT_INTERVAL) {
                     updateImages.animateAllBlocks();
-                }
+                    tick = 0;
+                    
                 updateImages.updateAllImages();
             }
+        }
         };
         gameLoop.start();
+        
     }
 
     public static void main(String[] args) {

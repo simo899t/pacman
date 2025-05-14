@@ -3,16 +3,18 @@ package com.example;
 public class CollideHandler implements ICollideHandler {
     private final IMap map;
     private final IKillEntity killEntity;
+    private final Eater eater;
 
     public CollideHandler(IMap map) {
         // 1) bind the map first
         this.map = map;
         // 2) now you can safely pass it into KillEntity
         this.killEntity = new KillEntity(map);
+        this.eater = new Eater(map);
     }
 
     @Override
-    public void ghostCollision(Pacman pacman, Ghost ghost) {
+    public void ghostCollision(Ghost ghost) {
         System.err.println("OMG COLLISION HAPPENED!!!!");
         switch (ghost.getState()) {
             case CHASE:
@@ -23,24 +25,31 @@ public class CollideHandler implements ICollideHandler {
                 break;
             case EATEN:
                 break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void pelletCollision(MoveableBlock entity, Block pellet) {
-        // eat(entity);
-        // gameScore.addScore(10);
+    public void pelletCollision(Pellet pellet) {
+        eater.eatPellet(pellet);
     }
 
     @Override
-    public void bigPelletCollision(MoveableBlock entity, Block pellet) {
+    public void bigPelletCollision(Pellet pellet) {
+        eater.eatBigPellet(pellet);
+    }
+
+    @Override
+    public void fruitCollision(Fruit pellet) {
         // eat(entity);
-        // gameScore.addScore(10);
+        // gameLives.addLife();
         
     }
 
     @Override
-    public void fruitCollision(MoveableBlock entity, Block pellet) {
+    public void teleporterCollision(Pacman pacman) {
+        // TODO Auto-generated method stub
         // eat(entity);
         // gameLives.addLife();
         
