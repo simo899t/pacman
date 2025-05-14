@@ -125,6 +125,7 @@ public class Map implements IMap {
                         eatenPelletred.setType(BlockType.PELLET);
                         eatenPelletred.setEaten(true);
                         allBlocks.add(eatenPelletred);
+                        redGhost.setState(Ghost.states.CHASE);
                         break;
                     case 'b':
                         blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize);
@@ -188,7 +189,7 @@ public class Map implements IMap {
                 return block;
             }
         }
-        System.err.println("Block not found at coordinates: " + x + ", " + y);
+        // System.err.println("Block not found at coordinates: " + x + ", " + y);
         return null;
     }
 }

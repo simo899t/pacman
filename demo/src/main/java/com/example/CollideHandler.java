@@ -1,16 +1,19 @@
 package com.example;
 
 public class CollideHandler implements ICollideHandler {
-
-    IMap map;
+    private final IMap map;
+    private final IKillEntity killEntity;
 
     public CollideHandler(IMap map) {
+        // 1) bind the map first
         this.map = map;
+        // 2) now you can safely pass it into KillEntity
+        this.killEntity = new KillEntity(map);
     }
-    IKillEntity killEntity = new KillEntity(map);
 
     @Override
-    public void ghostCollision(Ghost ghost, Pacman pacman) {
+    public void ghostCollision(Pacman pacman, Ghost ghost) {
+        System.err.println("OMG COLLISION HAPPENED!!!!");
         switch (ghost.getState()) {
             case CHASE:
                 killEntity.killPlayer();
