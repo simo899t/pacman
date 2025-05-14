@@ -3,8 +3,8 @@ package com.example;
 public class GameLives {
     int lives;
 
-    public GameLives(int maxLives) {
-        this.lives = maxLives;
+    public GameLives() {
+        this.lives = 3;
     }
 
     public int getLives() {
@@ -18,7 +18,9 @@ public class GameLives {
     }
 
     public void addLife() {
-        lives++;
+        if (lives < 3) {
+            lives++;
+        }
     }
 
     public void resetLives() {

@@ -31,6 +31,8 @@ public class Map implements IMap {
 
     int rowCount = map.length; // Gameboard is 21 rows
     int columCount = map[0].length(); // Gameboard is 19 columns
+    // Ghosts = new HashMap<>();
+    // Pellets = new HashMap<>();
 
     public Map() {
         loadAllBlocks(map);
@@ -43,6 +45,22 @@ public class Map implements IMap {
     private Pacman pacman;
     public Pacman getPacman() {
         return pacman;
+    }
+    private Ghost redGhost;
+    public Ghost getRedGhost() {
+        return redGhost;
+    }
+    private Ghost blueGhost;
+    public Ghost getBlueGhost() {
+        return blueGhost;
+    }
+    private Ghost pinkGhost;
+    public Ghost getPinkGhost() {
+        return pinkGhost;
+    }
+    private Ghost orangeGhost;
+    public Ghost getOrangeGhost() {
+        return orangeGhost;
     }
 
     private int tileSize = 32; // each tile is 16 pixels wide
@@ -88,28 +106,34 @@ public class Map implements IMap {
                         pacman = new Pacman(pacmanImage, col * tileSize, row * tileSize);
                         pacman.setType(BlockType.PACMAN);
                         allBlocks.add(pacman);
-                        //moveableBlocks.add(pacman);
+                        Pellet eatenPellet = new Pellet(null, col * tileSize, row * tileSize);
+                        eatenPellet.setType(BlockType.PELLET);
+                        eatenPellet.setEaten(true);
+                        allBlocks.add(eatenPellet);
                         break;
                     case 'r':
-                        Ghost redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize);
+                        redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize);
                         redGhost.setType(BlockType.GHOST);
                         allBlocks.add(redGhost);
-                        //moveableBlocks.add(redGhost);
+                        Pellet eatenPelletred = new Pellet(null, col * tileSize, row * tileSize);
+                        eatenPelletred.setType(BlockType.PELLET);
+                        eatenPelletred.setEaten(true);
+                        allBlocks.add(eatenPelletred);
                         break;
                     case 'b':
-                        Ghost blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize);
+                        blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize);
                         blueGhost.setType(BlockType.GHOST);
                         allBlocks.add(blueGhost);
                         //moveableBlocks.add(blueGhost);
                         break;
                     case 'p':
-                        Ghost pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize);
+                        pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize);
                         pinkGhost.setType(BlockType.GHOST);
                         allBlocks.add(pinkGhost);
                         //moveableBlocks.add(pinkGhost);
                         break;
                     case 'o':
-                        Ghost orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize);
+                        orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize);
                         orangeGhost.setType(BlockType.GHOST);
                         allBlocks.add(orangeGhost);
                         //moveableBlocks.add(orangeGhost);
@@ -138,6 +162,7 @@ public class Map implements IMap {
     }
 
     private ArrayList<Block> allBlocks;
+
     public ArrayList<Block> getAllBlocks() {
         return allBlocks;
     }

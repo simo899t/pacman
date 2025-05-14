@@ -1,5 +1,9 @@
 package com.example;
 
 public interface ICollide{
-    public boolean isColliding(Block block1, Block block2, IMap map);
+    public void ghostCollision(MoveableBlock entity);
+    public void pelletCollision(MoveableBlock entity);
+    public void bigPelletCollision(MoveableBlock entity);
+    public void fruitCollision(MoveableBlock entity);
+
 }

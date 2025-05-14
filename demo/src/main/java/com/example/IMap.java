@@ -6,6 +6,7 @@ public interface IMap {
     public ArrayList<Block> getAllBlocks();
     // public ArrayList<MoveableBlock> getMoveableBlocks();
     public Pacman getPacman();
+    public Ghost getRedGhost();
     public int getTileSize();
     public int getCols();
     public int getRows();

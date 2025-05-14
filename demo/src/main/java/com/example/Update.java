@@ -5,7 +5,6 @@ import com.example.MoveableBlock.direction;
 public class Update implements IUpdate {
     IMap map;
     IMove move;
-    ICollide collide = new Collide(map);
     int tileSize;
 
     public void Update(IMap map) {
@@ -14,7 +13,7 @@ public class Update implements IUpdate {
         this.map = map;
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
-                if (block.getType() == BlockType.PACMAN) {
+                if (block.getType() == BlockType.PACMAN || block.getType() == BlockType.GHOST) {
                     updateEntity((MoveableBlock) block);
                 }
             }
@@ -25,23 +24,13 @@ public class Update implements IUpdate {
     public void updateEntity(MoveableBlock entity) {
         direction bufferDirection = entity.getBufferDirection();
         direction currentDirection = entity.getDirection();
-        
-
-
 
         if (canITurn(entity, bufferDirection)) {
             Block currentNextBlock = nextBlock(entity, currentDirection);
             whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
             Block bufferedNextBlock = nextBlock(entity, bufferDirection);
             whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
-            whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
-            for (Block block : map.getAllBlocks()) {
-                if (collide.isColliding(entity, block, map)) {
-                    if (block.getType() == BlockType.WALL) {
-                        System.out.println("collision");
-                    }   
-                }
-            }
+
         }
         move.move(entity);
     }

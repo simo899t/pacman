@@ -39,11 +39,12 @@ public class Game extends Application {
         stage.centerOnScreen(); // Center the stage on the screen
         stage.show();
      
-        IController controller = new Controller(map.getPacman());
+        IController controller = new Controller(map.getPacman(), map.getRedGhost());
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                controller.keyPressed(event);
+                controller.keyPressed1(event);
+                controller.keyPressed2(event);
             }
         });
         
