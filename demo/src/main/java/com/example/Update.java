@@ -3,22 +3,21 @@ package com.example;
 import com.example.MoveableBlock.direction;
 
 public class Update implements IUpdate {
-    IMap map;
-    IMove move;
-    int tileSize;
-    Collision collision = new Collision(map);
-    CollideHandler collideHandler = new CollideHandler(map);
-    
+    private final IMap map;
+    private final IMove move;
+    private final int tileSize;
+    private final Collision collision;
+    private final CollideHandler collideHandler;
+
     public Update(IMap map) {
-        this.tileSize = map.getTileSize();
-        this.move = new Move();
-        this.map = map;
-        System.out.println("Map initialized again: " + (map != null));
+        this.map       = map;                 
+        this.tileSize  = map.getTileSize(); 
+        this.move      = new Move();
+
+        this.collision      = new Collision(map);
+        this.collideHandler = new CollideHandler(map);
     }
 
-    {}
-
-    @Override
     public void updateGame(IMap map) {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
@@ -33,6 +32,34 @@ public class Update implements IUpdate {
     public void updateEntity(MoveableBlock entity) {
         direction bufferDirection = entity.getBufferDirection();
         direction currentDirection = entity.getDirection();
+        
+        for (Block block : map.getAllBlocks()) {
+            if (!collision.checkCollision((Pacman) entity, block)) {
+                continue;
+            }
+
+            // 1) Ghost runs into Pacman
+            if (entity.getType() == BlockType.PACMAN
+            && block.getType()  == BlockType.GHOST) {
+                collideHandler.ghostCollision((Pacman) entity, (Ghost) block);
+            }
+            // 2) Pacman eats a normal pellet
+            else if (entity.getType() == BlockType.PACMAN
+                && block.getType()  == BlockType.PELLET) {
+                collideHandler.pelletCollision(entity, block);
+            }
+            // 3) Pacman eats a big pellet
+            else if (entity.getType() == BlockType.PACMAN
+                && block.getType()  == BlockType.BIGPELLET) {
+                collideHandler.bigPelletCollision(entity, block);
+            }
+        }
+        // 4) (optional) Pacman eats fruit, etc.
+        // else if (entity.getType() == BlockType.PACMAN
+        //       && block.getType()  == BlockType.FRUIT) {
+        //     collideHandler.fruitCollision(entity, block);
+        // }
+
 
         boolean isReverse = (currentDirection == direction.LEFT && bufferDirection == direction.RIGHT) ||
                             (currentDirection == direction.RIGHT && bufferDirection == direction.LEFT) ||
@@ -61,29 +88,6 @@ public class Update implements IUpdate {
             move.move(entity);
         } else {
             entity.setDirection(direction.NONE);
-        }
-        if (entity instanceof Pacman) {
-            for (Block block : map.getAllBlocks()) {
-                switch (block.getType()) {
-                    case PELLET:
-                        if (collision.checkCollision((Pacman) entity, block)) {
-                            collideHandler.pelletCollision(entity, block);
-                        }
-                        break;
-                    case PACMAN:
-                        if (collision.checkCollision((Pacman) entity, block)) {
-                            collideHandler.ghostCollision((Pacman) block, (Ghost) block);
-                        }
-                        break;
-                    case BIGPELLET:
-                        if (collision.checkCollision((Pacman) entity, block)) {
-                            collideHandler.bigPelletCollision(entity, block);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
         }
     }
 
