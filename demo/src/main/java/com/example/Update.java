@@ -25,26 +25,39 @@ public class Update implements IUpdate {
     public void updateEntity(MoveableBlock entity) {
         direction bufferDirection = entity.getBufferDirection();
         direction currentDirection = entity.getDirection();
-        
 
+        boolean isReverse = (currentDirection == direction.LEFT && bufferDirection == direction.RIGHT) ||
+                            (currentDirection == direction.RIGHT && bufferDirection == direction.LEFT) ||
+                            (currentDirection == direction.UP && bufferDirection == direction.DOWN) ||
+                            (currentDirection == direction.DOWN && bufferDirection == direction.UP);
 
-
-        if (canITurn(entity, bufferDirection)) {
-            Block currentNextBlock = nextBlock(entity, currentDirection);
-            whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
-            Block bufferedNextBlock = nextBlock(entity, bufferDirection);
-            whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
-            whatToDCurrent(entity, currentNextBlock, currentDirection, bufferDirection);
-            for (Block block : map.getAllBlocks()) {
-                if (collide.isColliding(entity, block, map)) {
-                    if (block.getType() == BlockType.WALL) {
-                        System.out.println("collision");
-                    }   
-                }
+        if (isReverse) {
+            Block reverseNextBlock = nextBlock(entity, bufferDirection);
+            if (reverseNextBlock == null) {
+                entity.setDirection(bufferDirection);
+            }
+            else if (reverseNextBlock.getType() != BlockType.WALL) {
+                entity.setDirection(bufferDirection);
             }
         }
-        move.move(entity);
+
+        if (canITurn(entity, bufferDirection)) {
+            Block bufferedNextBlock = nextBlock(entity, bufferDirection);
+            if (bufferedNextBlock != null && bufferedNextBlock.getType() != BlockType.WALL) {
+                entity.setDirection(bufferDirection);
+            }
+        }
+
+        Block moveNextBlock = nextBlock(entity, entity.getDirection());
+        if (moveNextBlock == null){
+            move.move(entity);
+        } else if (moveNextBlock.getType() != BlockType.WALL) {
+            move.move(entity);
+        } else {
+            entity.setDirection(direction.NONE);
+        }
     }
+
 
     @Override
     public Block nextBlock(MoveableBlock entity, direction direction) {
@@ -72,44 +85,19 @@ public class Update implements IUpdate {
     }
     
     public boolean canITurn(MoveableBlock entity, direction bufferDirection) {
-        switch (entity.getDirection()) {
-            case UP:
-                if (entity.getX() % tileSize == 0 && entity.getY() % tileSize == 0) {
-                    return true;
-                }
-                break;
-            case DOWN:
-                if (entity.getX() % tileSize == 0 && entity.getY() % tileSize == 0) {
-                    return true;
-                }
-                break;
-            case LEFT:
-                if (entity.getY() % tileSize == 0 && entity.getX() % tileSize == 0) {
-                    return true;
-                }
-            break;
-            case RIGHT:
-                if (entity.getY() % tileSize == 0 && entity.getX() % tileSize == 0) {
-                    return true;
-                }
-                break;
-            case NONE:
-                    return true;
-            default:
-                return false;
-        }
-        return false;
+        return entity.getX() % tileSize == 0 && entity.getY() % tileSize == 0;
     }
 
     public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, direction currentDirection, direction bufferDirection) {
+        if (!canITurn(entity, bufferDirection)) return;
+
         switch (bufferedNextBlock.getType()) {
             case WALL:
-                break;
             case DOOR:
                 break;
             default:
                 entity.setDirection(bufferDirection);
-                break;        
+                break;
         }
     }
 
