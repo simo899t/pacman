@@ -7,10 +7,16 @@ public class Update implements IUpdate {
     IMove move;
     int tileSize;
 
-    public void Update(IMap map) {
+    Collision collision = new Collision(map);
+    CollideHandler collideHandler = new CollideHandler(map);
+    
+    public Update(IMap map) {
         this.tileSize = map.getTileSize();
         this.move = new Move();
         this.map = map;
+    }
+
+    public void updateGame(IMap map) {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
                 if (block.getType() == BlockType.PACMAN || block.getType() == BlockType.GHOST) {
@@ -44,7 +50,7 @@ public class Update implements IUpdate {
             Block bufferedNextBlock = nextBlock(entity, bufferDirection);
             whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
         }
-
+        
         Block moveNextBlock = nextBlock(entity, entity.getDirection());
         if (moveNextBlock == null){
             move.move(entity);
@@ -52,6 +58,29 @@ public class Update implements IUpdate {
             move.move(entity);
         } else {
             entity.setDirection(direction.NONE);
+        }
+
+        for (Block block : map.getAllBlocks()) {
+            switch (block.getType()) {
+                case PELLET:
+                    if (collision.checkCollision(entity, block)) {
+                        collideHandler.pelletCollision(entity, block);
+                    }
+                    break;
+                case PACMAN:
+                    if (collision.checkCollision(entity, block)) {
+                        collideHandler.ghostCollision((Ghost) entity, (Pacman) block);
+                    }
+                    break;
+                case BIGPELLET:
+                    if (collision.checkCollision(entity, block)) {
+                        collideHandler.bigPelletCollision(entity, block);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 
@@ -98,22 +127,6 @@ public class Update implements IUpdate {
             case WALL:
                 if (bufferDirection == currentDirection) {
                     entity.setDirection(direction.NONE);
-                }
-                break;
-            case GHOST:
-                if (entity.getType() == BlockType.PACMAN) {
-                    // ghostCollision(nextblock);
-                }
-
-                break;
-            case PELLET:
-                if (entity.getType() == BlockType.PACMAN) {
-                    // pelletCollision(nextblock);
-                }
-                break;
-            case BIGPELLET:
-                if (entity.getType() == BlockType.PACMAN) {
-                    // bigPelletCollision(nextblock);
                 }
                 break;
             case DOOR:

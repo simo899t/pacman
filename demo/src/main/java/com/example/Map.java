@@ -1,6 +1,8 @@
 package com.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javafx.scene.image.Image;
 
 public class Map implements IMap {
@@ -31,9 +33,7 @@ public class Map implements IMap {
 
     int rowCount = map.length; // Gameboard is 21 rows
     int columCount = map[0].length(); // Gameboard is 19 columns
-    // Ghosts = new HashMap<>();
-    // Pellets = new HashMap<>();
-
+    
     public Map() {
         loadAllBlocks(map);
     }
@@ -62,6 +62,12 @@ public class Map implements IMap {
     public Ghost getOrangeGhost() {
         return orangeGhost;
     }
+
+    private HashMap<String, Ghost> ghosts = new HashMap<>();
+
+    public HashMap<String, Block> pellets = new HashMap<>();
+
+
 
     private int tileSize = 32; // each tile is 16 pixels wide
     public int getTileSize() {
@@ -165,6 +171,10 @@ public class Map implements IMap {
 
     public ArrayList<Block> getAllBlocks() {
         return allBlocks;
+    }
+
+    public void removeBlock(Block block) {
+        allBlocks.remove(block);
     }
 
     private ArrayList<MoveableBlock> moveableBlocks;

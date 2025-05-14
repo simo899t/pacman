@@ -52,13 +52,14 @@ public class Game extends Application {
         final AtomicInteger animationTimer = new AtomicInteger();
 
         IDraw draw = new Draw(map, canvas);
-        IUpdate update = new Update();
+        System.out.println("Map initialized: " + (map != null));
+        IUpdate update = new Update(map);
         IUpdateImages updateImages = new UpdateImages(map);
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
-                update.Update(map);
+                update.updateGame(map);
                 animationTimer.incrementAndGet(); // Increment the AtomicInteger
                 if (animationTimer.get() == 10) {
                     animationTimer.set(0);
