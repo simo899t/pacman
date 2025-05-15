@@ -1,7 +1,5 @@
 package com.example;
 
-import com.example.MoveableBlock.direction;
-
 import javafx.scene.image.Image;
 
 public class UpdateImages implements IUpdateImages {
@@ -46,47 +44,28 @@ public class UpdateImages implements IUpdateImages {
     }
 
     public void updateImage(MoveableBlock block) {
-        int animationImage = block.getAnimationImage();
+        // int animationImage = block.getAnimationImage();
+        // if (animationImage == 1) {
+        //     animationImage = 1;
         switch (block.getType()) {
             case PACMAN:
                 switch (((MoveableBlock) block).getDirection()) {
                     case UP:
-                        block.setImage(animationImage == 0 ? pacmanImageUp : pacmanImage);
+                        block.setImage(pacmanImageUp);
                         break;
                     case DOWN:
-                        block.setImage(animationImage == 0 ? pacmanImageDown : pacmanImage);
+                        block.setImage(pacmanImageDown);
                         break;
                     case LEFT:
-                        block.setImage(animationImage == 0 ? pacmanImageLeft : pacmanImage);
+                        block.setImage(pacmanImageLeft);
                         break;
                     case RIGHT:
-                        block.setImage(animationImage == 0 ? pacmanImageRight : pacmanImage);
+                        block.setImage(pacmanImageRight);
                         break;
                     default:
-                        block.setImage(pacmanImage);
                         break;
                 }
         }
-    }
-
-    @Override
-    public void animateAllBlocks() {
-        for (Block block : map.getAllBlocks()) {
-            animateBlock(block);
-        }
-    }
-
-    public void animateBlock(Block entity) {
-        switch (entity.getType()) {
-            case PACMAN:
-                if (((MoveableBlock) entity).getAnimationImage() == 0 && ((MoveableBlock) entity).getDirection() != direction.NONE) {
-                    System.out.println("Animate Pacman");
-                    ((MoveableBlock) entity).setImage(pacmanImage); 
-                break;
-                }
-            default:
-                    break;
-        }   
     }
 }
 

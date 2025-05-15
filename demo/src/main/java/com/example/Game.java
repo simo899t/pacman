@@ -55,22 +55,20 @@ public class Game extends Application {
         IUpdate update = new Update(map);
         IUpdateImages updateImages = new UpdateImages(map);
         
+        
         AnimationTimer gameLoop = new AnimationTimer() {
-            private int tick = 0;
-            private final int EVENT_INTERVAL = 30;
+            // private int tick = 0;
+            // private final int EVENT_INTERVAL = 10;
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
                 update.updateGame(map);
-                tick++;
-                System.out.println("Tick: " + tick);
-                if (tick == EVENT_INTERVAL) {
-                    updateImages.animateAllBlocks();
-                    tick = 0;
-                    
+                // tick++;
+                // if (tick == EVENT_INTERVAL) {}
+                //     tick = 0;
+                
                 updateImages.updateAllImages();
             }
-        }
         };
         gameLoop.start();
         
