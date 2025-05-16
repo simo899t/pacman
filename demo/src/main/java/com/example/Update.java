@@ -9,13 +9,12 @@ public class Update implements IUpdate {
     private final Collision collision;
     private final CollideHandler collideHandler;
 
-    public Update(IMap map) {
-        this.map       = map;                 
-        this.tileSize  = map.getTileSize(); 
-        this.move      = new Move();
-
-        this.collision      = new Collision(map);
-        this.collideHandler = new CollideHandler(map);
+    public Update(IMap map, GameScore score, GameLives lives) {
+        this.map = map;
+        this.tileSize = map.getTileSize(); 
+        this.move = new Move();
+        this.collision = new Collision(map);
+        this.collideHandler = new CollideHandler(map, score, lives);
     }
 
     public void updateGame(IMap map) {

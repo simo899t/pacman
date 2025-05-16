@@ -63,7 +63,7 @@ public class Map implements IMap {
         return orangeGhost;
     }
 
-    private int tileSize = 32; // each tile is 16 pixels wide
+    private int tileSize = 32; // each tile is 32 pixels wide
     public int getTileSize() {
         return tileSize;
     }

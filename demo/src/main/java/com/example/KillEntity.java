@@ -5,18 +5,19 @@ import com.example.MoveableBlock.direction;
 
 public class KillEntity implements IKillEntity {
 
-    GameLives gameLives = new GameLives();
-    GameScore gameScore = new GameScore();
-
     IMap map;
+    GameScore score;
+    GameLives lives;
     Pacman pacman;
     Ghost redGhost;
     Ghost blueGhost;
     Ghost pinkGhost;
     Ghost orangeGhost;
 
-    public KillEntity(IMap map) {
+    public KillEntity(IMap map, GameScore score, GameLives lives) {
         this.map = map;
+        this.score = score;
+        this.lives = lives;
         this.pacman = map.getPacman();
         this.redGhost = map.getRedGhost();
         this.blueGhost = map.getBlueGhost();
@@ -38,12 +39,10 @@ public class KillEntity implements IKillEntity {
         blueGhost.setPos(blueGhost.getStartX(), blueGhost.getStartY());
         pinkGhost.setPos(pinkGhost.getStartX(), pinkGhost.getStartY());
         orangeGhost.setPos(orangeGhost.getStartX(), orangeGhost.getStartY());
-        gameLives.removeLife();
     }
 
     @Override
     public void killGhost(Ghost ghost) {
         ghost.setState(states.EATEN);
-        gameScore.addScore(200);
     }
 }

@@ -5,17 +5,16 @@ public class CollideHandler implements ICollideHandler {
     private final IKillEntity killEntity;
     private final Eater eater;
 
-    public CollideHandler(IMap map) {
+    public CollideHandler(IMap map, GameScore score, GameLives lives) {
         // 1) bind the map first
         this.map = map;
         // 2) now you can safely pass it into KillEntity
-        this.killEntity = new KillEntity(map);
-        this.eater = new Eater(map);
+        this.killEntity = new KillEntity(map, score, lives);
+        this.eater = new Eater(map, score, lives);
     }
 
     @Override
     public void ghostCollision(Ghost ghost) {
-        System.err.println("OMG COLLISION HAPPENED!!!!");
         switch (ghost.getState()) {
             case CHASE:
                 killEntity.killPlayer();
