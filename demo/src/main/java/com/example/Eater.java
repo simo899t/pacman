@@ -19,13 +19,15 @@ public class Eater {
         
         pellet.setEaten(true);
         pellet.setImage(null);
+        map.removePellet();
+        System.out.println(map.getPelletCount());
         score.addScore(points);
         // System.out.println("Pellet eaten! Score: " + score.getScore());
         return true;
     }
 
     public void eatPellet(Pellet pellet) {
-        tryEat(pellet, 10); 
+        tryEat(pellet, 10);
     }
 
     public void eatBigPellet(Pellet pellet) {

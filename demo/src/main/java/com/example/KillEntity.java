@@ -32,6 +32,8 @@ public class KillEntity implements IKillEntity {
         blueGhost.setDirection(direction.NONE);
         pinkGhost.setDirection(direction.NONE);
         orangeGhost.setDirection(direction.NONE);
+
+        lives.removeLife();
         
 
         pacman.setPos(pacman.getStartX(), pacman.getStartY());

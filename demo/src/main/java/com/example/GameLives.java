@@ -13,7 +13,7 @@ public class GameLives {
 
     public void removeLife() {
         if (lives > 0) {
-            lives=-1;
+            lives = lives -1;
         }
     }
 

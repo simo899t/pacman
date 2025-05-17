@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -69,6 +70,19 @@ public class Game extends Application {
         Canvas canvas = new Canvas(canvasWidth, canvasHeight);
         canvasContainer.getChildren().add(canvas);
 
+        // Create a game over text (initially hidden)
+        Label gameOverText = new Label("GAME OVER");
+        gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
+        gameOverText.setTextFill(Color.YELLOW);
+        gameOverText.setVisible(false);
+
+        // Center the text in the canvas
+        gameOverText.setLayoutX((canvasWidth - 250) / 2); // Approximate width of text
+        gameOverText.setLayoutY(canvasHeight / 2 - 24);   // Half of text height
+
+        // Add the game over text to the canvas container
+        canvasContainer.getChildren().add(gameOverText);
+
         // Add both components to main layout
         root.getChildren().addAll(scorePanel, canvasContainer);
 
@@ -93,7 +107,6 @@ public class Game extends Application {
         IDraw draw = new Draw(map, canvas);
         IUpdate update = new Update(map, gameScore, gameLives);
         IUpdateImages updateImages = new UpdateImages(map);
-        
 
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
@@ -101,10 +114,40 @@ public class Game extends Application {
                 draw.drawAllBlocks();
                 update.updateGame(map);
                 updateImages.updateAllImages();
-                
+
                 // Update both displays separately
                 scoreLabel.setText("SCORE: " + gameScore.getScore());
                 livesLabel.setText("LIVES: " + gameLives.getLives());
+
+                if (gameLives.getLives() <= 0) {
+                    // Show game over text
+                    gameOverText.setVisible(true);
+
+                    // Stop the game loop
+                    this.stop();
+
+                    // Optional: Add a key listener to restart the game
+                    scene.setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.ENTER) {
+                            // Reset the game state
+                            //gameLives.reset();
+                            //gameScore.reset();
+                            //map.reset();
+
+                            // Hide game over text
+                            gameOverText.setVisible(false);
+
+                            // Restart the game loop
+                            this.start();
+
+                            // Restore original key handler
+                            scene.setOnKeyPressed(event -> {
+                                controller.keyPressed1(event);
+                                controller.keyPressed2(event);
+                            });
+                        }
+                    });
+                }
             }
         };
 

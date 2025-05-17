@@ -58,8 +58,11 @@ public class Update implements IUpdate {
                         for (Block otherTeleporter : map.getAllBlocks()) {
                             if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
                                 Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
-                                entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
-                                System.out.println("Pacman teleported to another teleporter");
+                                if (nextToTeleporter != null) {
+                                    entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
+                                    // System.out.println("Pacman teleported to another teleporter");
+                                    break;
+                                }
                             }
                         }
                         break;

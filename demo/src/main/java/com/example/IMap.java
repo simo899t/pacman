@@ -12,6 +12,10 @@ public interface IMap {
     public int getTileSize();
     public int getCols();
     public int getRows();
+    public int getPelletCount();
+    public void removePellet();
+    public void addPellet();
+    public void resetPelletCount();
     public String[] getMap();
     public Block getBlock(int x, int y);
     public void removeBlock(Block block);

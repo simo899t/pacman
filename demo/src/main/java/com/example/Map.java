@@ -15,7 +15,7 @@ public class Map implements IMap {
         "X XX X XXXXX X XX X",
         "X    X   X   X    X",
         "XXXX XXX X XXX XXXX",
-        "OOOX X   r   X XOOO",
+        "...X X   r   X X...",
         "XXXX X XXDXX X XXXX",
         "O      XbpoX      O",
         "XXXX X XXXXX X XXXX",
@@ -72,6 +72,23 @@ public class Map implements IMap {
     }
     public int getRows() {
         return rowCount;
+    }
+
+    private int pelletCount = 0;
+    public int getPelletCount() {
+        return pelletCount;
+    }
+
+    public void removePellet() {
+        this.pelletCount = pelletCount - 1;
+    }
+
+    public void addPellet() {
+        this.pelletCount = pelletCount + 1;
+    }
+
+    public void resetPelletCount() {
+        this.pelletCount = 0;
     }
     
     private void loadAllBlocks(String[] map) {
@@ -142,11 +159,13 @@ public class Map implements IMap {
                         Pellet pellet = new Pellet(smallFoodImage, col * tileSize, row * tileSize);
                         pellet.setType(BlockType.PELLET);
                         allBlocks.add(pellet);
+                        addPellet();
                         break;
                     case 'B':
                         Pellet bigPellet = new Pellet(bigFoodImage, col * tileSize, row * tileSize);
                         bigPellet.setType(BlockType.BIGPELLET);
                         allBlocks.add(bigPellet);
+                        addPellet();
                         break;
                     case 'D':
                         Block door = new Block(doorClosed, col * tileSize, row * tileSize);
