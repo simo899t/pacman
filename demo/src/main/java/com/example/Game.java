@@ -23,13 +23,27 @@ import javafx.scene.input.KeyEvent;
 
 public class Game extends Application {
 
+    private GameLives gameLives;
+    private GameScore gameScore;
+    private IMap map;
+    private IController controller;
+    private IDraw draw;
+    private IUpdate update;
+    private IUpdateImages updateImages;
+    private AnimationTimer gameLoop;
+    private Label scoreLabel;
+    private Label livesLabel;
+    private Label gameOverText;
+    private Label restartText;
+    private Scene scene;
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("Pacman Game");
         stage.setResizable(false);
 
         // Load the map
-        IMap map = new Map();
+        map = new Map();
 
         // Define the dimensions of the game with current map
         int tileSize = map.getTileSize();
@@ -51,7 +65,7 @@ public class Game extends Application {
         scorePanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
         // Create score label
-        Label scoreLabel = new Label("SCORE: 0");
+        scoreLabel = new Label("SCORE: 0");
         scoreLabel.setTextFill(Color.WHITE);
         scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         scorePanel.getChildren().add(scoreLabel);
@@ -60,7 +74,7 @@ public class Game extends Application {
         scorePanel.setSpacing(30);
 
         // Create lives label
-        Label livesLabel = new Label("LIVES: 3");
+        livesLabel = new Label("LIVES: 3");
         livesLabel.setTextFill(Color.WHITE);
         livesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         scorePanel.getChildren().add(livesLabel);
@@ -71,30 +85,39 @@ public class Game extends Application {
         canvasContainer.getChildren().add(canvas);
 
         // Create a game over text (initially hidden)
-        Label gameOverText = new Label("GAME OVER");
+        gameOverText = new Label("GAME OVER");
         gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
         gameOverText.setTextFill(Color.YELLOW);
         gameOverText.setVisible(false);
 
-        // Center the text in the canvas
-        gameOverText.setLayoutX((canvasWidth - 250) / 2); // Approximate width of text
-        gameOverText.setLayoutY(canvasHeight / 2 - 24);   // Half of text height
+        // Center the gameover text in the canvas
+        gameOverText.setLayoutX((canvasWidth - 260) / 2); // Adjusted width calculation
+        gameOverText.setLayoutY((canvasHeight / 2) - 50); // Position above center
 
-        // Add the game over text to the canvas container
-        canvasContainer.getChildren().add(gameOverText);
+        // Create a restart text (also initially hidden)
+        restartText = new Label("Press ENTER to restart");
+        restartText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        restartText.setTextFill(Color.YELLOW);
+        restartText.setVisible(false);
+
+        // Position the restart text below the game over text
+        restartText.setLayoutX((canvasWidth - 200) / 2); // Adjusted width calculation
+        restartText.setLayoutY((canvasHeight / 2) + 10); // Position below center
+
+        canvasContainer.getChildren().addAll(gameOverText, restartText);
 
         // Add both components to main layout
         root.getChildren().addAll(scorePanel, canvasContainer);
 
         // Create scene with the root layout
-        Scene scene = new Scene(root, canvasWidth, Math.max(canvasHeight + 30, 30));
+        scene = new Scene(root, canvasWidth, Math.max(canvasHeight + 30, 30));
 
         // Show the scene
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
 
-        IController controller = new Controller(map.getPacman(), map.getRedGhost());
+        controller = new Controller(map.getPacman(), map.getRedGhost());
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -102,13 +125,13 @@ public class Game extends Application {
                 controller.keyPressed2(event);
             }
         });
-        GameLives gameLives = new GameLives();
-        GameScore gameScore = new GameScore();
-        IDraw draw = new Draw(map, canvas);
-        IUpdate update = new Update(map, gameScore, gameLives);
-        IUpdateImages updateImages = new UpdateImages(map);
+        gameLives = new GameLives();
+        gameScore = new GameScore();
+        draw = new Draw(map, canvas);
+        update = new Update(map, gameScore, gameLives);
+        updateImages = new UpdateImages(map);
 
-        AnimationTimer gameLoop = new AnimationTimer() {
+        gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
@@ -121,37 +144,61 @@ public class Game extends Application {
 
                 if (gameLives.getLives() <= 0) {
                     // Show game over text
-                    gameOverText.setVisible(true);
+                    gameOver();
+                }
 
-                    // Stop the game loop
-                    this.stop();
-
-                    // Optional: Add a key listener to restart the game
-                    scene.setOnKeyPressed(e -> {
-                        if (e.getCode() == KeyCode.ENTER) {
-                            // Reset the game state
-                            //gameLives.reset();
-                            //gameScore.reset();
-                            //map.reset();
-
-                            // Hide game over text
-                            gameOverText.setVisible(false);
-
-                            // Restart the game loop
-                            this.start();
-
-                            // Restore original key handler
-                            scene.setOnKeyPressed(event -> {
-                                controller.keyPressed1(event);
-                                controller.keyPressed2(event);
-                            });
-                        }
-                    });
+                if (map.getPelletCount() == 0) {
+                    // Show game over text
+                    gameWin();
                 }
             }
         };
 
         gameLoop.start();
+    }
+
+    private void resetGame() {
+        // Reset game state
+        gameLives.resetLives();
+        gameScore.resetScore();
+        map.resetMap();
+        
+        // Update controller to use the new Pacman instance
+        controller = new Controller(map.getPacman(), map.getRedGhost());
+        
+        // Hide game over text
+        gameOverText.setVisible(false);
+        restartText.setVisible(false);
+        
+        // Start a new game loop
+        gameLoop.start();
+        
+        // Restore original controls with the updated controller
+        scene.setOnKeyPressed(event -> {
+            controller.keyPressed1(event);
+            controller.keyPressed2(event);
+        });
+    }
+
+    private void gameOver() {
+        // Stop the game loop
+        gameLoop.stop();
+
+        // Show game over text and restart text
+        gameOverText.setVisible(true);
+        restartText.setVisible(true);
+
+        // Set up event handler for restarting the game
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                resetGame();
+            }
+        });
+    }
+
+    private void gameWin() {
+        // Stop the game loop
+        System.out.println("YOU WON!");
     }
 
     public static void main(String[] args) {

@@ -1,14 +1,12 @@
 package com.example;
 
-import javafx.scene.image.Image;
-
-public class Fruit extends Block implements Eatable {
+public class EatableBehavior implements Eatable {
     private boolean eaten;
-    int points = 20;
+    private int points;
 
-    public Fruit(Image image, int x, int y) {
-        super(image, x, y);
+    public EatableBehavior(int points) {
         this.eaten = false;
+        this.points = points;
     }
 
     public boolean isEaten() {
@@ -19,7 +17,6 @@ public class Fruit extends Block implements Eatable {
         this.eaten = eaten;
     }
 
-    @Override
     public int getPoints() {
         return points;
     }

@@ -11,11 +11,11 @@ public class GameScore {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public void addScore(int score) {
         this.score += score;
+    }
+
+    public void resetScore() {
+        this.score = 0;
     }
 }

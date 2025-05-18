@@ -20,29 +20,28 @@ public class Eater {
         pellet.setEaten(true);
         pellet.setImage(null);
         map.removePellet();
-        System.out.println(map.getPelletCount());
         score.addScore(points);
         // System.out.println("Pellet eaten! Score: " + score.getScore());
         return true;
     }
 
     public void eatPellet(Pellet pellet) {
-        tryEat(pellet, 10);
+        tryEat(pellet, pellet.getPoints());
     }
 
     public void eatBigPellet(Pellet pellet) {
-        if (!tryEat(pellet, 20)) 
+        if (!tryEat(pellet, pellet.getPoints())) 
             return;
         // set the state of the ghosts to frightened"
     }
 
     public void eatFruit(Pellet fruit) {
-        if (!tryEat(fruit, 20)) 
+        if (!tryEat(fruit, fruit.getPoints())) 
             return;
         // set the state of the ghosts to frightened"
     }
     public void eatGhost(Pellet ghost) {
-        if (!tryEat(ghost, 200)) 
+        if (!tryEat(ghost, ghost.getPoints())) 
             return;
         // set the state of the ghosts to frightened"
     }

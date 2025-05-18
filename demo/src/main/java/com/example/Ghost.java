@@ -2,7 +2,9 @@ package com.example;
 
 import javafx.scene.image.Image;
 
-public class Ghost extends MoveableBlock {
+public class Ghost extends MoveableBlock implements Eatable {
+
+    private final Eatable eatableBehavior = new EatableBehavior(200);
 
     public enum states {
         STILL,
@@ -10,14 +12,11 @@ public class Ghost extends MoveableBlock {
         FRIGHTENED,
         EATEN
     }
-
     private states state;
-
 
     public Ghost(Image image, int x, int y) {
         super(image, x, y);
         this.state = states.STILL;
-
     }
 
     public states getState() {
@@ -26,5 +25,25 @@ public class Ghost extends MoveableBlock {
 
     public void setState(states state) {
         this.state = state;
+    }
+
+    @Override
+    public boolean isEaten() {
+        return eatableBehavior.isEaten();
+    }
+
+    @Override
+    public void setEaten(boolean eaten) {
+        eatableBehavior.setEaten(eaten);
+        if (eaten) {
+            setState(states.EATEN);
+        } else {
+            setState(states.STILL);
+        }
+    }
+
+    @Override
+    public int getPoints() {
+        return eatableBehavior.getPoints();
     }
 }

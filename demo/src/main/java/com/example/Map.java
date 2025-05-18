@@ -184,6 +184,11 @@ public class Map implements IMap {
         }
     }
 
+    public void resetMap() {
+        allBlocks.clear();
+        loadAllBlocks(map);
+    }
+
     private ArrayList<Block> allBlocks;
 
     public ArrayList<Block> getAllBlocks() {

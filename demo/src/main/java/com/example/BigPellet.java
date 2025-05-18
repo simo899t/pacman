@@ -2,21 +2,19 @@ package com.example;
 
 import javafx.scene.image.Image;
 
-public class Pellet extends Block implements Eatable {
-    private final Eatable eatableBehavior = new EatableBehavior(10);
-    private boolean eaten;
-    private int points = 10;
+public class BigPellet extends Block implements Eatable {
+    private final Eatable eatableBehavior = new EatableBehavior(50);
 
-    public Pellet(Image image, int x, int y) {
+    public BigPellet(Image image, int x, int y) {
         super(image, x, y);
-        this.eaten = false;
+        boolean eaten = false;
     }
 
     @Override
     public boolean isEaten() {
         return eatableBehavior.isEaten();
     }
-
+    
     @Override
     public void setEaten(boolean eaten) {
         eatableBehavior.setEaten(eaten);

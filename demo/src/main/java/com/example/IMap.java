@@ -16,6 +16,7 @@ public interface IMap {
     public void removePellet();
     public void addPellet();
     public void resetPelletCount();
+    public void resetMap();
     public String[] getMap();
     public Block getBlock(int x, int y);
     public void removeBlock(Block block);

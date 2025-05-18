@@ -1,7 +1,7 @@
 package com.example;
 
 import com.example.Ghost.states;
-import com.example.MoveableBlock.direction;
+// import com.example.MoveableBlock.direction;
 
 public class KillEntity implements IKillEntity {
 
@@ -27,14 +27,13 @@ public class KillEntity implements IKillEntity {
         
     @Override
     public void killPlayer() {
-        pacman.setDirection(direction.NONE);
-        redGhost.setDirection(direction.NONE);
-        blueGhost.setDirection(direction.NONE);
-        pinkGhost.setDirection(direction.NONE);
-        orangeGhost.setDirection(direction.NONE);
-
         lives.removeLife();
         
+        // pacman.setDirection(direction.NONE);
+        // redGhost.setDirection(direction.NONE);
+        // blueGhost.setDirection(direction.NONE);
+        // pinkGhost.setDirection(direction.NONE);
+        // orangeGhost.setDirection(direction.NONE);
 
         pacman.setPos(pacman.getStartX(), pacman.getStartY());
         redGhost.setPos(redGhost.getStartX(), redGhost.getStartY());
