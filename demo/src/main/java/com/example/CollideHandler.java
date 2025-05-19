@@ -37,6 +37,13 @@ public class CollideHandler implements ICollideHandler {
     @Override
     public void bigPelletCollision(Pellet pellet) {
         eater.eatBigPellet(pellet);
+
+        for (Block block : map.getAllBlocks()) {
+        if (block instanceof Ghost) {
+            Ghost ghost = (Ghost) block;
+            ghost.setState(Ghost.states.FRIGHTENED);
+        }
+}
     }
 
     @Override

@@ -43,6 +43,8 @@ public class UpdateImages implements IUpdateImages {
         }
     }
 
+
+
     public void updateImage(MoveableBlock entity) {
         // int animationImage = block.getAnimationImage();
         // if (animationImage == 1) {
@@ -65,6 +67,40 @@ public class UpdateImages implements IUpdateImages {
                     default:
                         break;
                 }
+            case GHOST:
+                if (entity instanceof Ghost) {
+                    Ghost ghost = (Ghost) entity;
+                    String GhostColor = ghost.getColor().toString();
+                    String GhostImage = null;
+                    if (ghost.getState() == Ghost.states.FRIGHTENED) {     
+                        GhostImage = "/com/example/images/scaredGhost.png";
+                    } else if (ghost.getState() == Ghost.states.CHASE) {
+                        switch (entity.getDirection()){
+                            case UP:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostUp.png";
+                                break;
+                            case DOWN:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostDown.png";
+                                break;
+                            case LEFT:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostLeft.png";
+                                break;
+                            case RIGHT:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
+                                break;
+                            default:
+                                break;
+                        }
+                    } 
+                    if (GhostImage != null) {
+                        Image updatedGhost = new Image(getClass().getResource(GhostImage).toExternalForm());
+                        entity.setImage(updatedGhost);
+                    }
+                }
+
+
+                
+
         }
     }
 }

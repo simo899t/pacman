@@ -45,5 +45,7 @@ public class KillEntity implements IKillEntity {
     @Override
     public void killGhost(Ghost ghost) {
         ghost.setState(states.EATEN);
+        ghost.setPos(ghost.getStartX(), ghost.getStartY());
+        
     }
 }
