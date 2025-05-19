@@ -3,11 +3,11 @@ package com.example;
 import javafx.scene.input.KeyEvent;
 
 public class Controller implements IController {
-    private Pacman pacman;
-    private Ghost redGhost;
-    private Ghost blueGhost;
-    private Ghost pinkGhost;
-    private Ghost orangeGhost;
+    Pacman pacman;
+    Ghost redGhost;
+    Ghost blueGhost;
+    Ghost pinkGhost;
+    Ghost orangeGhost;
 
     public Controller(Pacman pacman, Ghost redGhost) {
         this.pacman = pacman;

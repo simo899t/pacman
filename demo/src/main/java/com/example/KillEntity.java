@@ -5,14 +5,14 @@ import com.example.Ghost.states;
 
 public class KillEntity implements IKillEntity {
 
-    IMap map;
-    GameScore score;
-    GameLives lives;
-    Pacman pacman;
-    Ghost redGhost;
-    Ghost blueGhost;
-    Ghost pinkGhost;
-    Ghost orangeGhost;
+    private final IMap map;
+    private final GameScore score;
+    private final GameLives lives;
+    private final Pacman pacman;
+    private final Ghost redGhost;
+    private final Ghost blueGhost;
+    private final Ghost pinkGhost;
+    private final Ghost orangeGhost;
 
     public KillEntity(IMap map, GameScore score, GameLives lives) {
         this.map = map;
@@ -45,7 +45,6 @@ public class KillEntity implements IKillEntity {
     @Override
     public void killGhost(Ghost ghost) {
         ghost.setState(states.EATEN);
-        ghost.setPos(ghost.getStartX(), ghost.getStartY());
-        
+
     }
 }

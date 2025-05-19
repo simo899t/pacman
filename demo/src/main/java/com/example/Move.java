@@ -1,9 +1,18 @@
 package com.example;
 
-public class Move implements IMove {
+import com.example.Ghost.states;
 
-    @Override
+
+public class Move {
+
     public void move(MoveableBlock entity) {
+        if (entity.getType() == BlockType.GHOST) {
+            Ghost ghost = (Ghost) entity;
+            if (ghost.getState() == Ghost.states.EATEN && ghost.isHome() == true) {
+                ghost.setState(states.CHASE);
+            }
+        }
+
         switch (entity.getDirection()) {
             case UP:
                 entity.setPos(entity.getX(), entity.getY() - entity.getStepSize());
@@ -21,5 +30,7 @@ public class Move implements IMove {
                 break;
         }
     }
-    
+
 }
+    
+

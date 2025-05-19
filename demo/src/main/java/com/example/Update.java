@@ -4,7 +4,7 @@ import com.example.MoveableBlock.direction;
 
 public class Update implements IUpdate {
     private final IMap map;
-    private final IMove move;
+    private final Move move;
     private final int tileSize;
     private final Collision collision;
     private final CollideHandler collideHandler;
@@ -39,7 +39,7 @@ public class Update implements IUpdate {
             if (!collision.checkCollision(entity, block)) {
                 continue;
             }
-            
+
             if (entityType == BlockType.PACMAN) {
                 switch (blockType) {
                     case PELLET:
@@ -70,7 +70,17 @@ public class Update implements IUpdate {
                         break;
                 }
             }
+            
+            if (entityType == BlockType.GHOST) {
+                switch (blockType) {
+                    case DOOR:
+                        collideHandler.doorCollision(block);
+                        break;
+                    default:
+                        break;    
+                }
         }
+        
         // 4) (optional) Pacman eats fruit, etc.
         // else if (entity.getType() == BlockType.PACMAN
         //       && block.getType()  == BlockType.FRUIT) {
@@ -99,29 +109,33 @@ public class Update implements IUpdate {
         }
         
         Block moveNextBlock = nextBlock(entity, entity.getDirection());
-        if (moveNextBlock == null){
+        if (moveNextBlock == null) {
             move.move(entity);
-        } else if (moveNextBlock.getType() != BlockType.WALL) {
+        } else if (
+            (entity.getType() == BlockType.GHOST && moveNextBlock.getType() != BlockType.WALL) ||
+            (entity.getType() == BlockType.PACMAN && moveNextBlock.getType() != BlockType.WALL && moveNextBlock.getType() != BlockType.DOOR)
+        ) {
             move.move(entity);
         } else {
             entity.setDirection(direction.NONE);
         }
     }
+    }
 
 
     @Override
-    public Block nextBlock(Block entity, direction direction) {
+    public Block nextBlock(Block block, direction direction) {
         switch (direction) {
             case UP:
-                return map.getBlock(entity.getX(), entity.getY() - map.getTileSize());
+                return map.getBlock(block.getX(), block.getY() - map.getTileSize());
             case DOWN:
-                return map.getBlock(entity.getX(), entity.getY() + map.getTileSize());
+                return map.getBlock(block.getX(), block.getY() + map.getTileSize());
             case LEFT:
-                return map.getBlock(entity.getX() - map.getTileSize(), entity.getY());
+                return map.getBlock(block.getX() - map.getTileSize(), block.getY());
             case RIGHT:
-                return map.getBlock(entity.getX() + map.getTileSize(), entity.getY());
+                return map.getBlock(block.getX() + map.getTileSize(), block.getY());
             default:
-                return map.getBlock(entity.getX(), entity.getY());
+                return map.getBlock(block.getX(), block.getY());
         }
     }
 
@@ -139,11 +153,20 @@ public class Update implements IUpdate {
     }
 
     public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, direction currentDirection, direction bufferDirection) {
-        if (bufferedNextBlock.getType() != BlockType.WALL && bufferedNextBlock.getType() != BlockType.DOOR) {
-            entity.setDirection(bufferDirection);
-            return;
-        }
+        if (entity.getType() == BlockType.GHOST) {
+            // Ghosts can turn into anything except walls
+            if (bufferedNextBlock.getType() != BlockType.WALL) {
+                entity.setDirection(bufferDirection);
+                return;
+            }
+        } else {
+            // Pacman can't turn into walls or doors
+            if (bufferedNextBlock.getType() != BlockType.WALL && bufferedNextBlock.getType() != BlockType.DOOR) {
+                entity.setDirection(bufferDirection);
+                return;
+            }
     }
+}
 
     public void whatToDCurrent(MoveableBlock entity, Block currentNextBlock, direction currentDirection, direction bufferDirection) {
     

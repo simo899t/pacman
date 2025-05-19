@@ -30,6 +30,11 @@ public class CollideHandler implements ICollideHandler {
     }
 
     @Override
+    public void doorCollision(Block door) {
+        door.openDoor();
+    }
+
+    @Override
     public void pelletCollision(Pellet pellet) {
         eater.eatPellet(pellet);
     }
@@ -60,6 +65,9 @@ public class CollideHandler implements ICollideHandler {
         // gameLives.addLife();
         
     }
+
+    
+    
 
     
     

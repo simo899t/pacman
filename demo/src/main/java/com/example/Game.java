@@ -29,7 +29,7 @@ public class Game extends Application {
     private IController controller;
     private IDraw draw;
     private IUpdate update;
-    private IUpdateImages updateImages;
+    private UpdateImages updateImages;
     private AnimationTimer gameLoop;
     private Label scoreLabel;
     private Label livesLabel;

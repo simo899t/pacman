@@ -4,12 +4,9 @@ import javafx.scene.image.Image;
 
 public class Pellet extends Block implements Eatable {
     private final Eatable eatableBehavior = new EatableBehavior(10);
-    private boolean eaten;
-    private int points = 10;
 
     public Pellet(Image image, int x, int y) {
         super(image, x, y);
-        this.eaten = false;
     }
 
     @Override

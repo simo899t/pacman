@@ -1,7 +1,7 @@
 package com.example;
 
 public class GameLives {
-    int lives;
+    private int lives;
 
     public GameLives() {
         this.lives = 3;

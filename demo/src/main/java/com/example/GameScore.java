@@ -1,7 +1,7 @@
 package com.example;
 
 public class GameScore {
-    int score;
+    private int score;
 
     public GameScore() {
         this.score = 0;
