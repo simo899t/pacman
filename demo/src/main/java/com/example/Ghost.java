@@ -14,9 +14,18 @@ public class Ghost extends MoveableBlock implements Eatable {
     }
     private states state;
 
-    public Ghost(Image image, int x, int y) {
+    public enum color {
+        BLUE,
+        PINK,
+        ORANGE,
+        RED
+    }
+    private final color color;
+
+    public Ghost(Image image, int x, int y, color colour) {
         super(image, x, y);
         this.state = states.STILL;
+        this.color = colour;
     }
 
     public states getState() {
@@ -45,5 +54,9 @@ public class Ghost extends MoveableBlock implements Eatable {
     @Override
     public int getPoints() {
         return eatableBehavior.getPoints();
+    }
+
+    public color getColor() {
+        return color;
     }
 }

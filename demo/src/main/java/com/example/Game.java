@@ -35,6 +35,7 @@ public class Game extends Application {
     private Label livesLabel;
     private Label gameOverText;
     private Label restartText;
+    private Label winText;
     private Scene scene;
 
     @Override
@@ -103,8 +104,17 @@ public class Game extends Application {
         // Position the restart text below the game over text
         restartText.setLayoutX((canvasWidth - 200) / 2); // Adjusted width calculation
         restartText.setLayoutY((canvasHeight / 2) + 10); // Position below center
+        // Create a win text (initially hidden)
+        winText = new Label("YOU WIN!");
+        winText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
+        winText.setTextFill(Color.YELLOW);
+        winText.setVisible(false);
 
-        canvasContainer.getChildren().addAll(gameOverText, restartText);
+        // Center the win text in the canvas
+        winText.setLayoutX((canvasWidth - 220) / 2); // Adjusted width calculation for win text
+        winText.setLayoutY((canvasHeight / 2) - 50); // Position above center
+
+        canvasContainer.getChildren().addAll(gameOverText, restartText, winText);
 
         // Add both components to main layout
         root.getChildren().addAll(scorePanel, canvasContainer);
@@ -131,6 +141,7 @@ public class Game extends Application {
         update = new Update(map, gameScore, gameLives);
         updateImages = new UpdateImages(map);
 
+        // The game loop
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -195,10 +206,22 @@ public class Game extends Application {
             }
         });
     }
-
     private void gameWin() {
         // Stop the game loop
-        System.out.println("YOU WON!");
+        gameLoop.stop();
+
+        // Show win text and restart text
+        winText.setVisible(true);
+        restartText.setVisible(true);
+
+        // Set up event handler for restarting the game
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                winText.setVisible(false);
+                restartText.setVisible(false);
+                resetGame();
+            }
+        });
     }
 
     public static void main(String[] args) {

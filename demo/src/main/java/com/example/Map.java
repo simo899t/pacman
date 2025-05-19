@@ -128,32 +128,48 @@ public class Map implements IMap {
                         allBlocks.add(eatenPellet);
                         break;
                     case 'r':
-                        redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize);
+                        redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize, Ghost.color.RED);
                         redGhost.setType(BlockType.GHOST);
-                        allBlocks.add(redGhost);
-                        Pellet eatenPelletred = new Pellet(null, col * tileSize, row * tileSize);
-                        eatenPelletred.setType(BlockType.PELLET);
-                        eatenPelletred.setEaten(true);
-                        allBlocks.add(eatenPelletred);
                         redGhost.setState(Ghost.states.CHASE);
+                        allBlocks.add(redGhost);
+                        
+                        Pellet eatenPelletBehindRed = new Pellet(null, col * tileSize, row * tileSize);
+                        eatenPelletBehindRed.setType(BlockType.PELLET);
+                        eatenPelletBehindRed.setEaten(true);
+                        allBlocks.add(eatenPelletBehindRed);
                         break;
                     case 'b':
-                        blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize);
+                        blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize, Ghost.color.BLUE);
                         blueGhost.setType(BlockType.GHOST);
+                        blueGhost.setState(Ghost.states.CHASE);
                         allBlocks.add(blueGhost);
-                        //moveableBlocks.add(blueGhost);
+                        
+                        Pellet eatenPelletBehindBlue = new Pellet(null, col * tileSize, row * tileSize);
+                        eatenPelletBehindBlue.setType(BlockType.PELLET);
+                        eatenPelletBehindBlue.setEaten(true);
+                        allBlocks.add(eatenPelletBehindBlue);
                         break;
                     case 'p':
-                        pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize);
+                        pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize, Ghost.color.PINK);
                         pinkGhost.setType(BlockType.GHOST);
+                        pinkGhost.setState(Ghost.states.CHASE);
                         allBlocks.add(pinkGhost);
-                        //moveableBlocks.add(pinkGhost);
+                        
+                        Pellet eatenPelletBehindPink = new Pellet(null, col * tileSize, row * tileSize);
+                        eatenPelletBehindPink.setType(BlockType.PELLET);
+                        eatenPelletBehindPink.setEaten(true);
+                        allBlocks.add(eatenPelletBehindPink);
                         break;
                     case 'o':
-                        orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize);
+                        orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize, Ghost.color.ORANGE);
                         orangeGhost.setType(BlockType.GHOST);
+                        orangeGhost.setState(Ghost.states.CHASE);
                         allBlocks.add(orangeGhost);
-                        //moveableBlocks.add(orangeGhost);
+                        
+                        Pellet eatenPelletBehindOrange = new Pellet(null, col * tileSize, row * tileSize);
+                        eatenPelletBehindOrange.setType(BlockType.PELLET);
+                        eatenPelletBehindOrange.setEaten(true);
+                        allBlocks.add(eatenPelletBehindOrange);
                         break;
                     case ' ':
                         Pellet pellet = new Pellet(smallFoodImage, col * tileSize, row * tileSize);

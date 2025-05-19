@@ -43,24 +43,24 @@ public class UpdateImages implements IUpdateImages {
         }
     }
 
-    public void updateImage(MoveableBlock block) {
+    public void updateImage(MoveableBlock entity) {
         // int animationImage = block.getAnimationImage();
         // if (animationImage == 1) {
         //     animationImage = 1;
-        switch (block.getType()) {
+        switch (entity.getType()) {
             case PACMAN:
-                switch (((MoveableBlock) block).getDirection()) {
+                switch (entity.getDirection()) {
                     case UP:
-                        block.setImage(pacmanImageUp);
+                        entity.setImage(pacmanImageUp);
                         break;
                     case DOWN:
-                        block.setImage(pacmanImageDown);
+                        entity.setImage(pacmanImageDown);
                         break;
                     case LEFT:
-                        block.setImage(pacmanImageLeft);
+                        entity.setImage(pacmanImageLeft);
                         break;
                     case RIGHT:
-                        block.setImage(pacmanImageRight);
+                        entity.setImage(pacmanImageRight);
                         break;
                     default:
                         break;
