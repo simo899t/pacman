@@ -1,11 +1,17 @@
 package com.example;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javafx.scene.image.Image;
 
 public class Map implements IMap {
+    private Pacman pacman;
+    private Ghost redGhost;
+    private Ghost blueGhost;
+    private Ghost pinkGhost;
+    private Ghost orangeGhost;
+    private int tileSize = 32; // each tile is 32 pixels wide
+    private int pelletCount = 0;
 
     String[] map = new String[] {
         "XXXXXXXXXXXXXXXXXXX",
@@ -32,7 +38,7 @@ public class Map implements IMap {
     };
 
     int rowCount = map.length; // Gameboard is 21 rows
-    int columCount = map[0].length(); // Gameboard is 19 columns
+    int columnCount = map[0].length(); // Gameboard is 19 columns
     
     public Map() {
         loadAllBlocks(map);
@@ -42,39 +48,38 @@ public class Map implements IMap {
         return map;
     }
 
-    private Pacman pacman;
+
     public Pacman getPacman() {
         return pacman;
     }
-    private Ghost redGhost;
+
     public Ghost getRedGhost() {
         return redGhost;
     }
-    private Ghost blueGhost;
+
     public Ghost getBlueGhost() {
         return blueGhost;
     }
-    private Ghost pinkGhost;
+
     public Ghost getPinkGhost() {
         return pinkGhost;
     }
-    private Ghost orangeGhost;
+
     public Ghost getOrangeGhost() {
         return orangeGhost;
     }
 
-    private int tileSize = 32; // each tile is 32 pixels wide
     public int getTileSize() {
         return tileSize;
     }
     public int getCols() {
-        return columCount;
+        return columnCount;
     }
     public int getRows() {
         return rowCount;
     }
 
-    private int pelletCount = 0;
+
     public int getPelletCount() {
         return pelletCount;
     }
@@ -108,9 +113,36 @@ public class Map implements IMap {
 
         allBlocks = new ArrayList<>(new ArrayList<>());
 
-        // Draw the map
+        // Draw the pellet and door map 
         for (int row = 0; row < rowCount; row++) {
-            for (int col = 0; col < columCount; col++) {
+            for (int col = 0; col < columnCount; col++) {
+                char tile = tileMap[row].charAt(col);
+                switch (tile) {
+                    case ' ':
+                        Pellet pellet = new Pellet(smallFoodImage, col * tileSize, row * tileSize);
+                        pellet.setType(BlockType.PELLET);
+                        allBlocks.add(pellet);
+                        addPellet();
+                        break;
+                    case 'D':
+                        Block door = new Block(doorClosed, col * tileSize, row * tileSize);
+                        door.setType(BlockType.DOOR);
+                        allBlocks.add(door);
+                        break;
+                    case 'B':
+                        Pellet bigPellet = new Pellet(bigFoodImage, col * tileSize, row * tileSize);
+                        bigPellet.setType(BlockType.BIGPELLET);
+                        allBlocks.add(bigPellet);
+                        addPellet();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        // Draw other part of map
+        for (int row = 0; row < rowCount; row++) {
+            for (int col = 0; col < columnCount; col++) {
                 char tile = tileMap[row].charAt(col);
                 switch (tile) {
                     case 'X':
@@ -141,7 +173,7 @@ public class Map implements IMap {
                     case 'b':
                         blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize, Ghost.color.BLUE);
                         blueGhost.setType(BlockType.GHOST);
-                        blueGhost.setState(Ghost.states.CHASE);
+                        blueGhost.setState(Ghost.states.STILL);
                         allBlocks.add(blueGhost);
                         
                         Pellet eatenPelletBehindBlue = new Pellet(null, col * tileSize, row * tileSize);
@@ -152,7 +184,7 @@ public class Map implements IMap {
                     case 'p':
                         pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize, Ghost.color.PINK);
                         pinkGhost.setType(BlockType.GHOST);
-                        pinkGhost.setState(Ghost.states.CHASE);
+                        pinkGhost.setState(Ghost.states.STILL);
                         allBlocks.add(pinkGhost);
                         
                         Pellet eatenPelletBehindPink = new Pellet(null, col * tileSize, row * tileSize);
@@ -163,30 +195,13 @@ public class Map implements IMap {
                     case 'o':
                         orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize, Ghost.color.ORANGE);
                         orangeGhost.setType(BlockType.GHOST);
-                        orangeGhost.setState(Ghost.states.CHASE);
+                        orangeGhost.setState(Ghost.states.STILL);
                         allBlocks.add(orangeGhost);
                         
                         Pellet eatenPelletBehindOrange = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindOrange.setType(BlockType.PELLET);
                         eatenPelletBehindOrange.setEaten(true);
                         allBlocks.add(eatenPelletBehindOrange);
-                        break;
-                    case ' ':
-                        Pellet pellet = new Pellet(smallFoodImage, col * tileSize, row * tileSize);
-                        pellet.setType(BlockType.PELLET);
-                        allBlocks.add(pellet);
-                        addPellet();
-                        break;
-                    case 'B':
-                        Pellet bigPellet = new Pellet(bigFoodImage, col * tileSize, row * tileSize);
-                        bigPellet.setType(BlockType.BIGPELLET);
-                        allBlocks.add(bigPellet);
-                        addPellet();
-                        break;
-                    case 'D':
-                        Block door = new Block(doorClosed, col * tileSize, row * tileSize);
-                        door.setType(BlockType.DOOR);
-                        allBlocks.add(door);
                         break;
                     case 'O':
                         Block teleporter = new Block(null, col * tileSize, row * tileSize);
@@ -201,8 +216,23 @@ public class Map implements IMap {
     }
 
     public void resetMap() {
-        allBlocks.clear();
-        loadAllBlocks(map);
+        for (Block block : allBlocks) {
+            if (block instanceof Pellet) {
+                Pellet pellet = (Pellet) block;
+                pellet.setEaten(false);
+                pellet.setImage(pellet.getImage());
+            }
+            if (block instanceof Ghost) {
+                Ghost ghost = (Ghost) block;
+                ghost.setState(Ghost.states.CHASE);
+                ghost.setPos(ghost.getStartX(), ghost.getStartY());
+            }
+            if (block instanceof Pacman) {
+                Pacman pacman = (Pacman) block;
+                pacman.setPos(pacman.getStartX(), pacman.getStartY());
+            }
+        }
+        resetPelletCount();
     }
 
     private ArrayList<Block> allBlocks;

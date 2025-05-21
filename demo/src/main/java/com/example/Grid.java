@@ -21,16 +21,55 @@ public class Grid implements IGrid {
 
     public void makeGrid() {
         String[] gridMap = map.getMap();  
+        
+        // First pass: Create all nodes without connections
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (gridMap[row].charAt(col) != 'X') {
-                    grid[col][row] = new Node(toCol(col), toRow(row));
+                    grid[col][row] = new Node(col * tileSize, row * tileSize);
                     if (gridMap[row].charAt(col) == 'P') {
                         currentNode = grid[col][row];
                     }
-                    surroundingNodes(getNode(col, row));
+                    System.out.println("Node created at: " + col + ", " + row);
                 }
             }
+        }
+        
+        // Second pass: Connect all nodes properly
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (grid[col][row] != null) {
+                    connectNodeNeighbors(grid[col][row], col, row);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void connectNodeNeighbors(Node node, int col, int row) {
+        // Check all four directions
+        if (getNode(col, row - 1) != null) {
+            node.neighbourgs[0] = getNode(col, row - 1); // UP
+        } else {
+            node.neighbourgs[0] = null;
+        }
+        
+        if (getNode(col, row + 1) != null) {
+            node.neighbourgs[1] = getNode(col, row + 1); // DOWN
+        } else {
+            node.neighbourgs[1] = null;
+        }
+        
+        if (getNode(col - 1, row) != null) {
+            node.neighbourgs[2] = getNode(col - 1, row); // LEFT
+        } else {
+            node.neighbourgs[2] = null;
+        }
+        
+        if (getNode(col + 1, row) != null) {
+            node.neighbourgs[3] = getNode(col + 1, row); // RIGHT
+        } else {
+            node.neighbourgs[3] = null;
         }
     }
 
@@ -79,7 +118,8 @@ public class Grid implements IGrid {
      * @param x
      * @return
      */
-    private int toCol(double x) {
+    @Override
+    public int toCol(int x) {
         return (int) x / map.getTileSize(); 
     }
     
@@ -88,36 +128,10 @@ public class Grid implements IGrid {
      * @param y
      * @return
      */
-    private int toRow(double y) {
+    @Override
+    public int toRow(int y) {
         return (int) y / map.getTileSize();
-    }
-
-    /**
-     * set surrounding nodes for a given node
-     * @param node
-     * @return
-     */
-    public void surroundingNodes(Node node) {
-        int col = toCol(node.getX());
-        int row = toRow(node.getY());
-
-        node.neighbourgs[1] = null; // down
-        node.neighbourgs[3] = null; // right        
-
-        if (getNode(col, row - 1) != null) {
-            node.neighbourgs[0] = getNode(col, row - 1);
-            getNode(col, row - 1).neighbourgs[1] = node;
-        } else {
-            node.neighbourgs[0] = null;
-        }
-        if (getNode(col - 1, row) != null) {
-            node.neighbourgs[2] = getNode(col - 1, row);
-            getNode(col - 1, row).neighbourgs[3] = node;
-        } else {
-            node.neighbourgs[2] = null;
-        } 
-        
     }
 }
 
-    
+   

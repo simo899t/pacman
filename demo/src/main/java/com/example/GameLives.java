@@ -1,10 +1,10 @@
 package com.example;
 
 public class GameLives {
-    int lives;
+    private int lives;
 
     public GameLives() {
-        this.lives = 3;
+        this.lives = 2;
     }
 
     public int getLives() {
@@ -12,18 +12,18 @@ public class GameLives {
     }
 
     public void removeLife() {
-        if (lives > 0) {
+        if (lives >= 0) {
             lives = lives -1;
         }
     }
 
     public void addLife() {
-        if (lives < 3) {
+        if (lives < 2) {
             lives++;
         }
     }
 
     public void resetLives() {
-        this.lives = 3;
+        this.lives = 2;
     }
 }

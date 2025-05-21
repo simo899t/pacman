@@ -2,7 +2,7 @@ package com.example;
 
 import javafx.scene.image.Image;
 
-public class UpdateImages implements IUpdateImages {
+public class UpdateImages {
     private IMap map;
 
     public UpdateImages(IMap map) {
@@ -34,7 +34,7 @@ public class UpdateImages implements IUpdateImages {
     Image orangeGhostImageUp = new Image(getClass().getResource("/com/example/images/orangeGhostUp.png").toExternalForm());
     Image orangeGhostImageDown = new Image(getClass().getResource("/com/example/images/orangeGhostDown.png").toExternalForm());
 
-    @Override
+    
     public void updateAllImages() {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
@@ -42,6 +42,8 @@ public class UpdateImages implements IUpdateImages {
             }
         }
     }
+
+
 
     public void updateImage(MoveableBlock entity) {
         // int animationImage = block.getAnimationImage();
@@ -65,7 +67,60 @@ public class UpdateImages implements IUpdateImages {
                     default:
                         break;
                 }
+            case GHOST:
+                if (entity instanceof Ghost) {
+                    Ghost ghost = (Ghost) entity;
+                    String GhostColor = ghost.getColor().toString();
+                    String GhostImage = null;
+                    if (ghost.getState() == Ghost.states.FRIGHTENED) {
+                        GhostImage = "/com/example/images/scaredGhost.png";
+                    } else if (ghost.getState() == Ghost.states.CHASE) {
+                        switch (entity.getDirection()){
+                            case UP:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostUp.png";
+                                break;
+                            case DOWN:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostDown.png";
+                                break;
+                            case LEFT:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostLeft.png";
+                                break;
+                            case RIGHT:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
+                                break;
+                            default:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
+                                break;
+                        }
+                    } else if (ghost.getState() == Ghost.states.EATEN) {
+                        switch (entity.getDirection()){
+                            case UP:
+                                GhostImage = "/com/example/images/deadGhostUp.png";
+                                break;
+                            case DOWN:
+                                GhostImage = "/com/example/images/deadGhostDown.png";
+                                break;
+                            case LEFT:
+                                GhostImage = "/com/example/images/deadGhostLeft.png";
+                                break;
+                            case RIGHT:
+                                GhostImage = "/com/example/images/deadGhostRight.png";
+                                break;
+                            default:
+                                GhostImage = "/com/example/images/deadGhostRight.png";
+                                break;
+                        }
+                    } 
+                    if (GhostImage != null) {
+                        Image updatedGhost = new Image(getClass().getResource(GhostImage).toExternalForm());
+                        entity.setImage(updatedGhost);
+                    }
+                }
+                
+
         }
     }
+
+
 }
 

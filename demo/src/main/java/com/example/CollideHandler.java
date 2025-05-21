@@ -4,13 +4,19 @@ public class CollideHandler implements ICollideHandler {
     private final IMap map;
     private final IKillEntity killEntity;
     private final Eater eater;
+    private final GameTimer gameTimer;
+    private final Game game;
+    private final UpdateImages updateImages;
 
-    public CollideHandler(IMap map, GameScore score, GameLives lives) {
+    public CollideHandler(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
         // 1) bind the map first
         this.map = map;
         // 2) now you can safely pass it into KillEntity
         this.killEntity = new KillEntity(map, score, lives);
-        this.eater = new Eater(map, score, lives);
+        this.eater = new Eater(map, score, lives, gameTimer, game, updateImages);
+        this.gameTimer = gameTimer;
+        this.game = game;
+        this.updateImages = updateImages;
     }
 
     @Override
@@ -30,6 +36,21 @@ public class CollideHandler implements ICollideHandler {
     }
 
     @Override
+    public void doorCollision(Block door) {
+        door.openDoor();
+
+        long currentTime = System.currentTimeMillis();
+        gameTimer.addFunctionToList(
+            GameTimer.atTimeRunFunction(
+                currentTime, 1000L, () -> {
+                    door.closeDoor();
+                }
+            )
+        );
+
+    }
+
+    @Override
     public void pelletCollision(Pellet pellet) {
         eater.eatPellet(pellet);
     }
@@ -39,20 +60,13 @@ public class CollideHandler implements ICollideHandler {
         eater.eatBigPellet(pellet);
     }
 
-    @Override
-    public void fruitCollision(Fruit pellet) {
-        // eat(entity);
-        // gameLives.addLife();
-        
-    }
 
     @Override
     public void teleporterCollision(Pacman pacman) {
-        // TODO Auto-generated method stub
-        // eat(entity);
-        // gameLives.addLife();
-        
     }
+
+    
+    
 
     
     

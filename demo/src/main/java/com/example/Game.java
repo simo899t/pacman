@@ -4,22 +4,22 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.input.KeyEvent;
 
 public class Game extends Application {
 
@@ -29,7 +29,7 @@ public class Game extends Application {
     private IController controller;
     private IDraw draw;
     private IUpdate update;
-    private IUpdateImages updateImages;
+    private UpdateImages updateImages;
     private AnimationTimer gameLoop;
     private Label scoreLabel;
     private Label livesLabel;
@@ -37,14 +37,16 @@ public class Game extends Application {
     private Label restartText;
     private Label winText;
     private Scene scene;
+    private GameTimer gameTimer;
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Pacman Game");
+        stage.setTitle("Pac-Man Game");
         stage.setResizable(false);
 
         // Load the map
         map = new Map();
+        IGrid grid = new Grid(map);
 
         // Define the dimensions of the game with current map
         int tileSize = map.getTileSize();
@@ -131,21 +133,25 @@ public class Game extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                controller.keyPressed1(event);
-                controller.keyPressed2(event);
+                controller.keyPressed(event);
             }
         });
+
+        GhostMovementPathfinding ghostMovementPathfinding = new GhostMovementPathfinding(map, grid);
         gameLives = new GameLives();
         gameScore = new GameScore();
         draw = new Draw(map, canvas);
-        update = new Update(map, gameScore, gameLives);
+        gameTimer = new GameTimer();
         updateImages = new UpdateImages(map);
+        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages);
+        
 
         // The game loop
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 draw.drawAllBlocks();
+                ghostMovementPathfinding.directAllGhosts();
                 update.updateGame(map);
                 updateImages.updateAllImages();
 
@@ -153,7 +159,7 @@ public class Game extends Application {
                 scoreLabel.setText("SCORE: " + gameScore.getScore());
                 livesLabel.setText("LIVES: " + gameLives.getLives());
 
-                if (gameLives.getLives() <= 0) {
+                if (gameLives.getLives() < 0) {
                     // Show game over text
                     gameOver();
                 }
@@ -162,6 +168,10 @@ public class Game extends Application {
                     // Show game over text
                     gameWin();
                 }
+
+                // Update The Timer
+                gameTimer.runFunctionList(gameTimer.functionList);
+            
             }
         };
 
@@ -174,9 +184,6 @@ public class Game extends Application {
         gameScore.resetScore();
         map.resetMap();
         
-        // Update controller to use the new Pacman instance
-        controller = new Controller(map.getPacman(), map.getRedGhost());
-        
         // Hide game over text
         gameOverText.setVisible(false);
         restartText.setVisible(false);
@@ -186,8 +193,7 @@ public class Game extends Application {
         
         // Restore original controls with the updated controller
         scene.setOnKeyPressed(event -> {
-            controller.keyPressed1(event);
-            controller.keyPressed2(event);
+            controller.keyPressed(event);
         });
     }
 
@@ -222,6 +228,18 @@ public class Game extends Application {
                 resetGame();
             }
         });
+    }
+
+    public void setAllGhostsToChase() {
+        for (Block block : map.getAllBlocks()) {
+            if (block instanceof Ghost) {
+                Ghost ghost = (Ghost) block;
+                if (ghost.getState() == Ghost.states.FRIGHTENED) {
+                    ghost.setState(Ghost.states.CHASE);
+                }
+            }
+        }
+            
     }
 
     public static void main(String[] args) {

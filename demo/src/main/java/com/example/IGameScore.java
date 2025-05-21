@@ -5,5 +5,4 @@ public interface IGameScore {
     public int getScore();
     public void addScore(int score);
     public void resetScore();
-    public void setScore(int score);
 }

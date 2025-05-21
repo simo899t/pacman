@@ -4,23 +4,29 @@ import com.example.MoveableBlock.direction;
 
 public class Update implements IUpdate {
     private final IMap map;
-    private final IMove move;
+    private final Move move;
     private final int tileSize;
     private final Collision collision;
     private final CollideHandler collideHandler;
+    private final GameTimer gameTimer;
+    private final UpdateImages updateImages;
 
-    public Update(IMap map, GameScore score, GameLives lives) {
+    public Update(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
         this.move = new Move();
         this.collision = new Collision(map);
-        this.collideHandler = new CollideHandler(map, score, lives);
+        this.gameTimer = gameTimer;
+        this.updateImages = updateImages;
+        this.collideHandler = new CollideHandler(map, score, lives, gameTimer, game, updateImages);
+  
     }
 
     public void updateGame(IMap map) {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
                 if (block.getType() == BlockType.PACMAN || block.getType() == BlockType.GHOST) {
+                    System.out.println(((MoveableBlock) block).getDirection());
                     updateEntity((MoveableBlock) block);
                 }
             }
@@ -33,13 +39,25 @@ public class Update implements IUpdate {
         direction currentDirection = entity.getDirection();
         BlockType entityType = entity.getType();
         BlockType blockType;
+
+        boolean isReverse = (currentDirection == direction.LEFT && bufferDirection == direction.RIGHT) ||
+                            (currentDirection == direction.RIGHT && bufferDirection == direction.LEFT) ||
+                            (currentDirection == direction.UP && bufferDirection == direction.DOWN) ||
+                            (currentDirection == direction.DOWN && bufferDirection == direction.UP);
+
+        // if (entity.getType() == BlockType.GHOST) {
+        //     if (isReverse) {
+        //         move.move(entity);
+        //         return;
+        //     }
+        // }
         
         for (Block block : map.getAllBlocks()) {
             blockType = block.getType();
             if (!collision.checkCollision(entity, block)) {
                 continue;
             }
-            
+
             if (entityType == BlockType.PACMAN) {
                 switch (blockType) {
                     case PELLET:
@@ -54,7 +72,7 @@ public class Update implements IUpdate {
                     case FRUIT:
                         // collideHandler.fruitCollision(entity, block);
                         break;
-                    case TELEPORTER:
+                    case TELEPORTER: // this could be a method by itself, but need nextblock
                         for (Block otherTeleporter : map.getAllBlocks()) {
                             if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
                                 Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
@@ -70,26 +88,40 @@ public class Update implements IUpdate {
                         break;
                 }
             }
+            
+            if (entityType == BlockType.GHOST) {
+                //System.out.println(entity.getDirection());
+                switch (blockType) {
+                    case DOOR:
+                        collideHandler.doorCollision(block);
+                        break;
+                    case TELEPORTER: // this also could be a method by itself, but need nextblock
+                        for (Block otherTeleporter : map.getAllBlocks()) {
+                            if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
+                                Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
+                                if (nextToTeleporter != null) {
+                                    entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
+                                    // System.out.println("Ghost teleported to another teleporter");
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;    
+                }
         }
-        // 4) (optional) Pacman eats fruit, etc.
-        // else if (entity.getType() == BlockType.PACMAN
-        //       && block.getType()  == BlockType.FRUIT) {
-        //     collideHandler.fruitCollision(entity, block);
-        // }
 
 
-        boolean isReverse = (currentDirection == direction.LEFT && bufferDirection == direction.RIGHT) ||
-                            (currentDirection == direction.RIGHT && bufferDirection == direction.LEFT) ||
-                            (currentDirection == direction.UP && bufferDirection == direction.DOWN) ||
-                            (currentDirection == direction.DOWN && bufferDirection == direction.UP);
-
-        if (isReverse) {
-            Block reverseNextBlock = nextBlock(entity, bufferDirection);
-            if (reverseNextBlock == null) {
-                entity.setDirection(bufferDirection);
-            }
-            else if (reverseNextBlock.getType() != BlockType.WALL) {
-                entity.setDirection(bufferDirection);
+        if (entity.getType() == BlockType.PACMAN) {
+            if (isReverse) {
+                Block reverseNextBlock = nextBlock(entity, bufferDirection);
+                if (reverseNextBlock == null) {
+                    entity.setDirection(bufferDirection);
+                }
+                else if (reverseNextBlock.getType() != BlockType.WALL) {
+                    entity.setDirection(bufferDirection);
+                }
             }
         }
 
@@ -97,31 +129,37 @@ public class Update implements IUpdate {
             Block bufferedNextBlock = nextBlock(entity, bufferDirection);
             whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
         }
-        
+
+        // mby place this in the collide handler???
         Block moveNextBlock = nextBlock(entity, entity.getDirection());
-        if (moveNextBlock == null){
+        if (moveNextBlock == null) {
+            
             move.move(entity);
-        } else if (moveNextBlock.getType() != BlockType.WALL) {
+        } else if (
+            (entity.getType() == BlockType.GHOST && moveNextBlock.getType() != BlockType.WALL) ||
+            (entity.getType() == BlockType.PACMAN && moveNextBlock.getType() != BlockType.WALL && moveNextBlock.getType() != BlockType.DOOR)
+        ) {
             move.move(entity);
         } else {
             entity.setDirection(direction.NONE);
         }
     }
+    }
 
 
     @Override
-    public Block nextBlock(Block entity, direction direction) {
+    public Block nextBlock(Block block, direction direction) {
         switch (direction) {
             case UP:
-                return map.getBlock(entity.getX(), entity.getY() - map.getTileSize());
+                return map.getBlock(block.getX(), block.getY() - map.getTileSize());
             case DOWN:
-                return map.getBlock(entity.getX(), entity.getY() + map.getTileSize());
+                return map.getBlock(block.getX(), block.getY() + map.getTileSize());
             case LEFT:
-                return map.getBlock(entity.getX() - map.getTileSize(), entity.getY());
+                return map.getBlock(block.getX() - map.getTileSize(), block.getY());
             case RIGHT:
-                return map.getBlock(entity.getX() + map.getTileSize(), entity.getY());
+                return map.getBlock(block.getX() + map.getTileSize(), block.getY());
             default:
-                return map.getBlock(entity.getX(), entity.getY());
+                return map.getBlock(block.getX(), block.getY());
         }
     }
 
@@ -139,11 +177,20 @@ public class Update implements IUpdate {
     }
 
     public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, direction currentDirection, direction bufferDirection) {
-        if (bufferedNextBlock.getType() != BlockType.WALL && bufferedNextBlock.getType() != BlockType.DOOR) {
-            entity.setDirection(bufferDirection);
-            return;
-        }
+        if (entity.getType() == BlockType.GHOST) {
+            // Ghosts can turn into anything except walls
+            if (bufferedNextBlock.getType() != BlockType.WALL) {
+                entity.setDirection(bufferDirection);
+                return;
+            }
+        } else {
+            // Pacman can't turn into walls or doors
+            if (bufferedNextBlock.getType() != BlockType.WALL && bufferedNextBlock.getType() != BlockType.DOOR) {
+                entity.setDirection(bufferDirection);
+                return;
+            }
     }
+}
 
     public void whatToDCurrent(MoveableBlock entity, Block currentNextBlock, direction currentDirection, direction bufferDirection) {
     
