@@ -1,6 +1,6 @@
 package com.example;
 
-public class Eater {
+public class Eater implements IEater {
     IMap map;
     Block pellet;
     GameScore score;
@@ -35,11 +35,7 @@ public class Eater {
         // set the state of the ghosts to frightened"
     }
 
-    public void eatFruit(Pellet fruit) {
-        if (!tryEat(fruit, fruit.getPoints())) 
-            return;
-        // set the state of the ghosts to frightened"
-    }
+
     public void eatGhost(Pellet ghost) {
         if (!tryEat(ghost, ghost.getPoints())) 
             return;

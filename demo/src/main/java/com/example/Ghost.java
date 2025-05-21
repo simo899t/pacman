@@ -63,4 +63,6 @@ public class Ghost extends MoveableBlock implements Eatable {
     public color getColor() {
         return color;
     }
+
+
 }

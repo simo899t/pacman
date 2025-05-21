@@ -8,13 +8,18 @@ public class Update implements IUpdate {
     private final int tileSize;
     private final Collision collision;
     private final CollideHandler collideHandler;
+    private final GameTimer gameTimer;
+    private final UpdateImages updateImages;
 
-    public Update(IMap map, GameScore score, GameLives lives) {
+    public Update(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
         this.move = new Move();
         this.collision = new Collision(map);
-        this.collideHandler = new CollideHandler(map, score, lives);
+        this.gameTimer = gameTimer;
+        this.updateImages = updateImages;
+        this.collideHandler = new CollideHandler(map, score, lives, gameTimer, game, updateImages);
+  
     }
 
     public void updateGame(IMap map) {

@@ -4,22 +4,22 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.input.KeyEvent;
 
 public class Game extends Application {
 
@@ -37,6 +37,7 @@ public class Game extends Application {
     private Label restartText;
     private Label winText;
     private Scene scene;
+    private GameTimer gameTimer;
 
     @Override
     public void start(Stage stage) {
@@ -138,8 +139,10 @@ public class Game extends Application {
         gameLives = new GameLives();
         gameScore = new GameScore();
         draw = new Draw(map, canvas);
-        update = new Update(map, gameScore, gameLives);
+        gameTimer = new GameTimer();
         updateImages = new UpdateImages(map);
+        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages);
+        
 
         // The game loop
         gameLoop = new AnimationTimer() {
@@ -162,6 +165,10 @@ public class Game extends Application {
                     // Show game over text
                     gameWin();
                 }
+
+                // Update The Timer
+                gameTimer.runFunctionList(gameTimer.functionList);
+            
             }
         };
 
@@ -222,6 +229,18 @@ public class Game extends Application {
                 resetGame();
             }
         });
+    }
+
+    public void setAllGhostsToChase() {
+        for (Block block : map.getAllBlocks()) {
+            if (block instanceof Ghost) {
+                Ghost ghost = (Ghost) block;
+                if (ghost.getState() == Ghost.states.FRIGHTENED) {
+                    ghost.setState(Ghost.states.CHASE);
+                }
+            }
+        }
+            
     }
 
     public static void main(String[] args) {

@@ -59,7 +59,7 @@ public class Block {
     }
 
     public void closeDoor() {
-        setImage(new Image(getClass().getResource("/com/example/images/doorClose.png").toExternalForm()));
+        setImage(new Image(getClass().getResource("/com/example/images/doorClosed.png").toExternalForm()));
     }
     
 }

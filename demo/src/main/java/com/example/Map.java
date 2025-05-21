@@ -173,7 +173,7 @@ public class Map implements IMap {
                     case 'b':
                         blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize, Ghost.color.BLUE);
                         blueGhost.setType(BlockType.GHOST);
-                        blueGhost.setState(Ghost.states.CHASE);
+                        blueGhost.setState(Ghost.states.STILL);
                         allBlocks.add(blueGhost);
                         
                         Pellet eatenPelletBehindBlue = new Pellet(null, col * tileSize, row * tileSize);
@@ -184,7 +184,7 @@ public class Map implements IMap {
                     case 'p':
                         pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize, Ghost.color.PINK);
                         pinkGhost.setType(BlockType.GHOST);
-                        pinkGhost.setState(Ghost.states.CHASE);
+                        pinkGhost.setState(Ghost.states.STILL);
                         allBlocks.add(pinkGhost);
                         
                         Pellet eatenPelletBehindPink = new Pellet(null, col * tileSize, row * tileSize);
@@ -195,7 +195,7 @@ public class Map implements IMap {
                     case 'o':
                         orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize, Ghost.color.ORANGE);
                         orangeGhost.setType(BlockType.GHOST);
-                        orangeGhost.setState(Ghost.states.CHASE);
+                        orangeGhost.setState(Ghost.states.STILL);
                         allBlocks.add(orangeGhost);
                         
                         Pellet eatenPelletBehindOrange = new Pellet(null, col * tileSize, row * tileSize);
