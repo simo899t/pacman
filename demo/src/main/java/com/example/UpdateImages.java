@@ -89,6 +89,7 @@ public class UpdateImages {
                                 GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
                                 break;
                             default:
+                                GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
                                 break;
                         }
                     } else if (ghost.getState() == Ghost.states.EATEN) {
@@ -106,6 +107,7 @@ public class UpdateImages {
                                 GhostImage = "/com/example/images/deadGhostRight.png";
                                 break;
                             default:
+                                GhostImage = "/com/example/images/deadGhostRight.png";
                                 break;
                         }
                     } 
