@@ -30,7 +30,7 @@ public class Grid implements IGrid {
                     if (gridMap[row].charAt(col) == 'P') {
                         currentNode = grid[col][row];
                     }
-                    System.out.println("Node created at: " + col + ", " + row);
+                    //System.out.println("Node created at: " + col + ", " + row);
                 }
             }
         }

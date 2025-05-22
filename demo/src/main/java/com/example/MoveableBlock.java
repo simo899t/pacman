@@ -3,7 +3,7 @@ package com.example;
 import javafx.scene.image.Image;
 
 public class MoveableBlock extends Block {
-    enum direction {
+    public enum direction {
         UP, DOWN, LEFT, RIGHT, NONE
     }
 

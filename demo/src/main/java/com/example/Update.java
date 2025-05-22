@@ -26,7 +26,7 @@ public class Update implements IUpdate {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
                 if (block.getType() == BlockType.PACMAN || block.getType() == BlockType.GHOST) {
-                    System.out.println(((MoveableBlock) block).getDirection());
+                    //System.out.println(((MoveableBlock) block).getDirection());
                     updateEntity((MoveableBlock) block);
                 }
             }

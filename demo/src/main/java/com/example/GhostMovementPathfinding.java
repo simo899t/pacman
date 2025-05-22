@@ -10,11 +10,13 @@ public class GhostMovementPathfinding {
     public Ghost pinkGhost;
     public Ghost orangeGhost;
     public RandomWalk randomWalk;
+    public BFS bfs;
 
     GhostMovementPathfinding(IMap map, IGrid grid) {
         this.map = map;
         this.grid = grid;
         this.randomWalk = new RandomWalk(map, grid); // Initialize here after map is set
+        this.bfs = new BFS(map, grid); // Initialize here after map is set
         this.redGhost = map.getRedGhost();
         this.blueGhost = map.getBlueGhost();
         this.pinkGhost = map.getPinkGhost();
@@ -22,10 +24,11 @@ public class GhostMovementPathfinding {
     }
 
     public void directAllGhosts() {
-        if (redGhost.getState() == Ghost.states.EATEN) {
-            //BFSDirectGhost(redGhost);
+        System.out.println(redGhost.getState());
+        if (redGhost.getState() == Ghost.states.CHASE) {
+            BFSDirectGhost(redGhost);
         } else if (redGhost.getState() == Ghost.states.CHASE) {
-            RandomWalkDirectGhost(redGhost);
+            //RandomWalkDirectGhost(redGhost);
         }
         if (blueGhost.getState() == Ghost.states.EATEN && blueGhost.isHome() != true) {
             //BFSDirectGhost(blueGhost);
@@ -46,7 +49,7 @@ public class GhostMovementPathfinding {
 
     public void BFSDirectGhost(Ghost ghost) {
         if (ghost.getDirection() == direction.NONE) {
-            //ghost.direction = bfs.seach(ghost);
+            ghost.setBufferDirection(bfs.search(ghost));
         }
     }
 
@@ -55,7 +58,6 @@ public class GhostMovementPathfinding {
         if (ghost.getX() % map.getTileSize() == 0 && ghost.getY() % map.getTileSize() == 0) {
             direction newDirection = randomWalk.seach(ghost);
             ghost.setDirection(newDirection);
-            System.out.println("Setting ghost direction to: " + newDirection);
         }
     }
 }
