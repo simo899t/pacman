@@ -50,6 +50,7 @@ public class GhostMovementPathfinding {
     public void BFSDirectGhost(Ghost ghost) {
         if (ghost.getDirection() == direction.NONE) {
             ghost.setBufferDirection(bfs.search(ghost));
+            System.out.println("Test");
         }
     }
 

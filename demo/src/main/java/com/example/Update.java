@@ -133,7 +133,6 @@ public class Update implements IUpdate {
         // mby place this in the collide handler???
         Block moveNextBlock = nextBlock(entity, entity.getDirection());
         if (moveNextBlock == null) {
-            
             move.move(entity);
         } else if (
             (entity.getType() == BlockType.GHOST && moveNextBlock.getType() != BlockType.WALL) ||
