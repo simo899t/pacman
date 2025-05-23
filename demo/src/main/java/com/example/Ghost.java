@@ -34,6 +34,21 @@ public class Ghost extends MoveableBlock implements Eatable {
 
     public void setState(states state) {
         this.state = state;
+        switch (state) {
+            case CHASE:
+                this.setStepSize(2);
+                break;
+            case FRIGHTENED:
+                this.setStepSize(1);
+                break;
+            case EATEN:
+                this.setPos(this.getX() - this.getX()%2 , this.getY() - this.getY()%2);
+                this.setStepSize(2);
+                break;
+            default:
+                break;
+        }
+        
     }
 
     @Override
