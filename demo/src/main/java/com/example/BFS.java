@@ -9,6 +9,7 @@ public class BFS {
     IMap map;
     IGrid grid;
     
+    
 
     public BFS(IMap map, IGrid grid) {
         this.map = map;
@@ -16,19 +17,22 @@ public class BFS {
     }
 
     public direction search(Ghost ghost) {
+        System.out.println("Searching for pacman");
         Node startNode = grid.getNode(grid.toCol(ghost.getX()), grid.toRow(ghost.getY()));
         Node targetNode = grid.getNode(grid.toCol(map.getPacman().getX()), grid.toRow(map.getPacman().getY()));
         ArrayList<Node> possibleNodes = new ArrayList<>();
+        ArrayList<Node> seenNodes = new ArrayList<>();
         boolean found = false;
 
-        Node[] startneighbors = startNode.getNeighbourgs(); //Get the neighbors from the start node and assign their direction from start node
-        //System.out.println(Arrays.toString(startneighbors));
+
+        Node[] startneighbors = startNode.getNeighbourgs(); 
+        System.out.println("Start node: " + startneighbors.length);
         for (int i = 0; i < startneighbors.length; i++) {
             if (startneighbors[i] != null && startneighbors[i] != targetNode) {
                 possibleNodes.add(startneighbors[i]);
                
                 //System.out.println(startneighbors[i]);
-                System.out.println(possibleNodes);
+                //System.out.println(possibleNodes);
                 switch (i) {
                     case 0:
                         startneighbors[i].setNeighborsNodeDirection(neighborDirection.UP);
@@ -56,10 +60,8 @@ public class BFS {
             }
             //System.out.println("Possible nodes: " + possibleNodes);
             Node workingnode = possibleNodes.get(0); //get the first node from the list
-            ArrayList<Node> validNeibours = validNeibours(possibleNodes.get(0)); //get all its valid neighbors, and set them to seen and their direction from startnode
+            ArrayList<Node> validNeibours = validNeibours(possibleNodes.get(0), seenNodes); //get all its valid neighbors, and set them to seen and their direction from startnode
                 for (Node validNode : validNeibours) { //for each neighbor node, check if node contains pacman
-                    System.out.println("Checking node: " + workingnode.getX() + ", " + workingnode.getY());
-                    System.out.println("Target node: " + targetNode.getX() + ", " + targetNode.getY());
                     if (isPacman(workingnode, targetNode)){
                         found = true;
                         System.out.println("Found pacman");
@@ -73,6 +75,10 @@ public class BFS {
                 possibleNodes.remove(0); //remove worked node
             
             
+        }
+
+        for (Node node : seenNodes) { //for each node we have seen, set its direction from startnode
+            node.setSeen(false);
         }
         
         if (directionNode != null) { 
@@ -97,22 +103,23 @@ public class BFS {
         return node.equals(targetNode);
     }
 
-    public ArrayList<Node> validNeibours(Node node) {
+    public ArrayList<Node> validNeibours(Node node, ArrayList<Node> seenNodes) {
         Node[] neighbours = node.getNeighbourgs();
         ArrayList<Node> validNeibours = new ArrayList<>();
         
         //System.out.println("NEIGHBOURS: " + Arrays.toString(neighbours));
 
         for (int i = 0; i < neighbours.length; i++) {
-            System.out.println("Checking neighbour: " + neighbours[i]);
+            //System.out.println("Checking neighbour: " + neighbours[i]);
             if (neighbours[i] != null) {
-                System.out.println("Neighbour is: " + neighbours[i].isSeen());
+                //System.out.println("Neighbour is: " + neighbours[i].isSeen());
             }
             if (neighbours[i] != null && !neighbours[i].isSeen()) {
                 neighbours[i].setSeen(true);
-                System.out.println("Setting neighbour: " + neighbours[i] + " to seen");
+                seenNodes.add(neighbours[i]);
+                //System.out.println("Setting neighbour: " + neighbours[i] + " to seen");
                 validNeibours.add(neighbours[i]);
-                System.out.println("Adding neighbour: " + neighbours[i]);
+                //System.out.println("Adding neighbour: " + neighbours[i]);
                 validNeibours.get(i).setNeighborsNodeDirection(node.getNeighborsNodeDirection());
             }
         }
