@@ -27,7 +27,7 @@ public class Game extends Application {
     private GameScore gameScore;
     private IMap map;
     private IController controller;
-    private IDraw draw;
+    private IDraw draw; 
     private IUpdate update;
     private UpdateImages updateImages;
     private AnimationTimer gameLoop;

@@ -21,22 +21,22 @@ public class BFS {
         ArrayList<Node> possibleNodes = new ArrayList<>();
         boolean found = false;
 
-        Node[] path = startNode.getNeighbourgs();
-        for (int i = 0; i < path.length; i++) {
-            if (path[i] != null) {
-                possibleNodes.add(path[i]);
+        Node[] startneighbors = startNode.getNeighbourgs(); //Get the neighbors from the start node and assign their direction from start node
+        for (int i = 0; i < startneighbors.length; i++) {
+            if (startneighbors[i] != null && startneighbors[i] != targetNode) {
+                possibleNodes.add(startneighbors[i]);
                 switch (i) {
                     case 0:
-                        path[i].setNeighborsNodeDirection(neighborDirection.UP);
+                        startneighbors[i].setNeighborsNodeDirection(neighborDirection.UP);
                         break;
                     case 1:
-                        path[i].setNeighborsNodeDirection(neighborDirection.DOWN);
+                        startneighbors[i].setNeighborsNodeDirection(neighborDirection.DOWN);
                         break;
                     case 2:
-                        path[i].setNeighborsNodeDirection(neighborDirection.LEFT);
+                        startneighbors[i].setNeighborsNodeDirection(neighborDirection.LEFT);
                         break;
                     case 3:
-                        path[i].setNeighborsNodeDirection(neighborDirection.RIGHT);
+                        startneighbors[i].setNeighborsNodeDirection(neighborDirection.RIGHT);
                         break;
                     default:
                         break;
@@ -44,25 +44,25 @@ public class BFS {
             }
         }
 
-        int index = 0;
-        Node directionNode = null;
-        while (!found && index < possibleNodes.size()) {
-            Node node = possibleNodes.get(index);
-            if (isPacman(node, targetNode)) {
-                found = true;
-                directionNode = node;
-                break;
-            } 
-            else {
-                ArrayList<Node> validNeibours = validNeibours(node);
-                for (Node validNode : validNeibours) {
-                    possibleNodes.add(validNode);
+        
+        Node directionNode = null; //We dont know which direction to go
+        while (!found) { //While we havent found pacman
+            Node workingnode = possibleNodes.get(0); //get the first node from the list
+            ArrayList<Node> validNeibours = validNeibours(possibleNodes.get(0)); //get all its valid neighbors, and set them to seen and their direction from startnode
+                for (Node validNode : validNeibours) { //for each neighbor node, check if node contains pacman
+                    if (isPacman(workingnode, targetNode)){
+                        found = true;
+                        directionNode = workingnode; //set direction ghost should go
+                        break;
+                    }
+                    else {
+                        possibleNodes.add(validNode); //If not pacman, add them to the back of the queue
+                    }
                 }
-            }
-            index++;
+                possibleNodes.remove(0); //remove worked node
         }
         
-        if (directionNode != null) {
+        if (directionNode != null) { 
             switch (directionNode.getNeighborsNodeDirection()) {
                 case UP:
                     return direction.LEFT;

@@ -7,8 +7,8 @@ public class UpdateImages {
 
     public UpdateImages(IMap map) {
         this.map = map;
-        updateAllImages();
-    }
+        updateAllImages();  
+    }  
 
     Image pacmanImageRight = new Image(getClass().getResource("/com/example/images/pacmanRight.png").toExternalForm());
     Image pacmanImageLeft = new Image(getClass().getResource("/com/example/images/pacmanLeft.png").toExternalForm());
