@@ -55,12 +55,4 @@ public class Block {
         this.type = type;
     }
     
-    public void openDoor() {
-        setImage(new Image(getClass().getResource("/com/example/images/doorOpen.png").toExternalForm()));
-    }
-
-    public void closeDoor() {
-        setImage(new Image(getClass().getResource("/com/example/images/doorClosed.png").toExternalForm()));
-    }
-    
 }

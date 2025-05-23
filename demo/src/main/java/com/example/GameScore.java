@@ -1,6 +1,6 @@
 package com.example;
 
-public class GameScore {
+public class GameScore implements IGameScore{
     private int score;
 
     public GameScore() {

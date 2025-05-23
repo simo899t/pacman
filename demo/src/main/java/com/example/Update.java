@@ -11,7 +11,7 @@ public class Update implements IUpdate {
     private final GameTimer gameTimer;
     private final UpdateImages updateImages;
 
-    public Update(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
+    public Update(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
         this.move = new Move();
@@ -85,7 +85,7 @@ public class Update implements IUpdate {
             if (entityType == BlockType.GHOST) {
                 switch (blockType) {
                     case DOOR:
-                        collideHandler.doorCollision(block);
+                        collideHandler.doorCollision((Door) block);
                         break;
                     case GHOSTHOME:
                         collideHandler.homeCollision((Ghost) entity);

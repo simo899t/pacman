@@ -1,23 +1,17 @@
 package com.example;
 
 public class CollideHandler implements ICollideHandler {
-    private final IMap map;
     private final IKillEntity killEntity;
-    private final Eater eater;
+    private final IEater eater;
     private final GameTimer gameTimer;
-    private final Game game;
-    private final UpdateImages updateImages;
     private final Revive revive;
 
-    public CollideHandler(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
+    public CollideHandler(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
         // 1) bind the map first
-        this.map = map;
         // 2) now you can safely pass it into KillEntity
         this.killEntity = new KillEntity(map, score, lives);
         this.eater = new Eater(map, score, lives, gameTimer, game, updateImages);
         this.gameTimer = gameTimer;
-        this.game = game;
-        this.updateImages = updateImages;
         this.revive = revive;
     }
 
@@ -43,7 +37,7 @@ public class CollideHandler implements ICollideHandler {
     }
 
     @Override
-    public void doorCollision(Block door) {
+    public void doorCollision(Door door) {
         door.openDoor();
 
         long currentTime = System.currentTimeMillis();

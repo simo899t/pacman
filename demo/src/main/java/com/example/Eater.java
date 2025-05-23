@@ -1,16 +1,16 @@
 package com.example;
 
 public class Eater implements IEater {
-    IMap map;
-    Block pellet;
-    GameScore score;
-    GameLives lives;
+    private IMap map;
+    private Block pellet;
+    private IGameScore score;
+    private IGameLives lives;
     private final GameTimer gameTimer;
     private final Game game;
     private final UpdateImages updateImages;
 
     
-    public Eater(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
+    public Eater(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
         this.map = map;
         this.score = score;
         this.lives = lives;

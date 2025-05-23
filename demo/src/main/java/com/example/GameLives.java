@@ -1,6 +1,6 @@
 package com.example;
 
-public class GameLives {
+public class GameLives implements IGameLives{
     private int lives;
 
     public GameLives() {

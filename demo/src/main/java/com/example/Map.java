@@ -130,7 +130,7 @@ public class Map implements IMap {
                         addPellet();
                         break;
                     case 'D':
-                        Block door = new Block(doorClosed, col * tileSize, row * tileSize);
+                        Door door = new Door(doorClosed, col * tileSize, row * tileSize);
                         door.setType(BlockType.DOOR);
                         allBlocks.add(door);
                         break;

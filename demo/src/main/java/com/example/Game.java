@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 
 public class Game extends Application {
 
-    private GameLives gameLives;
-    private GameScore gameScore;
+    private IGameLives gameLives;
+    private IGameScore gameScore;
     private Revive revive;
     private IMap map;
     private IController controller;

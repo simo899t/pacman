@@ -7,7 +7,6 @@ public class UpdateImages {
 
     public UpdateImages(IMap map) {
         this.map = map;
-        updateAllImages();  
     }  
 
     Image pacmanImageRight = new Image(getClass().getResource("/com/example/images/pacmanRight.png").toExternalForm());

@@ -6,15 +6,15 @@ import com.example.MoveableBlock.direction;
 public class KillEntity implements IKillEntity {
 
     private final IMap map;
-    private final GameScore score;
-    private final GameLives lives;
+    private final IGameScore score;
+    private final IGameLives lives;
     private final Pacman pacman;
     private final Ghost redGhost;
     private final Ghost blueGhost;
     private final Ghost pinkGhost;
     private final Ghost orangeGhost;
 
-    public KillEntity(IMap map, GameScore score, GameLives lives) {
+    public KillEntity(IMap map, IGameScore score, IGameLives lives) {
         this.map = map;
         this.score = score;
         this.lives = lives;
