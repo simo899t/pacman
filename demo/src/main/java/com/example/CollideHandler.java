@@ -7,8 +7,9 @@ public class CollideHandler implements ICollideHandler {
     private final GameTimer gameTimer;
     private final Game game;
     private final UpdateImages updateImages;
+    private final Revive revive;
 
-    public CollideHandler(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
+    public CollideHandler(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
         // 1) bind the map first
         this.map = map;
         // 2) now you can safely pass it into KillEntity
@@ -17,6 +18,7 @@ public class CollideHandler implements ICollideHandler {
         this.gameTimer = gameTimer;
         this.game = game;
         this.updateImages = updateImages;
+        this.revive = revive;
     }
 
     @Override
@@ -33,6 +35,11 @@ public class CollideHandler implements ICollideHandler {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void homeCollision(Ghost ghost) {
+        revive.reviveGhost(ghost);
     }
 
     @Override

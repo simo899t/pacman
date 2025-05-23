@@ -16,9 +16,9 @@ public class BFS {
         this.grid = grid;
     }
 
-    public direction search(Ghost ghost) {
+    public direction search(Ghost ghost, Block target) {
         Node startNode = grid.getNode(grid.toCol(ghost.getX()), grid.toRow(ghost.getY()));
-        Node targetNode = grid.getNode(grid.toCol(map.getPacman().getX()), grid.toRow(map.getPacman().getY()));
+        Node targetNode = grid.getNode(grid.toCol(target.getX()), grid.toRow(target.getY()));
         
         // Reset all nodes for a clean search
         for (Node node : grid.getAllNodes()) {
@@ -40,7 +40,7 @@ public class BFS {
             if (startneighbors[i] != null) {
                 // Check if this neighbor is already Pacman
                 if (startneighbors[i] == targetNode) {
-                    // Found Pacman immediately!
+                    // Found Pacman at startnode neighbors!
                     switch (i) {
                         case 0: return direction.UP;
                         case 1: return direction.DOWN;

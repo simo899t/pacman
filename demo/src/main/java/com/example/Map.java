@@ -10,6 +10,7 @@ public class Map implements IMap {
     private Ghost blueGhost;
     private Ghost pinkGhost;
     private Ghost orangeGhost;
+    private Block ghostHome;
     private int tileSize = 32; // each tile is 32 pixels wide
     private int pelletCount = 0;
 
@@ -67,6 +68,10 @@ public class Map implements IMap {
 
     public Ghost getOrangeGhost() {
         return orangeGhost;
+    }
+
+    public Block getGhostHome() {
+        return ghostHome;
     }
 
     public int getTileSize() {
@@ -164,6 +169,11 @@ public class Map implements IMap {
                         redGhost.setType(BlockType.GHOST);
                         redGhost.setState(Ghost.states.CHASE);
                         allBlocks.add(redGhost);
+                        ghostHome = new Block(null, col * tileSize, row * tileSize);
+                        ghostHome.setType(BlockType.GHOSTHOME);
+                        allBlocks.add(ghostHome);
+                        System.out.println("ghostHome: " + ghostHome.getX() + ", " + ghostHome.getY());
+                        System.out.println(redGhost.getX() + ", " + redGhost.getY());
                         
                         Pellet eatenPelletBehindRed = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindRed.setType(BlockType.PELLET);
@@ -186,6 +196,7 @@ public class Map implements IMap {
                         pinkGhost.setType(BlockType.GHOST);
                         pinkGhost.setState(Ghost.states.STILL);
                         allBlocks.add(pinkGhost);
+                        
                         
                         Pellet eatenPelletBehindPink = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindPink.setType(BlockType.PELLET);

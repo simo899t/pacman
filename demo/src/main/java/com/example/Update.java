@@ -11,14 +11,14 @@ public class Update implements IUpdate {
     private final GameTimer gameTimer;
     private final UpdateImages updateImages;
 
-    public Update(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
+    public Update(IMap map, GameScore score, GameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
         this.move = new Move();
         this.collision = new Collision(map);
         this.gameTimer = gameTimer;
         this.updateImages = updateImages;
-        this.collideHandler = new CollideHandler(map, score, lives, gameTimer, game, updateImages);
+        this.collideHandler = new CollideHandler(map, score, lives, gameTimer, game, updateImages, revive);
   
     }
 
@@ -26,7 +26,6 @@ public class Update implements IUpdate {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
                 if (block.getType() == BlockType.PACMAN || block.getType() == BlockType.GHOST) {
-                    //System.out.println(((MoveableBlock) block).getDirection());
                     updateEntity((MoveableBlock) block);
                 }
             }
@@ -45,12 +44,6 @@ public class Update implements IUpdate {
                             (currentDirection == direction.UP && bufferDirection == direction.DOWN) ||
                             (currentDirection == direction.DOWN && bufferDirection == direction.UP);
 
-        // if (entity.getType() == BlockType.GHOST) {
-        //     if (isReverse) {
-        //         move.move(entity);
-        //         return;
-        //     }
-        // }
         
         for (Block block : map.getAllBlocks()) {
             blockType = block.getType();
@@ -90,10 +83,12 @@ public class Update implements IUpdate {
             }
             
             if (entityType == BlockType.GHOST) {
-                //System.out.println(entity.getDirection());
                 switch (blockType) {
                     case DOOR:
                         collideHandler.doorCollision(block);
+                        break;
+                    case GHOSTHOME:
+                        collideHandler.homeCollision((Ghost) entity);
                         break;
                     case TELEPORTER: // this also could be a method by itself, but need nextblock
                         for (Block otherTeleporter : map.getAllBlocks()) {

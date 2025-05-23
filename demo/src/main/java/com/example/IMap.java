@@ -9,6 +9,7 @@ public interface IMap {
     public Ghost getBlueGhost();
     public Ghost getPinkGhost();
     public Ghost getOrangeGhost();
+    public Block getGhostHome();
     public int getTileSize();
     public int getCols();
     public int getRows();

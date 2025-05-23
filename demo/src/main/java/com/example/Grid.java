@@ -22,7 +22,6 @@ public class Grid implements IGrid {
     public void makeGrid() {
         String[] gridMap = map.getMap();  
         
-        // First pass: Create all nodes without connections
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (gridMap[row].charAt(col) != 'X') {
@@ -30,7 +29,6 @@ public class Grid implements IGrid {
                     if (gridMap[row].charAt(col) == 'P') {
                         currentNode = grid[col][row];
                     }
-                    //System.out.println("Node created at: " + col + ", " + row);
                 }
             }
         }

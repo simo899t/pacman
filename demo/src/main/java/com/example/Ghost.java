@@ -36,10 +36,6 @@ public class Ghost extends MoveableBlock implements Eatable {
         this.state = state;
     }
 
-    public boolean isHome() {
-        return getX() == getStartX() && getY() == getStartY();
-    }
-
     @Override
     public boolean isEaten() {
         return eatableBehavior.isEaten();

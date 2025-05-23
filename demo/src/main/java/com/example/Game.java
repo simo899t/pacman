@@ -25,6 +25,7 @@ public class Game extends Application {
 
     private GameLives gameLives;
     private GameScore gameScore;
+    private Revive revive;
     private IMap map;
     private IController controller;
     private IDraw draw; 
@@ -143,8 +144,8 @@ public class Game extends Application {
         draw = new Draw(map, canvas);
         gameTimer = new GameTimer();
         updateImages = new UpdateImages(map);
-        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages);
-        
+        revive = new Revive(map);
+        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive);
 
         // The game loop
         gameLoop = new AnimationTimer() {
