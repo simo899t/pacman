@@ -50,7 +50,6 @@ public class RandomWalk {
         else if (random.nextDouble() < 0.50) {
             int bufferIndex = validIndices.get(random.nextInt(validIndices.size()));
             ghost.setBufferDirection(indexToDirection(bufferIndex));
-            System.out.println("Random buffer direction set: " + indexToDirection(bufferIndex));
         }
         
         return indexToDirection(randomIndex);

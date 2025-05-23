@@ -13,6 +13,7 @@ public class Map implements IMap {
     private Block ghostHome;
     private int tileSize = 32; // each tile is 32 pixels wide
     private int pelletCount = 0;
+    private int pelletsLeft;
 
     String[] map = new String[] {
         "XXXXXXXXXXXXXXXXXXX",
@@ -42,6 +43,7 @@ public class Map implements IMap {
     int columnCount = map[0].length(); // Gameboard is 19 columns
     
     public Map() {
+        allBlocks = new ArrayList<>();
         loadAllBlocks(map);
     }
 
@@ -84,27 +86,25 @@ public class Map implements IMap {
         return rowCount;
     }
 
-
-    public int getPelletCount() {
-        return pelletCount;
+    public int getPelletsLeft() {
+        return pelletsLeft;
     }
 
-    public void removePellet() {
-        this.pelletCount = pelletCount - 1;
+    public void decreasePelletsLeft() {
+        this.pelletsLeft = pelletsLeft - 1;
     }
 
     public void addPellet() {
         this.pelletCount = pelletCount + 1;
     }
 
-    public void resetPelletCount() {
-        this.pelletCount = 0;
+    public void resetPelletsLeft() {
+        this.pelletsLeft = pelletCount;
     }
-    
+
     private void loadAllBlocks(String[] map) {
         String[] tileMap = map;
         
-
         // Load images
         Image pacmanImage = new Image(getClass().getResource("/com/example/images/pacman.png").toExternalForm());
         Image wallImage = new Image(getClass().getResource("/com/example/images/wall.png").toExternalForm());
@@ -116,7 +116,6 @@ public class Map implements IMap {
         Image smallFoodImage = new Image(getClass().getResource("/com/example/images/smallFood.png").toExternalForm());
         Image bigFoodImage = new Image(getClass().getResource("/com/example/images/bigFood.png").toExternalForm());
 
-        allBlocks = new ArrayList<>(new ArrayList<>());
 
         // Draw the pellet and door map 
         for (int row = 0; row < rowCount; row++) {
@@ -145,6 +144,7 @@ public class Map implements IMap {
                 }
             }
         }
+        pelletsLeft = pelletCount;
         // Draw other part of map
         for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < columnCount; col++) {
@@ -172,8 +172,6 @@ public class Map implements IMap {
                         ghostHome = new Block(null, col * tileSize, row * tileSize);
                         ghostHome.setType(BlockType.GHOSTHOME);
                         allBlocks.add(ghostHome);
-                        System.out.println("ghostHome: " + ghostHome.getX() + ", " + ghostHome.getY());
-                        System.out.println(redGhost.getX() + ", " + redGhost.getY());
                         
                         Pellet eatenPelletBehindRed = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindRed.setType(BlockType.PELLET);
@@ -196,7 +194,6 @@ public class Map implements IMap {
                         pinkGhost.setType(BlockType.GHOST);
                         pinkGhost.setState(Ghost.states.STILL);
                         allBlocks.add(pinkGhost);
-                        
                         
                         Pellet eatenPelletBehindPink = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindPink.setType(BlockType.PELLET);
@@ -227,23 +224,36 @@ public class Map implements IMap {
     }
 
     public void resetMap() {
+        // Reload the pellet images
+        Image smallFoodImage = new Image(getClass().getResource("/com/example/images/smallFood.png").toExternalForm());
+        Image bigFoodImage = new Image(getClass().getResource("/com/example/images/bigFood.png").toExternalForm());
+        
         for (Block block : allBlocks) {
             if (block instanceof Pellet) {
                 Pellet pellet = (Pellet) block;
                 pellet.setEaten(false);
-                pellet.setImage(pellet.getImage());
+                
+                // Set the correct image based on pellet type
+                if (block.getType() == BlockType.PELLET) {
+                    pellet.setImage(smallFoodImage);
+                } else if (block.getType() == BlockType.BIGPELLET) {
+                    pellet.setImage(bigFoodImage);
+                }
             }
+            
             if (block instanceof Ghost) {
                 Ghost ghost = (Ghost) block;
                 ghost.setState(Ghost.states.CHASE);
+
                 ghost.setPos(ghost.getStartX(), ghost.getStartY());
             }
+            
             if (block instanceof Pacman) {
                 Pacman pacman = (Pacman) block;
                 pacman.setPos(pacman.getStartX(), pacman.getStartY());
             }
         }
-        resetPelletCount();
+        resetPelletsLeft();
     }
 
     private ArrayList<Block> allBlocks;
@@ -252,22 +262,12 @@ public class Map implements IMap {
         return allBlocks;
     }
 
-    public void removeBlock(Block block) {
-        allBlocks.remove(block);
-    }
-
-    private ArrayList<MoveableBlock> moveableBlocks;
-    public ArrayList<MoveableBlock> getMoveableBlocks() {
-        return moveableBlocks;
-    }
-
     public Block getBlock(int x, int y) {
         for (Block block : allBlocks) {
             if (block.getX() == x && block.getY() == y) {
                 return block;
             }
         }
-        // System.err.println("Block not found at coordinates: " + x + ", " + y);
         return null;
     }
 }

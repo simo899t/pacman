@@ -6,11 +6,11 @@ public class Eater implements IEater {
     private IGameScore score;
     private IGameLives lives;
     private final GameTimer gameTimer;
-    private final Game game;
+    private final App game;
     private final UpdateImages updateImages;
 
     
-    public Eater(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages) {
+    public Eater(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages) {
         this.map = map;
         this.score = score;
         this.lives = lives;
@@ -25,9 +25,8 @@ public class Eater implements IEater {
         
         pellet.setEaten(true);
         pellet.setImage(null);
-        map.removePellet();
+        map.decreasePelletsLeft();
         score.addScore(points);
-        // System.out.println("Pellet eaten! Score: " + score.getScore());
         return true;
     }
 
@@ -40,7 +39,7 @@ public class Eater implements IEater {
             return;
 
         for (Block block : map.getAllBlocks()) {
-            if (block instanceof Ghost) {
+            if (block.getType() == BlockType.GHOST) {
                 Ghost ghost = (Ghost) block;
                 if (ghost.getState() == Ghost.states.CHASE) {
                     ghost.setState(Ghost.states.FRIGHTENED);
@@ -53,9 +52,9 @@ public class Eater implements IEater {
             GameTimer.atTimeRunFunction(
                 currentTime, 5000L, () -> {
                     for (Block block : map.getAllBlocks()) {
-                        if (block instanceof Ghost) {
+                        if (block.getType() == BlockType.GHOST) {
                             Ghost ghost = (Ghost) block;
-                            game.setAllGhostsToChase();
+                            setAllGhostsToChase();
                         }
                     }
                 }
@@ -65,9 +64,25 @@ public class Eater implements IEater {
     }
 
 
+    /* 
+     * This method is called when Pacman eats a ghost. It checks if the ghost is in the frightened state and if so, it sets it to eaten state.
+     */
     public void eatGhost(Pellet ghost) {
-        if (!tryEat(ghost, ghost.getPoints())) 
-            return;
-        // set the state of the ghosts to frightened"
+        tryEat(ghost, ghost.getPoints());
+    }
+
+    /*
+     * This method sets all ghosts to chase state. It is called when the big pellet timer expires.
+     */
+    public void setAllGhostsToChase() {
+        for (Block block : map.getAllBlocks()) {
+            if (block instanceof Ghost) {
+                Ghost ghost = (Ghost) block;
+                if (ghost.getState() == Ghost.states.FRIGHTENED) {
+                    ghost.setState(Ghost.states.CHASE);
+                }
+            }
+        }
+            
     }
 }

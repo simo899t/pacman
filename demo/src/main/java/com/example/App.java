@@ -9,7 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -21,7 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class Game extends Application {
+public class App extends Application {
 
     private IGameLives gameLives;
     private IGameScore gameScore;
@@ -31,14 +32,17 @@ public class Game extends Application {
     private IDraw draw; 
     private IUpdate update;
     private UpdateImages updateImages;
+    private GameState gameState;
     private AnimationTimer gameLoop;
     private Label scoreLabel;
     private Label livesLabel;
+    private Label startText;
     private Label gameOverText;
     private Label restartText;
     private Label winText;
     private Scene scene;
     private GameTimer gameTimer;
+    private ImageView logoImageView;
 
     @Override
     public void start(Stage stage) {
@@ -88,6 +92,16 @@ public class Game extends Application {
         Canvas canvas = new Canvas(canvasWidth, canvasHeight);
         canvasContainer.getChildren().add(canvas);
 
+        // Create a restart text (also initially hidden)
+        startText = new Label("Press any button to start");
+        startText.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        startText.setTextFill(Color.YELLOW);
+        startText.setVisible(true);
+
+        // Position the restart text below the game over text
+        startText.setLayoutX((canvasWidth - 350) / 2); // Adjusted width calculation
+        startText.setLayoutY((canvasHeight / 2)); // Position below center
+
         // Create a game over text (initially hidden)
         gameOverText = new Label("GAME OVER");
         gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
@@ -95,8 +109,8 @@ public class Game extends Application {
         gameOverText.setVisible(false);
 
         // Center the gameover text in the canvas
-        gameOverText.setLayoutX((canvasWidth - 260) / 2); // Adjusted width calculation
-        gameOverText.setLayoutY((canvasHeight / 2) - 50); // Position above center
+        gameOverText.setLayoutX((canvasWidth-280) / 2); // Adjusted width calculation
+        gameOverText.setLayoutY((canvasHeight / 2) -60); // Position above center
 
         // Create a restart text (also initially hidden)
         restartText = new Label("Press ENTER to restart");
@@ -117,7 +131,21 @@ public class Game extends Application {
         winText.setLayoutX((canvasWidth - 220) / 2); // Adjusted width calculation for win text
         winText.setLayoutY((canvasHeight / 2) - 50); // Position above center
 
-        canvasContainer.getChildren().addAll(gameOverText, restartText, winText);
+        // Create start screen image
+        Image logoImage = new Image(getClass().getResource("/com/example/images/logo.png").toExternalForm());
+        logoImageView = new ImageView(logoImage);
+        
+        // Set image size (adjust as needed)
+        logoImageView.setFitWidth(400);
+        logoImageView.setPreserveRatio(true);
+        
+        // Position the image above the start text
+        logoImageView.setX((canvasWidth - 400) / 2);  // Center horizontally
+        logoImageView.setY(canvasHeight / 4);         // Position in top half
+        
+        logoImageView.setVisible(true);  // Make visible at start
+
+        canvasContainer.getChildren().addAll(gameOverText, restartText, winText, startText, logoImageView);
 
         // Add both components to main layout
         root.getChildren().addAll(scorePanel, canvasContainer);
@@ -146,8 +174,8 @@ public class Game extends Application {
         updateImages = new UpdateImages(map);
         revive = new Revive(map);
         update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive);
-
-        // The game loop
+        
+        // Initialize gameLoop BEFORE creating GameState
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -155,92 +183,16 @@ public class Game extends Application {
                 ghostMovementPathfinding.directAllGhosts();
                 update.updateGame(map);
                 updateImages.updateAllImages();
-
-                // Update both displays separately
+                gameState.updateGameState();
                 scoreLabel.setText("SCORE: " + gameScore.getScore());
                 livesLabel.setText("LIVES: " + gameLives.getLives());
-
-                if (gameLives.getLives() < 0) {
-                    // Show game over text
-                    gameOver();
-                }
-
-                if (map.getPelletCount() == 0) {
-                    // Show game over text
-                    gameWin();
-                }
-
-                // Update The Timer
+                 
                 gameTimer.runFunctionList(gameTimer.functionList);
-            
             }
         };
-
-        gameLoop.start();
-    }
-
-    private void resetGame() {
-        // Reset game state
-        gameLives.resetLives();
-        gameScore.resetScore();
-        map.resetMap();
         
-        // Hide game over text
-        gameOverText.setVisible(false);
-        restartText.setVisible(false);
-        
-        // Start a new game loop
-        gameLoop.start();
-        
-        // Restore original controls with the updated controller
-        scene.setOnKeyPressed(event -> {
-            controller.keyPressed(event);
-        });
-    }
-
-    private void gameOver() {
-        // Stop the game loop
-        gameLoop.stop();
-
-        // Show game over text and restart text
-        gameOverText.setVisible(true);
-        restartText.setVisible(true);
-
-        // Set up event handler for restarting the game
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                resetGame();
-            }
-        });
-    }
-    private void gameWin() {
-        // Stop the game loop
-        gameLoop.stop();
-
-        // Show win text and restart text
-        winText.setVisible(true);
-        restartText.setVisible(true);
-
-        // Set up event handler for restarting the game
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                winText.setVisible(false);
-                restartText.setVisible(false);
-                resetGame();
-            }
-        });
-    }
-
-    public void setAllGhostsToChase() {
-        for (Block block : map.getAllBlocks()) {
-            if (block instanceof Ghost) {
-                Ghost ghost = (Ghost) block;
-                if (ghost.getState() == Ghost.states.FRIGHTENED) {
-                    ghost.setState(Ghost.states.CHASE);
-                }
-            }
-        }
-            
+        // Create GameState instance
+        gameState = new GameState(gameLoop, gameLives, gameScore, map, gameOverText, restartText, winText, startText, logoImageView, controller, scene);
     }
 
     public static void main(String[] args) {

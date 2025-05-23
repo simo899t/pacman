@@ -6,7 +6,7 @@ public class CollideHandler implements ICollideHandler {
     private final GameTimer gameTimer;
     private final Revive revive;
 
-    public CollideHandler(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
+    public CollideHandler(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages, Revive revive) {
         // 1) bind the map first
         // 2) now you can safely pass it into KillEntity
         this.killEntity = new KillEntity(map, score, lives);

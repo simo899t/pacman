@@ -32,17 +32,24 @@ public class Ghost extends MoveableBlock implements Eatable {
         return state;
     }
 
+    /*
+     * set the state of the ghost
+     */
     public void setState(states state) {
         this.state = state;
         switch (state) {
             case CHASE:
+                // set ghost to normal speed
                 this.setStepSize(2);
                 break;
             case FRIGHTENED:
+                // set ghost to slow speed
                 this.setStepSize(1);
                 break;
             case EATEN:
+                // set the ghost to the correct position to avoid skipping
                 this.setPos(this.getX() - this.getX()%2 , this.getY() - this.getY()%2);
+                // set ghost to normal speed
                 this.setStepSize(2);
                 break;
             default:

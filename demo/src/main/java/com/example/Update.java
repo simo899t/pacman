@@ -11,7 +11,7 @@ public class Update implements IUpdate {
     private final GameTimer gameTimer;
     private final UpdateImages updateImages;
 
-    public Update(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, Game game, UpdateImages updateImages, Revive revive) {
+    public Update(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages, Revive revive) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
         this.move = new Move();
