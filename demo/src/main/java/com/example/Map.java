@@ -144,7 +144,7 @@ public class Map implements IMap {
                 }
             }
         }
-        pelletsLeft = pelletCount;
+        pelletsLeft = pelletCount; // Initialize pellets left after counting all pellets
         // Draw other part of map
         for (int row = 0; row < rowCount; row++) {
             for (int col = 0; col < columnCount; col++) {
