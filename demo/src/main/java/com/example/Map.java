@@ -41,8 +41,12 @@ public class Map implements IMap {
 
     int rowCount = map.length; // Gameboard is 21 rows
     int columnCount = map[0].length(); // Gameboard is 19 columns
-    
-    public Map() {
+    long currentTime = System.currentTimeMillis();
+
+    private final GameTimer gameTimer;
+
+    public Map(GameTimer gameTimer) {
+        this.gameTimer = gameTimer;
         allBlocks = new ArrayList<>();
         loadAllBlocks(map);
     }
@@ -184,6 +188,14 @@ public class Map implements IMap {
                         blueGhost.setState(Ghost.states.STILL);
                         allBlocks.add(blueGhost);
                         
+                        gameTimer.addFunctionToList(
+                            GameTimer.atTimeRunFunction(
+                                "blueGhostChaseTimer", currentTime, 12000L, () -> {
+                                    blueGhost.setState(Ghost.states.CHASE);
+                                }
+                            )
+                        );
+                        
                         Pellet eatenPelletBehindBlue = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindBlue.setType(BlockType.PELLET);
                         eatenPelletBehindBlue.setEaten(true);
@@ -194,6 +206,14 @@ public class Map implements IMap {
                         pinkGhost.setType(BlockType.GHOST);
                         pinkGhost.setState(Ghost.states.STILL);
                         allBlocks.add(pinkGhost);
+
+                        gameTimer.addFunctionToList(
+                            GameTimer.atTimeRunFunction(
+                                "pinkGhostChaseTimer", currentTime, 8000L, () -> {
+                                    pinkGhost.setState(Ghost.states.CHASE);
+                                }
+                            )
+                        );
                         
                         Pellet eatenPelletBehindPink = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindPink.setType(BlockType.PELLET);
@@ -205,6 +225,14 @@ public class Map implements IMap {
                         orangeGhost.setType(BlockType.GHOST);
                         orangeGhost.setState(Ghost.states.STILL);
                         allBlocks.add(orangeGhost);
+
+                        gameTimer.addFunctionToList(
+                            GameTimer.atTimeRunFunction(
+                                "OrangeGhostChaseTimer", currentTime, 15000L, () -> {
+                                    orangeGhost.setState(Ghost.states.CHASE);
+                                }
+                            )
+                        );
                         
                         Pellet eatenPelletBehindOrange = new Pellet(null, col * tileSize, row * tileSize);
                         eatenPelletBehindOrange.setType(BlockType.PELLET);
@@ -243,8 +271,45 @@ public class Map implements IMap {
             
             if (block instanceof Ghost) {
                 Ghost ghost = (Ghost) block;
-                ghost.setState(Ghost.states.CHASE);
-
+                switch (ghost.getColor()) {
+                    case Ghost.color.RED:
+                        ghost.setState(Ghost.states.CHASE);
+                        break;
+                    case Ghost.color.BLUE:
+                        ghost.setState(Ghost.states.STILL);
+                        gameTimer.addFunctionToList(
+                            GameTimer.atTimeRunFunction(
+                                "blueGhostChaseTimer", currentTime, 12000L, () -> {
+                                    blueGhost.setState(Ghost.states.CHASE);
+                                }
+                            )
+                        );
+                        break;
+                    case Ghost.color.PINK:
+                        ghost.setState(Ghost.states.STILL);
+                        gameTimer.addFunctionToList(
+                            GameTimer.atTimeRunFunction(
+                                "pinkGhostChaseTimer", currentTime, 8000L, () -> {
+                                    pinkGhost.setState(Ghost.states.CHASE);
+                                }
+                            )
+                        );
+                        break;
+                    case Ghost.color.ORANGE:
+                        ghost.setState(Ghost.states.STILL);
+                        gameTimer.addFunctionToList(
+                            GameTimer.atTimeRunFunction(
+                                "OrangeGhostChaseTimer", currentTime, 15000L, () -> {
+                                    orangeGhost.setState(Ghost.states.CHASE);
+                                }
+                            )
+                        );
+                        break;
+                    default:
+                        ghost.setState(Ghost.states.STILL);
+                        break;
+                }
+                
                 ghost.setPos(ghost.getStartX(), ghost.getStartY());
             }
             

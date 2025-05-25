@@ -1,10 +1,10 @@
 package com.example;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.input.KeyCode;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 
 public class GameState{
 
@@ -60,6 +60,10 @@ public class GameState{
                 gameLoop.start();
             }
         });
+    }
+
+    public State getGameState() {
+        return this.gameState;
     }
 
     public void updateGameState() {
