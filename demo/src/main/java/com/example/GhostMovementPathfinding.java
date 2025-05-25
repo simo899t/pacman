@@ -18,7 +18,7 @@ public class GhostMovementPathfinding {
         this.map = map;
         this.grid = grid;
         this.randomWalk = new RandomWalk(map, grid); // Initialize here after map is set
-        this.bfs = new BFS(map, grid); // Initialize here after map is set
+        this.bfs = new BFS(grid); // Initialize here after map is set
         this.badSearch = new BadSeach(grid); // Initialize here after map is set
         this.redGhost = map.getRedGhost();
         this.blueGhost = map.getBlueGhost();

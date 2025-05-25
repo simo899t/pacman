@@ -6,13 +6,11 @@ import com.example.MoveableBlock.direction;
 import com.example.Node.neighborDirection;
 
 public class BFS {
-    IMap map;
     IGrid grid;
     
     
 
-    public BFS(IMap map, IGrid grid) {
-        this.map = map;
+    public BFS(IGrid grid) {
         this.grid = grid;
     }
 
