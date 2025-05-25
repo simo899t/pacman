@@ -43,7 +43,7 @@ public class CollideHandler implements ICollideHandler {
         long currentTime = System.currentTimeMillis();
         gameTimer.addFunctionToList(
             GameTimer.atTimeRunFunction(
-                currentTime, 1000L, () -> {
+                "OpenTheDoor", currentTime, 1000L, () -> {
                     door.closeDoor();
                 }
             )

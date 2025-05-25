@@ -50,7 +50,7 @@ public class Eater implements IEater {
         long currentTime = System.currentTimeMillis();
         gameTimer.addFunctionToList(
             GameTimer.atTimeRunFunction(
-                currentTime, 5000L, () -> {
+                "BigPelletEaten", currentTime, 5000L, () -> {
                     for (Block block : map.getAllBlocks()) {
                         if (block.getType() == BlockType.GHOST) {
                             Ghost ghost = (Ghost) block;
