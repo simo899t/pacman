@@ -6,9 +6,7 @@ import com.example.MoveableBlock.direction;
 import com.example.Node.neighborDirection;
 
 public class BFS {
-    IGrid grid;
-    
-    
+    private final IGrid grid;
 
     public BFS(IGrid grid) {
         this.grid = grid;
