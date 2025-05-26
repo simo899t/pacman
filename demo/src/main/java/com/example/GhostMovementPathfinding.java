@@ -12,14 +12,12 @@ public class GhostMovementPathfinding {
     public Ghost orangeGhost;
     public RandomWalk randomWalk;
     public BFS bfs;
-    public BadSeach badSearch;
 
     GhostMovementPathfinding(IMap map, IGrid grid) {
         this.map = map;
         this.grid = grid;
         this.randomWalk = new RandomWalk(map, grid); // Initialize here after map is set
         this.bfs = new BFS(grid); // Initialize here after map is set
-        this.badSearch = new BadSeach(grid); // Initialize here after map is set
         this.redGhost = map.getRedGhost();
         this.blueGhost = map.getBlueGhost();
         this.pinkGhost = map.getPinkGhost();
@@ -43,7 +41,8 @@ public class GhostMovementPathfinding {
             if (ghost.getColor() == Ghost.color.RED || ghost.getColor() == Ghost.color.ORANGE) {
                 BFSDirectGhost(ghost, pacman);
             } else if (ghost.getColor() == Ghost.color.BLUE || ghost.getColor() == Ghost.color.PINK) {
-                badSearchDirectGhost(ghost, pacman);
+                BFSDirectGhost(ghost, pacman);
+                //RandomWalkDirectGhost(ghost);
             }
         } else if (ghost.getState() == Ghost.states.FRIGHTENED) {
             RandomWalkDirectGhost(ghost);
@@ -65,11 +64,6 @@ public class GhostMovementPathfinding {
         }
     }
 
-    private void badSearchDirectGhost(Ghost ghost, Block target) {
-        if (ghost.getX() % map.getTileSize() == 0 && ghost.getY() % map.getTileSize() == 0) {
-            ghost.setBufferDirection(badSearch.search(ghost, target));
-        }
-    }
 
 
 

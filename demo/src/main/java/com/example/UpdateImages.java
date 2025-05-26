@@ -109,7 +109,9 @@ public class UpdateImages {
                                 GhostImage = "/com/example/images/deadGhostRight.png";
                                 break;
                         }
-                    } 
+                    } else if (ghost.getState() == Ghost.states.STILL) {
+                        GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
+                    }
                     if (GhostImage != null) {
                         Image updatedGhost = new Image(getClass().getResource(GhostImage).toExternalForm());
                         entity.setImage(updatedGhost);

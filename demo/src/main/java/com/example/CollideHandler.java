@@ -9,7 +9,7 @@ public class CollideHandler implements ICollideHandler {
     public CollideHandler(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages, Revive revive) {
         // 1) bind the map first
         // 2) now you can safely pass it into KillEntity
-        this.killEntity = new KillEntity(map, score, lives);
+        this.killEntity = new KillEntity(map, score, lives, gameTimer);
         this.eater = new Eater(map, score, lives, gameTimer, game, updateImages);
         this.gameTimer = gameTimer;
         this.revive = revive;

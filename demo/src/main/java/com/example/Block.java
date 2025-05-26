@@ -10,7 +10,8 @@ enum BlockType {
     DOOR,
     FRUIT,
     TELEPORTER,
-    GHOSTHOME
+    GHOSTHOME,
+    EMPTY
 }
 
 public class Block {
