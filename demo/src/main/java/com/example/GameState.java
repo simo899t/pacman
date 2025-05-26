@@ -149,8 +149,6 @@ public class GameState{
 
     private void nextLevel() {
         // Reset game state
-        gameLives.resetLives();
-        gameScore.resetScore();
         map.resetMap();
 
         System.out.println();
