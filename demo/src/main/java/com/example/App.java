@@ -23,6 +23,10 @@ public class App extends Application {
     private UpdateImages updateImages;
     private GameState gameState;
     private AnimationTimer gameLoop;
+    private ICollideHandler collideHandler;
+    private Collision collision;
+    private IEater eater;
+    private IKillEntity killEntity;
     
     private Label startText;
     private Label gameOverText;
@@ -76,8 +80,14 @@ public class App extends Application {
         draw = new Draw(map, canvas);
         updateImages = new UpdateImages(map, gameTimer);
         revive = new Revive(map);
-        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive);
+        eater = new Eater(map, gameScore, gameLives, gameTimer, null, updateImages);
+        killEntity = new KillEntity(map, gameScore, gameLives, gameTimer);
+        collision = new Collision(map);
+
+        collideHandler = new CollideHandler(map, gameScore, gameLives, gameTimer, this, updateImages, revive, eater, killEntity);
+        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive, collideHandler, collision);
         
+
         // Initialize gameLoop BEFORE creating GameState
         gameLoop = new AnimationTimer() {
 

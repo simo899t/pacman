@@ -171,6 +171,7 @@ public class Map implements IMap {
                         redGhost.setType(BlockType.GHOST);
                         redGhost.setState(Ghost.states.CHASE);
                         allBlocks.add(redGhost);
+                        
                         ghostHome = new Block(null, col * tileSize, row * tileSize);
                         ghostHome.setType(BlockType.GHOSTHOME);
                         allBlocks.add(ghostHome);

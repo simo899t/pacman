@@ -13,6 +13,7 @@ public class UpdateImages {
 
     int pacmanAnimationStep = 0;
     int pacmanAnimationChangeCount = 0;
+    int pacmanMouthSpeed = 8;
     Image pacmanImageRight = new Image(getClass().getResource("/com/example/images/pacmanRight.png").toExternalForm());
     Image pacmanImageLeft = new Image(getClass().getResource("/com/example/images/pacmanLeft.png").toExternalForm());
     Image pacmanImageUp = new Image(getClass().getResource("/com/example/images/pacmanUp.png").toExternalForm());
@@ -72,14 +73,14 @@ public class UpdateImages {
                         default:
                             break;
                     }
-                    if (pacmanAnimationChangeCount >= 8) {
+                    if (pacmanAnimationChangeCount >= pacmanMouthSpeed) {
                         pacmanAnimationStep = 1;
                         pacmanAnimationChangeCount = 0;
                     }
                     pacmanAnimationChangeCount++;
                     } else {
                         entity.setImage(pacmanImage);
-                        if (pacmanAnimationChangeCount >= 8) {
+                        if (pacmanAnimationChangeCount >= pacmanMouthSpeed) {
                             pacmanAnimationStep = 0;
                             pacmanAnimationChangeCount = 0;
                         }
