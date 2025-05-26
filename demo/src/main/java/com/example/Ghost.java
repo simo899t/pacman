@@ -50,7 +50,7 @@ public class Ghost extends MoveableBlock implements Eatable {
                 // set the ghost to the correct position to avoid skipping
                 this.setPos(this.getX() - this.getX()%2 , this.getY() - this.getY()%2);
                 // set ghost to normal speed
-                this.setStepSize(1);
+                this.setStepSize(2);
                 break;
             default:
                 break;

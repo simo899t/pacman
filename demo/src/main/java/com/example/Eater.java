@@ -1,5 +1,7 @@
 package com.example;
 
+import javafx.scene.image.Image;
+
 public class Eater implements IEater {
     private IMap map;
     private Block pellet;
@@ -43,24 +45,57 @@ public class Eater implements IEater {
                 Ghost ghost = (Ghost) block;
                 if (ghost.getState() == Ghost.states.CHASE) {
                     ghost.setState(Ghost.states.FRIGHTENED);
+
+                    Image whiteScaredGhost = new Image(getClass().getResource("/com/example/images/scaredGhostnegative.png").toExternalForm());
+                    Image blueScaredGhost = new Image(getClass().getResource("/com/example/images/scaredGhost.png").toExternalForm());
+
+                    long currentTime = System.currentTimeMillis();
+                    ghost.setImage(blueScaredGhost);
+
+                    gameTimer.addFunctionToList(
+                        GameTimer.atTimeRunFunction(
+                            "GhostFrightenedBlinkStart", currentTime, 3000L, () -> {
+                                if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(whiteScaredGhost);
+                            }
+                        )
+                    );
+
+                    gameTimer.addFunctionToList(
+                        GameTimer.atTimeRunFunction(
+                            "GhostFrightenedBlink1", currentTime, 3500L, () -> {
+                                if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(blueScaredGhost);
+                            }
+                        )
+                    );
+
+                    gameTimer.addFunctionToList(
+                        GameTimer.atTimeRunFunction(
+                            "GhostFrightenedBlink2", currentTime, 4000L, () -> {
+                                if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(whiteScaredGhost);
+                            }
+                        )
+                    );
+
+                    gameTimer.addFunctionToList(
+                        GameTimer.atTimeRunFunction(
+                            "GhostFrightenedBlink3", currentTime, 4500L, () -> {
+                                if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(blueScaredGhost);
+                            }
+                        )
+                    );
+                
+                    gameTimer.addFunctionToList(
+                        GameTimer.atTimeRunFunction(
+                            "BigPelletEaten", currentTime, 5000L, () -> {        
+                                setAllGhostsToChase();       
+                            }
+                        )
+                    );
                 }
+                
+
             }
         }
-
-        long currentTime = System.currentTimeMillis();
-        gameTimer.addFunctionToList(
-            GameTimer.atTimeRunFunction(
-                "BigPelletEaten", currentTime, 5000L, () -> {
-                    for (Block block : map.getAllBlocks()) {
-                        if (block.getType() == BlockType.GHOST) {
-                            Ghost ghost = (Ghost) block;
-                            setAllGhostsToChase();
-                        }
-                    }
-                }
-            )
-        );
-        // set the state of the ghosts to frightened"
     }
 
 

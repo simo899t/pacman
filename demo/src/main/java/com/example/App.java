@@ -74,7 +74,7 @@ public class App extends Application {
         gameLives = new GameLives();
         gameScore = new GameScore();
         draw = new Draw(map, canvas);
-        updateImages = new UpdateImages(map);
+        updateImages = new UpdateImages(map, gameTimer);
         revive = new Revive(map);
         update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive);
         

@@ -36,6 +36,7 @@ public class KillEntity implements IKillEntity {
     @Override
     public void killPlayer() {
         lives.removeLife();
+        ghostResetTimer.gameTimerReset();
         
         pacman.setDirection(direction.NONE);
         pacman.setBufferDirection(direction.NONE);
@@ -54,6 +55,7 @@ public class KillEntity implements IKillEntity {
         pinkGhost.setPos(pinkGhost.getStartX(), pinkGhost.getStartY());
         orangeGhost.setPos(orangeGhost.getStartX(), orangeGhost.getStartY());
 
+        redGhost.setState(states.CHASE);
         pinkGhost.resetState(8000L, ghostResetTimer);
         blueGhost.resetState(12000L, ghostResetTimer);
         orangeGhost.resetState(15000L, ghostResetTimer);
@@ -61,6 +63,8 @@ public class KillEntity implements IKillEntity {
         pinkGhost.setImage(pinkGhostImage);
         blueGhost.setImage(blueGhostImage);
         orangeGhost.setImage(orangeGhostImage);
+
+        
     }
 
     @Override

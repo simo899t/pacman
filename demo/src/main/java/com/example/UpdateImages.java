@@ -3,9 +3,11 @@ package com.example;
 import javafx.scene.image.Image;
 
 public class UpdateImages {
-    private IMap map;
+    private final IMap map;
+    private GameTimer loadImageTimer;
 
-    public UpdateImages(IMap map) {
+    public UpdateImages(IMap map, GameTimer loadImageTimer) {
+        this.loadImageTimer = loadImageTimer;
         this.map = map;
     }  
 
@@ -42,7 +44,29 @@ public class UpdateImages {
         }
     }
 
+    public String blinkingGhost(MoveableBlock ghost) {
 
+        String currentImage = "/com/example/images/scaredGhost.png";
+
+        System.out.println(ghost.getImage());
+        //if ghost.getImage() == 
+
+        long currentTime = System.currentTimeMillis();
+        long blinkTime = 1000L;
+        
+        loadImageTimer.addFunctionToList(
+            GameTimer.atTimeRunFunction(
+                "NextBlinkIn", currentTime, blinkTime, () -> {
+                    blinkingGhost(ghost);
+                }
+            )
+        );
+        return currentImage;
+    }
+
+    // DO A GET IMAGE TO SPECIFIC IMAGE
+    // Issue is constant recalling of the updateimage, which means the function is set to start all the time.
+    // Timer start, timer done to make it work in 
 
     public void updateImage(MoveableBlock entity) {
         // int animationImage = block.getAnimationImage();
@@ -72,7 +96,8 @@ public class UpdateImages {
                     String GhostColor = ghost.getColor().toString();
                     String GhostImage = null;
                     if (ghost.getState() == Ghost.states.FRIGHTENED) {
-                        GhostImage = "/com/example/images/scaredGhost.png";
+                        // GhostImage = "/com/example/images/"+GhostColor+"GhostUp.png";
+                        // done in eater right now.
                     } else if (ghost.getState() == Ghost.states.CHASE) {
                         switch (entity.getDirection()){
                             case UP:

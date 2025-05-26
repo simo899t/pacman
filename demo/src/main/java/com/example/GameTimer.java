@@ -58,6 +58,10 @@ public class GameTimer {
         }
     }
 
+    public void gameTimerReset(){
+        functionList = new ArrayList<>();
+    }
+
     // Example usage for delayed execution
     public static GameTask atTimeRunFunction(String name, long startTime, long wantedDuration, Runnable function) {
         return new NamedGameTask(name, startTime, new GameTask() {
