@@ -11,6 +11,8 @@ public class UpdateImages {
         this.map = map;
     }  
 
+    int pacmanAnimationStep = 0;
+    int pacmanAnimationChangeCount = 0;
     Image pacmanImageRight = new Image(getClass().getResource("/com/example/images/pacmanRight.png").toExternalForm());
     Image pacmanImageLeft = new Image(getClass().getResource("/com/example/images/pacmanLeft.png").toExternalForm());
     Image pacmanImageUp = new Image(getClass().getResource("/com/example/images/pacmanUp.png").toExternalForm());
@@ -44,51 +46,44 @@ public class UpdateImages {
         }
     }
 
-    public String blinkingGhost(MoveableBlock ghost) {
 
-        String currentImage = "/com/example/images/scaredGhost.png";
-
-        System.out.println(ghost.getImage());
-        //if ghost.getImage() == 
-
-        long currentTime = System.currentTimeMillis();
-        long blinkTime = 1000L;
-        
-        loadImageTimer.addFunctionToList(
-            GameTimer.atTimeRunFunction(
-                "NextBlinkIn", currentTime, blinkTime, () -> {
-                    blinkingGhost(ghost);
-                }
-            )
-        );
-        return currentImage;
-    }
-
-    // DO A GET IMAGE TO SPECIFIC IMAGE
-    // Issue is constant recalling of the updateimage, which means the function is set to start all the time.
-    // Timer start, timer done to make it work in 
 
     public void updateImage(MoveableBlock entity) {
         // int animationImage = block.getAnimationImage();
         // if (animationImage == 1) {
         //     animationImage = 1;
+
         switch (entity.getType()) {
             case PACMAN:
-                switch (entity.getDirection()) {
-                    case UP:
-                        entity.setImage(pacmanImageUp);
-                        break;
-                    case DOWN:
-                        entity.setImage(pacmanImageDown);
-                        break;
-                    case LEFT:
-                        entity.setImage(pacmanImageLeft);
-                        break;
-                    case RIGHT:
-                        entity.setImage(pacmanImageRight);
-                        break;
-                    default:
-                        break;
+                if (pacmanAnimationStep == 0) {
+                    switch (entity.getDirection()) {
+                        case UP:
+                            entity.setImage(pacmanImageUp);
+                            break;
+                        case DOWN:
+                            entity.setImage(pacmanImageDown);
+                            break;
+                        case LEFT:
+                            entity.setImage(pacmanImageLeft);
+                            break;
+                        case RIGHT:
+                            entity.setImage(pacmanImageRight);
+                            break;
+                        default:
+                            break;
+                    }
+                    if (pacmanAnimationChangeCount >= 8) {
+                        pacmanAnimationStep = 1;
+                        pacmanAnimationChangeCount = 0;
+                    }
+                    pacmanAnimationChangeCount++;
+                    } else {
+                        entity.setImage(pacmanImage);
+                        if (pacmanAnimationChangeCount >= 8) {
+                            pacmanAnimationStep = 0;
+                            pacmanAnimationChangeCount = 0;
+                        }
+                        pacmanAnimationChangeCount++;
                 }
             case GHOST:
                 if (entity instanceof Ghost) {

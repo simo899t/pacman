@@ -51,10 +51,11 @@ public class Eater implements IEater {
 
                     long currentTime = System.currentTimeMillis();
                     ghost.setImage(blueScaredGhost);
+                    String ghostBlinkTitle = ghost.getColor().toString() + "GhostFrightenedBlink";
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            "GhostFrightenedBlinkStart", currentTime, 3000L, () -> {
+                            ghostBlinkTitle+"Start", currentTime, 3000L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(whiteScaredGhost);
                             }
                         )
@@ -62,7 +63,7 @@ public class Eater implements IEater {
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            "GhostFrightenedBlink1", currentTime, 3500L, () -> {
+                            ghostBlinkTitle+"1", currentTime, 3500L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(blueScaredGhost);
                             }
                         )
@@ -70,7 +71,7 @@ public class Eater implements IEater {
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            "GhostFrightenedBlink2", currentTime, 4000L, () -> {
+                            ghostBlinkTitle+"2", currentTime, 4000L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(whiteScaredGhost);
                             }
                         )
@@ -78,7 +79,7 @@ public class Eater implements IEater {
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            "GhostFrightenedBlink3", currentTime, 4500L, () -> {
+                            ghostBlinkTitle+"3", currentTime, 4500L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(blueScaredGhost);
                             }
                         )
