@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCode;
 
 public class GameState{
 
-    enum State {
+    public enum State {
         NOTSTARTEDYET,
         PLAYING,
         GAME_OVER,

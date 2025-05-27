@@ -2,6 +2,11 @@ package com.example;
 
 
 public class Node {
+    private final int x;
+    private final int y;
+    private boolean isSeen;
+    private neighborDirection neighborsNodeDirection;
+    Node[] neighbourgs = new Node[4]; // up, down, left, right
 
     public enum neighborDirection {
         UP,
@@ -10,11 +15,6 @@ public class Node {
         RIGHT
     }
 
-    private final int x;
-    private final int y;
-    private boolean isSeen;
-    private neighborDirection neighborsNodeDirection;
-    Node[] neighbourgs = new Node[4]; // up, down, left, right
 
     public Node(int x, int y) {
         this.x = x;

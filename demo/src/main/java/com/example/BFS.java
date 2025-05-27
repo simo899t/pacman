@@ -35,7 +35,7 @@ public class BFS {
         for (int i = 0; i < startneighbors.length; i++) {
             if (startneighbors[i] != null) {
                 // Check if this neighbor is already Pacman
-                if (startneighbors[i] == targetNode) {
+                if (startneighbors[i].equals(targetNode)) {
                     // Found Pacman at startnode neighbors!
                     switch (i) {
                         case 0: return direction.UP;
@@ -76,7 +76,7 @@ public class BFS {
                     neighbor.setNeighborsNodeDirection(current.getNeighborsNodeDirection());
                     
                     // Check if this is Pacman
-                    if (neighbor == targetNode) {
+                    if (neighbor.equals(targetNode)) {
                         found = true;
                         return directionFromNeighborDirection(current.getNeighborsNodeDirection());
                     }
@@ -102,29 +102,4 @@ public class BFS {
         }
     }
 
-    public boolean isPacman(Node node, Node targetNode) {
-        return node.equals(targetNode);
-    }
-
-    public ArrayList<Node> validNeibours(Node node, ArrayList<Node> seenNodes) {
-        System.out.println("checking valid neighbours");
-        Node[] neighbours = node.getNeighbourgs();
-        System.out.println("Neighbours: " + neighbours.length);
-        for (Node n : neighbours) {
-            if (n != null) {
-                System.out.println(n.isSeen());
-            }
-        }
-        ArrayList<Node> validNeibours = new ArrayList<>();
-        for (int i = 0; i < neighbours.length; i++) {
-            if (neighbours[i] != null && !neighbours[i].isSeen()) {
-                neighbours[i].setSeen(true);
-                neighbours[i].setNeighborsNodeDirection(node.getNeighborsNodeDirection());
-                seenNodes.add(neighbours[i]);
-                validNeibours.add(neighbours[i]);
-            }
-        }
-        System.out.println("Valid neighbours: " + validNeibours.size());
-        return validNeibours;
-    }
 }
