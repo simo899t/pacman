@@ -5,7 +5,7 @@ import javafx.scene.input.KeyEvent;
 public class Controller implements IController {
     private final Pacman pacman;
 
-    public Controller(Pacman pacman, Ghost redGhost) {
+    public Controller(Pacman pacman) {
         this.pacman = pacman;
     }
 

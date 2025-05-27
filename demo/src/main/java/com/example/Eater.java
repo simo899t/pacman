@@ -5,18 +5,12 @@ import javafx.scene.image.Image;
 public class Eater implements IEater {
     private final IMap map;
     private final IGameScore score;
-    private final IGameLives lives;
     private final GameTimer gameTimer;
-    private final App game;
-    private final UpdateImages updateImages;
 
-    public Eater(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages) {
+    public Eater(IMap map, IGameScore score, GameTimer gameTimer) {
         this.map = map;
         this.score = score;
-        this.lives = lives;
         this.gameTimer = gameTimer;
-        this.game = game;
-        this.updateImages = updateImages;
     }
 
     private boolean tryEat(Pellet pellet, int points) {

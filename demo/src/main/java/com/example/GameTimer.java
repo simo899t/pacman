@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GameTimer {  
     // Interface for tasks that can report completion
-    private List<IGameTask> functionList = new ArrayList<>();
+    public List<IGameTask> functionList = new ArrayList<>();
 
     public void addFunctionToList(IGameTask function) {
         // Remove any existing task with the same name

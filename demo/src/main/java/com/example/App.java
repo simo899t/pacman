@@ -59,7 +59,7 @@ public class App extends Application {
         stage.centerOnScreen();
         stage.show();
 
-        controller = new Controller(map.getPacman(), map.getRedGhost());
+        controller = new Controller(map.getPacman());
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -73,12 +73,12 @@ public class App extends Application {
         draw = new Draw(map, canvas);
         updateImages = new UpdateImages(map, gameTimer);
         revive = new Revive(map);
-        eater = new Eater(map, gameScore, gameLives, gameTimer, null, updateImages);
+        eater = new Eater(map, gameScore, gameTimer);
         killEntity = new KillEntity(map, gameScore, gameLives, gameTimer);
         collision = new Collision(map);
 
-        collideHandler = new CollideHandler(map, gameScore, gameLives, gameTimer, this, updateImages, revive, eater, killEntity);
-        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive, collideHandler, collision);
+        collideHandler = new CollideHandler(gameTimer, revive, eater, killEntity);
+        update = new Update(map, collideHandler, collision);
         
 
         // Initialize gameLoop BEFORE creating GameState
