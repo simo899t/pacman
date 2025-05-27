@@ -7,15 +7,10 @@ import com.example.MoveableBlock.direction;
 
 public class RandomWalk {
     private final IGrid grid;
-    private final IMap map;
-    private final int tileSize;
     private final Random random = new Random();
-    private Ghost ghost;
 
     public RandomWalk(IMap map, IGrid grid) {
         this.grid = grid;
-        this.map = map;
-        this.tileSize = map.getTileSize();
     }
 
     public direction seach(Ghost ghost) {
