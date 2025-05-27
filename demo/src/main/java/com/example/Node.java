@@ -5,10 +5,10 @@ public class Node {
     private final int x;
     private final int y;
     private boolean isSeen;
-    private neighborDirection neighborsNodeDirection;
-    private Node[] neighbourgs = new Node[4]; // up, down, left, right
+    private neighbourDirection neighboursNodeDirection;
+    private Node[] neighbours = new Node[4]; // up, down, left, right
 
-    public enum neighborDirection {
+    public enum neighbourDirection {
         UP,
         DOWN,
         LEFT,
@@ -20,15 +20,15 @@ public class Node {
         this.x = x;
         this.y = y;
         this.isSeen = false;
-        this.neighborsNodeDirection = null; // Default direction
+        this.neighboursNodeDirection = null; // Default direction
     }
 
     public Node[] getNeighbours() {
-        return neighbourgs;
+        return neighbours;
     }
 
     public void setNeighbours(Node node, int iterator) {
-        neighbourgs[iterator] = node;
+        neighbours[iterator] = node;
     }
     
     public int getX() {
@@ -46,11 +46,11 @@ public class Node {
         return isSeen;
     }
 
-    public void setNeighboursNodeDirection(neighborDirection direction) {
-        this.neighborsNodeDirection = direction;
+    public void setNeighboursNodeDirection(neighbourDirection direction) {
+        this.neighboursNodeDirection = direction;
     }
 
-    public neighborDirection getNeighboursNodeDirection() {
-        return neighborsNodeDirection;
+    public neighbourDirection getNeighboursNodeDirection() {
+        return neighboursNodeDirection;
     }
 }

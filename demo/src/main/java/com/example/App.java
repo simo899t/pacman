@@ -17,6 +17,7 @@ public class App extends Application {
     private IGameScore gameScore;
     private Revive revive;
     private IMap map;
+    private IGrid grid;
     private IController controller;
     private IDraw draw; 
     private IUpdate update;
@@ -44,7 +45,7 @@ public class App extends Application {
         // Load the map
         gameTimer = new GameTimer();
         map = new Map(gameTimer);
-        IGrid grid = new Grid(map);
+        grid = new Grid(map);
 
         // Define the dimensions of the game with current map
         int tileSize = map.getTileSize();
@@ -100,8 +101,8 @@ public class App extends Application {
                 update.updateGame(map);
                 updateImages.updateAllImages();
                 gameState.updateGameState();
-                ui.scoreLabel.setText("SCORE: " + gameScore.getScore());
-                ui.livesLabel.setText("LIVES: " + gameLives.getLives());
+                ui.setScoreLabelText("SCORE: " + gameScore.getScore());
+                ui.setLivesLabelText("LIVES: " + gameLives.getLives());
                 
 
                 if (gameState.getGameState() == GameState.State.PLAYING) {
