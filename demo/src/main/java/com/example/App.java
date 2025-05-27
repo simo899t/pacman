@@ -98,7 +98,7 @@ public class App extends Application {
                 
 
                 if (gameState.getGameState() == GameState.State.PLAYING) {
-                    gameTimer.runFunctionList(gameTimer.functionList);
+                    gameTimer.runFunctionList(gameTimer.getFunctionList());
                 }
 
                 long diff = System.currentTimeMillis() - startOfLoopTime;

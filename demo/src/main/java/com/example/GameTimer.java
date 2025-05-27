@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GameTimer {  
     // Interface for tasks that can report completion
-    public List<IGameTask> functionList = new ArrayList<>();
+    private List<IGameTask> functionList = new ArrayList<>();
 
     public void addFunctionToList(IGameTask function) {
         // Remove any existing task with the same name
@@ -24,33 +24,18 @@ public class GameTimer {
         }
     }
 
+    public List<IGameTask> getFunctionList() {
+        return functionList;
+    }
+
     public void gameTimerReset(){
         functionList = new ArrayList<>();
     }
 
     // Example usage for delayed execution
+    // Example usage for delayed execution
     public static IGameTask atTimeRunFunction(String name, long startTime, long wantedDuration, Runnable function) {
-        return new IGameTask() {
-            @Override
-            public boolean run() {
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - startTime >= wantedDuration) {
-                    function.run();
-                    return true; // Done, remove from list
-                }
-                return false; // Not done, keep in list
-            }
-
-            @Override
-            public String getName() {
-                return name;
-            }
-
-            @Override
-            public long getStartTime() {
-                return startTime;
-            }
-        };
+        return new GameTask(name, startTime, wantedDuration, function);
     }
 }
 
