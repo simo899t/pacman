@@ -4,9 +4,10 @@ package com.example;
 public class Node {
     private final int x;
     private final int y;
+    private final Node[] neighbours = new Node[4]; // up, down, left, right
     private boolean isSeen;
     private neighbourDirection neighboursNodeDirection;
-    private Node[] neighbours = new Node[4]; // up, down, left, right
+
 
     public enum neighbourDirection {
         UP,
