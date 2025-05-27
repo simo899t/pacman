@@ -1,12 +1,11 @@
 package com.example;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class GameTimer {
+public class GameTimer {  
     // Interface for tasks that can report completion
-    public List<IGameTask> functionList = new ArrayList<>();
+    private List<IGameTask> functionList = new ArrayList<>();
 
     public void addFunctionToList(IGameTask function) {
         // Remove any existing task with the same name

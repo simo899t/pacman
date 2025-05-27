@@ -13,7 +13,7 @@ public class RandomWalk {
         this.grid = grid;
     }
 
-    public direction seach(Ghost ghost) {
+    public direction search(Ghost ghost) {
         // Convert pixel coordinates to grid coordinates
         int col = grid.toCol(ghost.getX());
         int row = grid.toRow(ghost.getY());

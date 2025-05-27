@@ -8,16 +8,13 @@ public class Update implements IUpdate {
     private final int tileSize;
     private final Collision collision;
     private final ICollideHandler collideHandler;
-    private final GameTimer gameTimer;
-    private final UpdateImages updateImages;
+
 
     public Update(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages, Revive revive, ICollideHandler collideHandler, Collision collision) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
         this.move = new Move();
         this.collision = collision;
-        this.gameTimer = gameTimer;
-        this.updateImages = updateImages;
         this.collideHandler = collideHandler;
   
     }

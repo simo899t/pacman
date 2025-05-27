@@ -53,7 +53,7 @@ public class GhostMovementPathfinding {
 
     private void RandomWalkDirectGhost(Ghost ghost) {
         if (ghost.getX() % map.getTileSize() == 0 && ghost.getY() % map.getTileSize() == 0) {
-            direction newDirection = randomWalk.seach(ghost);
+            direction newDirection = randomWalk.search(ghost);
             ghost.setDirection(newDirection);
         }
     }

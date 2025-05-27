@@ -6,8 +6,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
@@ -28,14 +26,8 @@ public class App extends Application {
     private Collision collision;
     private IEater eater;
     private IKillEntity killEntity;
-    
-    private Label startText;
-    private Label gameOverText;
-    private Label restartText;
-    private Label winText;
     private Scene scene;
     private GameTimer gameTimer;
-    private ImageView logoImageView;
 
     @Override
     public void start(Stage stage) {
