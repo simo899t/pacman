@@ -3,12 +3,17 @@ package com.example;
 import javafx.scene.image.Image;
 
 public class UpdateImages {
-    private IMap map;
+    private final IMap map;
+    private GameTimer loadImageTimer;
 
-    public UpdateImages(IMap map) {
+    public UpdateImages(IMap map, GameTimer loadImageTimer) {
+        this.loadImageTimer = loadImageTimer;
         this.map = map;
     }  
 
+    int pacmanAnimationStep = 0;
+    int pacmanAnimationChangeCount = 0;
+    int pacmanMouthSpeed = 8;
     Image pacmanImageRight = new Image(getClass().getResource("/com/example/images/pacmanRight.png").toExternalForm());
     Image pacmanImageLeft = new Image(getClass().getResource("/com/example/images/pacmanLeft.png").toExternalForm());
     Image pacmanImageUp = new Image(getClass().getResource("/com/example/images/pacmanUp.png").toExternalForm());
@@ -48,23 +53,38 @@ public class UpdateImages {
         // int animationImage = block.getAnimationImage();
         // if (animationImage == 1) {
         //     animationImage = 1;
+
         switch (entity.getType()) {
             case PACMAN:
-                switch (entity.getDirection()) {
-                    case UP:
-                        entity.setImage(pacmanImageUp);
-                        break;
-                    case DOWN:
-                        entity.setImage(pacmanImageDown);
-                        break;
-                    case LEFT:
-                        entity.setImage(pacmanImageLeft);
-                        break;
-                    case RIGHT:
-                        entity.setImage(pacmanImageRight);
-                        break;
-                    default:
-                        break;
+                if (pacmanAnimationStep == 0) {
+                    switch (entity.getDirection()) {
+                        case UP:
+                            entity.setImage(pacmanImageUp);
+                            break;
+                        case DOWN:
+                            entity.setImage(pacmanImageDown);
+                            break;
+                        case LEFT:
+                            entity.setImage(pacmanImageLeft);
+                            break;
+                        case RIGHT:
+                            entity.setImage(pacmanImageRight);
+                            break;
+                        default:
+                            break;
+                    }
+                    if (pacmanAnimationChangeCount >= pacmanMouthSpeed) {
+                        pacmanAnimationStep = 1;
+                        pacmanAnimationChangeCount = 0;
+                    }
+                    pacmanAnimationChangeCount++;
+                    } else {
+                        entity.setImage(pacmanImage);
+                        if (pacmanAnimationChangeCount >= pacmanMouthSpeed) {
+                            pacmanAnimationStep = 0;
+                            pacmanAnimationChangeCount = 0;
+                        }
+                        pacmanAnimationChangeCount++;
                 }
             case GHOST:
                 if (entity instanceof Ghost) {
@@ -72,7 +92,8 @@ public class UpdateImages {
                     String GhostColor = ghost.getColor().toString();
                     String GhostImage = null;
                     if (ghost.getState() == Ghost.states.FRIGHTENED) {
-                        GhostImage = "/com/example/images/scaredGhost.png";
+                        // GhostImage = "/com/example/images/"+GhostColor+"GhostUp.png";
+                        // done in eater right now.
                     } else if (ghost.getState() == Ghost.states.CHASE) {
                         switch (entity.getDirection()){
                             case UP:
@@ -109,7 +130,9 @@ public class UpdateImages {
                                 GhostImage = "/com/example/images/deadGhostRight.png";
                                 break;
                         }
-                    } 
+                    } else if (ghost.getState() == Ghost.states.STILL) {
+                        GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
+                    }
                     if (GhostImage != null) {
                         Image updatedGhost = new Image(getClass().getResource(GhostImage).toExternalForm());
                         entity.setImage(updatedGhost);

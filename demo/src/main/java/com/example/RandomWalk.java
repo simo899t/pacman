@@ -1,8 +1,9 @@
 package com.example;
 
-import com.example.MoveableBlock.direction;
 import java.util.ArrayList;
 import java.util.Random;
+
+import com.example.MoveableBlock.direction;
 
 public class RandomWalk {
     Ghost ghost;
@@ -19,8 +20,8 @@ public class RandomWalk {
 
     public direction seach(Ghost ghost) {
         // Convert pixel coordinates to grid coordinates
-        int col = ghost.getX() / tileSize;
-        int row = ghost.getY() / tileSize;
+        int col = grid.toCol(ghost.getX());
+        int row = grid.toRow(ghost.getY());
         
         Node currentNode = grid.getNode(col, row);
         if (currentNode == null) {

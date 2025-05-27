@@ -3,7 +3,13 @@ package com.example;
 import com.example.Ghost.states;
 import com.example.MoveableBlock.direction;
 
+import javafx.scene.image.Image;
+
 public class KillEntity implements IKillEntity {
+
+    Image blueGhostImage = new Image(getClass().getResource("/com/example/images/blueGhostRight.png").toExternalForm());
+    Image pinkGhostImage = new Image(getClass().getResource("/com/example/images/pinkGhostRight.png").toExternalForm());
+    Image orangeGhostImage = new Image(getClass().getResource("/com/example/images/orangeGhostRight.png").toExternalForm());
 
     private final IMap map;
     private final IGameScore score;
@@ -13,11 +19,13 @@ public class KillEntity implements IKillEntity {
     private final Ghost blueGhost;
     private final Ghost pinkGhost;
     private final Ghost orangeGhost;
+    private final GameTimer ghostResetTimer;
 
-    public KillEntity(IMap map, IGameScore score, IGameLives lives) {
+    public KillEntity(IMap map, IGameScore score, IGameLives lives, GameTimer ghostResetTimer) {
         this.map = map;
         this.score = score;
         this.lives = lives;
+        this.ghostResetTimer = ghostResetTimer;
         this.pacman = map.getPacman();
         this.redGhost = map.getRedGhost();
         this.blueGhost = map.getBlueGhost();
@@ -28,6 +36,7 @@ public class KillEntity implements IKillEntity {
     @Override
     public void killPlayer() {
         lives.removeLife();
+        ghostResetTimer.gameTimerReset();
         
         pacman.setDirection(direction.NONE);
         pacman.setBufferDirection(direction.NONE);
@@ -45,6 +54,17 @@ public class KillEntity implements IKillEntity {
         blueGhost.setPos(blueGhost.getStartX(), blueGhost.getStartY());
         pinkGhost.setPos(pinkGhost.getStartX(), pinkGhost.getStartY());
         orangeGhost.setPos(orangeGhost.getStartX(), orangeGhost.getStartY());
+
+        redGhost.setState(states.CHASE);
+        pinkGhost.resetState(8000L, ghostResetTimer);
+        blueGhost.resetState(12000L, ghostResetTimer);
+        orangeGhost.resetState(15000L, ghostResetTimer);
+        
+        pinkGhost.setImage(pinkGhostImage);
+        blueGhost.setImage(blueGhostImage);
+        orangeGhost.setImage(orangeGhostImage);
+
+        
     }
 
     @Override

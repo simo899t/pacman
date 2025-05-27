@@ -3,23 +3,12 @@ package com.example;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -34,6 +23,10 @@ public class App extends Application {
     private UpdateImages updateImages;
     private GameState gameState;
     private AnimationTimer gameLoop;
+    private ICollideHandler collideHandler;
+    private Collision collision;
+    private IEater eater;
+    private IKillEntity killEntity;
     
     private Label startText;
     private Label gameOverText;
@@ -49,7 +42,8 @@ public class App extends Application {
         stage.setResizable(false);
 
         // Load the map
-        map = new Map();
+        gameTimer = new GameTimer();
+        map = new Map(gameTimer);
         IGrid grid = new Grid(map);
 
         // Define the dimensions of the game with current map
@@ -84,15 +78,23 @@ public class App extends Application {
         gameLives = new GameLives();
         gameScore = new GameScore();
         draw = new Draw(map, canvas);
-        gameTimer = new GameTimer();
-        updateImages = new UpdateImages(map);
+        updateImages = new UpdateImages(map, gameTimer);
         revive = new Revive(map);
-        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive);
+        eater = new Eater(map, gameScore, gameLives, gameTimer, null, updateImages);
+        killEntity = new KillEntity(map, gameScore, gameLives, gameTimer);
+        collision = new Collision(map);
+
+        collideHandler = new CollideHandler(map, gameScore, gameLives, gameTimer, this, updateImages, revive, eater, killEntity);
+        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive, collideHandler, collision);
         
+
         // Initialize gameLoop BEFORE creating GameState
         gameLoop = new AnimationTimer() {
+
             @Override
             public void handle(long now) {
+                long startOfLoopTime = System.currentTimeMillis();
+                
                 draw.drawAllBlocks();
                 ghostMovementPathfinding.directAllGhosts();
                 update.updateGame(map);
@@ -101,8 +103,21 @@ public class App extends Application {
                 ui.scoreLabel.setText("SCORE: " + gameScore.getScore());
                 ui.livesLabel.setText("LIVES: " + gameLives.getLives());
                 
-                gameTimer.runFunctionList(gameTimer.functionList);
+
+                if (gameState.getGameState() == GameState.State.PLAYING) {
+                    gameTimer.runFunctionList(gameTimer.functionList);
+                }
+
+                long diff = System.currentTimeMillis() - startOfLoopTime;
+                if (diff < 800 / 60) {
+                    try {
+                        Thread.sleep(800 / 60 - diff);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+
         };
         
         // Create GameState instance
