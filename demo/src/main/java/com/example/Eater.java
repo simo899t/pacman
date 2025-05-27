@@ -9,8 +9,7 @@ public class Eater implements IEater {
     private final GameTimer gameTimer;
     private final App game;
     private final UpdateImages updateImages;
-    private Block pellet;
-    
+
     public Eater(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages) {
         this.map = map;
         this.score = score;
@@ -102,6 +101,7 @@ public class Eater implements IEater {
     /* 
      * This method is called when Pacman eats a ghost. It checks if the ghost is in the frightened state and if so, it sets it to eaten state.
      */
+    @Override
     public void eatGhost(Pellet ghost) {
         tryEat(ghost, ghost.getPoints());
     }

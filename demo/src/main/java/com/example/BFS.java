@@ -19,7 +19,7 @@ public class BFS {
         // Reset all nodes for a clean search
         for (Node node : grid.getAllNodes()) {
             node.setSeen(false);
-            node.setNeighborsNodeDirection(null);
+            node.setNeighboursNodeDirection(null);
         }
         
         ArrayList<Node> queue = new ArrayList<>();
@@ -31,7 +31,7 @@ public class BFS {
         seenNodes.add(startNode);
         
         // Add initial neighbors with directions
-        Node[] startneighbors = startNode.getNeighbourgs();
+        Node[] startneighbors = startNode.getNeighbours();
         for (int i = 0; i < startneighbors.length; i++) {
             if (startneighbors[i] != null) {
                 // Check if this neighbor is already Pacman
@@ -52,10 +52,10 @@ public class BFS {
                 
                 // Set direction based on index
                 switch (i) {
-                    case 0: startneighbors[i].setNeighborsNodeDirection(neighborDirection.UP); break;
-                    case 1: startneighbors[i].setNeighborsNodeDirection(neighborDirection.DOWN); break;
-                    case 2: startneighbors[i].setNeighborsNodeDirection(neighborDirection.LEFT); break;
-                    case 3: startneighbors[i].setNeighborsNodeDirection(neighborDirection.RIGHT); break;
+                    case 0: startneighbors[i].setNeighboursNodeDirection(neighborDirection.UP); break;
+                    case 1: startneighbors[i].setNeighboursNodeDirection(neighborDirection.DOWN); break;
+                    case 2: startneighbors[i].setNeighboursNodeDirection(neighborDirection.LEFT); break;
+                    case 3: startneighbors[i].setNeighboursNodeDirection(neighborDirection.RIGHT); break;
                 }
             }
         }
@@ -65,7 +65,7 @@ public class BFS {
             Node current = queue.remove(0);
             
             // Check all neighbors of current node
-            Node[] neighbors = current.getNeighbourgs();
+            Node[] neighbors = current.getNeighbours();
             for (int i = 0; i < neighbors.length; i++) {
                 Node neighbor = neighbors[i];
                 if (neighbor != null && !neighbor.isSeen()) {
@@ -73,12 +73,12 @@ public class BFS {
                     seenNodes.add(neighbor);
                     
                     // Inherit direction from current node
-                    neighbor.setNeighborsNodeDirection(current.getNeighborsNodeDirection());
+                    neighbor.setNeighboursNodeDirection(current.getNeighboursNodeDirection());
                     
                     // Check if this is Pacman
                     if (neighbor.equals(targetNode)) {
                         found = true;
-                        return directionFromNeighborDirection(current.getNeighborsNodeDirection());
+                        return directionFromNeighborDirection(current.getNeighboursNodeDirection());
                     }
                     
                     // Add to queue for processing

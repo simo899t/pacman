@@ -1,7 +1,7 @@
 package com.example;
 
 public class Revive {
-    IMap map;
+    private final IMap map;
 
     Revive(IMap map) {
         this.map = map;

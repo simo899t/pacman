@@ -47,27 +47,27 @@ public class Grid implements IGrid {
     public void connectNodeNeighbors(Node node, int col, int row) {
         // Check all four directions
         if (getNode(col, row - 1) != null) {
-            node.neighbourgs[0] = getNode(col, row - 1); // UP
+            node.setNeighbours(getNode(col, row - 1),0); // UP
         } else {
-            node.neighbourgs[0] = null;
+            node.setNeighbours(null, 0);
         }
         
         if (getNode(col, row + 1) != null) {
-            node.neighbourgs[1] = getNode(col, row + 1); // DOWN
+            node.setNeighbours(getNode(col, row + 1), 1);
         } else {
-            node.neighbourgs[1] = null;
+            node.setNeighbours(null, 1);
         }
         
         if (getNode(col - 1, row) != null) {
-            node.neighbourgs[2] = getNode(col - 1, row); // LEFT
+            node.setNeighbours(getNode(col - 1, row), 2);
         } else {
-            node.neighbourgs[2] = null;
+            node.setNeighbours(null, 2);
         }
         
         if (getNode(col + 1, row) != null) {
-            node.neighbourgs[3] = getNode(col + 1, row); // RIGHT
+            node.setNeighbours(getNode(col + 1, row), 3);
         } else {
-            node.neighbourgs[3] = null;
+            node.setNeighbours(null, 3);
         }
     }
 

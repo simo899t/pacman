@@ -17,19 +17,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class UI {
-    public Label scoreLabel;
-    public Label livesLabel;
+    private Label scoreLabel;
+    private Label livesLabel;
     private Label startText;
     private Label gameOverText;
     private Label restartText;
     private Label winText;
     private Label nextLevelText;
     private ImageView logoImageView;
-    private HBox scorePanel;
-    private VBox root;
-    private int canvasWidth;
-    private int canvasHeight;
-    private Group canvasContainer;
+    private final HBox scorePanel;
+    private final VBox root;
+    private final int canvasWidth;
+    private final int canvasHeight;
+    private final Group canvasContainer;
 
     public UI(Group canvasContainer, int canvasWidth, int canvasHeight) {
         this.root = new VBox();

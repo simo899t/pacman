@@ -6,7 +6,7 @@ public class Node {
     private final int y;
     private boolean isSeen;
     private neighborDirection neighborsNodeDirection;
-    Node[] neighbourgs = new Node[4]; // up, down, left, right
+    private Node[] neighbourgs = new Node[4]; // up, down, left, right
 
     public enum neighborDirection {
         UP,
@@ -23,8 +23,12 @@ public class Node {
         this.neighborsNodeDirection = null; // Default direction
     }
 
-    public Node[] getNeighbourgs() {
+    public Node[] getNeighbours() {
         return neighbourgs;
+    }
+
+    public void setNeighbours(Node node, int iterator) {
+        neighbourgs[iterator] = node;
     }
     
     public int getX() {
@@ -42,11 +46,11 @@ public class Node {
         return isSeen;
     }
 
-    public void setNeighborsNodeDirection(neighborDirection direction) {
+    public void setNeighboursNodeDirection(neighborDirection direction) {
         this.neighborsNodeDirection = direction;
     }
 
-    public neighborDirection getNeighborsNodeDirection() {
+    public neighborDirection getNeighboursNodeDirection() {
         return neighborsNodeDirection;
     }
 }
