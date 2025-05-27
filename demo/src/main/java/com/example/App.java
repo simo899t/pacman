@@ -100,8 +100,8 @@ public class App extends Application {
                 update.updateGame(map);
                 updateImages.updateAllImages();
                 gameState.updateGameState();
-                ui.scoreLabel.setText("SCORE: " + gameScore.getScore());
-                ui.livesLabel.setText("LIVES: " + gameLives.getLives());
+                ui.setScoreLabelText("SCORE: " + gameScore.getScore());
+                ui.setLivesLabelText("LIVES: " + gameLives.getLives());
                 
 
                 if (gameState.getGameState() == GameState.State.PLAYING) {

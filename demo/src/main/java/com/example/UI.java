@@ -57,9 +57,20 @@ public class UI {
     public Label getNextLevelText() {
         return nextLevelText;
     }
+    public void setScoreLabelText(String text) {
+        if (scoreLabel != null) {
+            scoreLabel.setText(text);
+        }
+    }
+    public void setLivesLabelText(String text) {
+        if (livesLabel != null) {
+            livesLabel.setText(text);
+        }        
+    }
     public ImageView getLogoImageView() {
         return logoImageView;
     }
+
 
     public void loadPanels() {
         root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));

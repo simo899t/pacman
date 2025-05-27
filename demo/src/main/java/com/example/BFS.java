@@ -3,7 +3,7 @@ package com.example;
 import java.util.ArrayList;
 
 import com.example.MoveableBlock.direction;
-import com.example.Node.neighborDirection;
+import com.example.Node.neighbourDirection;
 
 public class BFS {
     private final IGrid grid;
@@ -52,10 +52,10 @@ public class BFS {
                 
                 // Set direction based on index
                 switch (i) {
-                    case 0: startneighbors[i].setNeighboursNodeDirection(neighborDirection.UP); break;
-                    case 1: startneighbors[i].setNeighboursNodeDirection(neighborDirection.DOWN); break;
-                    case 2: startneighbors[i].setNeighboursNodeDirection(neighborDirection.LEFT); break;
-                    case 3: startneighbors[i].setNeighboursNodeDirection(neighborDirection.RIGHT); break;
+                    case 0: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.UP); break;
+                    case 1: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.DOWN); break;
+                    case 2: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.LEFT); break;
+                    case 3: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.RIGHT); break;
                 }
             }
         }
@@ -92,8 +92,8 @@ public class BFS {
         return direction.NONE;
     }
 
-    private direction directionFromNeighborDirection(neighborDirection nd) {
-        switch (nd) {
+    private direction directionFromNeighborDirection(neighbourDirection neighbourDirection) {
+        switch (neighbourDirection) {
             case UP: return direction.UP;
             case DOWN: return direction.DOWN;
             case LEFT: return direction.LEFT;
