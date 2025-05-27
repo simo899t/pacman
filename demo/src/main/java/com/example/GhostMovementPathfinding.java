@@ -4,23 +4,13 @@ import com.example.MoveableBlock.direction;
 
 public class GhostMovementPathfinding {
     private final IMap map;
-    private final IGrid grid;
-    private final Ghost redGhost;
-    private final Ghost blueGhost;
-    private final Ghost pinkGhost;
-    private final Ghost orangeGhost;
     private final RandomWalk randomWalk;
     private final BFS bfs;
 
     GhostMovementPathfinding(IMap map, IGrid grid) {
         this.map = map;
-        this.grid = grid;
         this.randomWalk = new RandomWalk(map, grid); // Initialize here after map is set
         this.bfs = new BFS(grid); // Initialize here after map is set
-        this.redGhost = map.getRedGhost();
-        this.blueGhost = map.getBlueGhost();
-        this.pinkGhost = map.getPinkGhost();
-        this.orangeGhost = map.getOrangeGhost();
     }
 
     public void directAllGhosts() {
