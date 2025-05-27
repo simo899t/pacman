@@ -1,8 +1,5 @@
 package com.example;
 
-import com.example.Ghost.states;
-
-
 public class Move {
 
     public void move(MoveableBlock entity) {

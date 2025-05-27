@@ -40,7 +40,7 @@ public class Ghost extends MoveableBlock implements Eatable {
         switch (state) {
             case CHASE:
                 // set ghost to normal speed
-                this.setStepSize(2);
+                this.setStepSize(1);
                 break;
             case FRIGHTENED:
                 // set ghost to slow speed
@@ -50,7 +50,7 @@ public class Ghost extends MoveableBlock implements Eatable {
                 // set the ghost to the correct position to avoid skipping
                 this.setPos(this.getX() - this.getX()%2 , this.getY() - this.getY()%2);
                 // set ghost to normal speed
-                this.setStepSize(2);
+                this.setStepSize(1);
                 break;
             default:
                 break;

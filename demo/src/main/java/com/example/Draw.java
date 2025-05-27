@@ -1,7 +1,6 @@
 package com.example;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 
 public class Draw implements IDraw {
 

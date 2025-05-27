@@ -43,7 +43,7 @@ public class GhostMovementPathfinding {
             if (ghost.getColor() == Ghost.color.RED || ghost.getColor() == Ghost.color.ORANGE) {
                 BFSDirectGhost(ghost, pacman);
             } else if (ghost.getColor() == Ghost.color.BLUE || ghost.getColor() == Ghost.color.PINK) {
-                badSearchDirectGhost(ghost, pacman);
+                RandomWalkDirectGhost(ghost);
             }
         } else if (ghost.getState() == Ghost.states.FRIGHTENED) {
             RandomWalkDirectGhost(ghost);

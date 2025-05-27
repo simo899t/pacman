@@ -86,7 +86,7 @@ public class UI {
     }
 
     public void loadLogo() {
-        Image logoImage = new Image(getClass().getResource("/com/example/images/logo.png").toExternalForm());
+        Image logoImage = new Image(getClass().getResource("/com/example/images/logo2.png").toExternalForm());
         logoImageView = new ImageView(logoImage);
         
         // Set image size (adjust as needed)

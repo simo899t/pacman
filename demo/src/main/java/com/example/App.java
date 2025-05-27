@@ -100,7 +100,7 @@ public class App extends Application {
                 gameState.updateGameState();
                 ui.scoreLabel.setText("SCORE: " + gameScore.getScore());
                 ui.livesLabel.setText("LIVES: " + gameLives.getLives());
-                 
+                
                 gameTimer.runFunctionList(gameTimer.functionList);
             }
         };

@@ -11,9 +11,10 @@ public class Map implements IMap {
     private Ghost pinkGhost;
     private Ghost orangeGhost;
     private Block ghostHome;
-    private int tileSize = 32; // each tile is 32 pixels wide
+    private final int tileSize = 32; // each tile is 32 pixels wide
     private int pelletCount = 0;
     private int pelletsLeft;
+    private ArrayList<Block> allBlocks = new ArrayList<>();
 
     String[] map = new String[] {
         "XXXXXXXXXXXXXXXXXXX",
@@ -43,7 +44,6 @@ public class Map implements IMap {
     int columnCount = map[0].length(); // Gameboard is 19 columns
     
     public Map() {
-        allBlocks = new ArrayList<>();
         loadAllBlocks(map);
     }
 
@@ -255,8 +255,6 @@ public class Map implements IMap {
         }
         resetPelletsLeft();
     }
-
-    private ArrayList<Block> allBlocks;
 
     public ArrayList<Block> getAllBlocks() {
         return allBlocks;
