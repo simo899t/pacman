@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCode;
 
 public class GameState{
 
-    public enum State {
+    enum State {
         NOTSTARTEDYET,
         PLAYING,
         GAME_OVER,
@@ -16,17 +16,17 @@ public class GameState{
     }
 
     private State gameState;
-    private AnimationTimer gameLoop;
-    private IGameLives gameLives;
-    private IGameScore gameScore;
-    private IMap map;
-    private Label gameOverText;
-    private Label restartText;
-    private Label winText;
-    private Label startText;
-    private Label nextLevelText;
-    private IController controller;
-    private Scene scene;
+    private final AnimationTimer gameLoop;
+    private final IGameLives gameLives;
+    private final IGameScore gameScore;
+    private final IMap map;
+    private final Label gameOverText;
+    private final Label restartText;
+    private final Label winText;
+    private final Label startText;
+    private final Label nextLevelText;
+    private final IController controller;
+    private final Scene scene;
 
     public GameState(AnimationTimer gameLoop, IGameLives gameLives, IGameScore gameScore, IMap map, 
                 Label gameOverText, Label restartText, Label winText, Label startText, Label nextLevelText,

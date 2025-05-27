@@ -3,7 +3,7 @@ package com.example;
 import javafx.scene.input.KeyEvent;
 
 public class Controller implements IController {
-    Pacman pacman;
+    private final Pacman pacman;
 
     public Controller(Pacman pacman, Ghost redGhost) {
         this.pacman = pacman;

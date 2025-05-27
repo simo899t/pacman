@@ -3,15 +3,14 @@ package com.example;
 import com.example.MoveableBlock.direction;
 
 public class GhostMovementPathfinding {
-    public IMap map;
-    public IGrid grid;
-    public Revive revive;
-    public Ghost redGhost;
-    public Ghost blueGhost;
-    public Ghost pinkGhost;
-    public Ghost orangeGhost;
-    public RandomWalk randomWalk;
-    public BFS bfs;
+    private final IMap map;
+    private final IGrid grid;
+    private final Ghost redGhost;
+    private final Ghost blueGhost;
+    private final Ghost pinkGhost;
+    private final Ghost orangeGhost;
+    private final RandomWalk randomWalk;
+    private final BFS bfs;
 
     GhostMovementPathfinding(IMap map, IGrid grid) {
         this.map = map;
@@ -37,17 +36,22 @@ public class GhostMovementPathfinding {
 
     private void directGhost(Block entity, Pacman pacman, Block ghostHome) {
         Ghost ghost = (Ghost) entity;
-        if (ghost.getState() == Ghost.states.CHASE) {
-            if (ghost.getColor() == Ghost.color.RED || ghost.getColor() == Ghost.color.ORANGE) {
-                BFSDirectGhost(ghost, pacman);
-            } else if (ghost.getColor() == Ghost.color.BLUE || ghost.getColor() == Ghost.color.PINK) {
-                BFSDirectGhost(ghost, pacman);
-                //RandomWalkDirectGhost(ghost);
-            }
-        } else if (ghost.getState() == Ghost.states.FRIGHTENED) {
-            RandomWalkDirectGhost(ghost);
-        } else if (ghost.getState() == Ghost.states.EATEN) {
-            BFSDirectGhost(ghost, ghostHome);
+        if (null != ghost.getState()) switch (ghost.getState()) {
+            case CHASE:
+                if (ghost.getColor() == Ghost.color.RED || ghost.getColor() == Ghost.color.ORANGE) {
+                    BFSDirectGhost(ghost, pacman);
+                } else if (ghost.getColor() == Ghost.color.BLUE || ghost.getColor() == Ghost.color.PINK) {
+                    BFSDirectGhost(ghost, pacman);
+                    //RandomWalkDirectGhost(ghost);
+                }   break;
+            case FRIGHTENED:
+                RandomWalkDirectGhost(ghost);
+                break;
+            case EATEN:
+                BFSDirectGhost(ghost, ghostHome);
+                break;
+            default:
+                break;
         }
     }
 

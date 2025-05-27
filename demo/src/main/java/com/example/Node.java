@@ -10,11 +10,11 @@ public class Node {
         RIGHT
     }
 
-    int x;
-    int y;
+    private final int x;
+    private final int y;
+    private boolean isSeen;
+    private neighborDirection neighborsNodeDirection;
     Node[] neighbourgs = new Node[4]; // up, down, left, right
-    boolean isSeen;
-    neighborDirection neighborsNodeDirection;
 
     public Node(int x, int y) {
         this.x = x;

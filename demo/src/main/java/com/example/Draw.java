@@ -1,12 +1,10 @@
 package com.example;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 
 public class Draw implements IDraw {
-
-    private IMap map;
-    private Canvas canvas;
+    private final IMap map;
+    private final Canvas canvas;
 
     public Draw(IMap map, Canvas canvas) {
         this.canvas = canvas;
