@@ -10,7 +10,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class App extends Application {
-
     private IGameLives gameLives;
     private IGameScore gameScore;
     private Revive revive;

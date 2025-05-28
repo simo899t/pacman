@@ -6,5 +6,4 @@ public interface ICollideHandler{
     public void bigPelletCollision(Pellet pellet);
     public void doorCollision(Door door);
     public void homeCollision(Ghost ghost);
-    public void teleporterCollision(Pacman pacman);
 }

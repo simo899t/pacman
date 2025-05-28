@@ -60,10 +60,6 @@ public class CollideHandler implements ICollideHandler {
     }
 
 
-    @Override
-    public void teleporterCollision(Pacman pacman) {
-    }
-
     
     
 

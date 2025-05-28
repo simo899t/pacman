@@ -58,21 +58,16 @@ public class Update implements IUpdate {
                     case GHOST:
                         collideHandler.ghostCollision((Ghost) block);
                         break;
-                    case FRUIT:
-                        // collideHandler.fruitCollision(entity, block);
-                        break;
                     case TELEPORTER: // this could be a method by itself, but need nextblock
                         for (Block otherTeleporter : map.getAllBlocks()) {
                             if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
                                 Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
                                 if (nextToTeleporter != null) {
                                     entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
-                                    // System.out.println("Pacman teleported to another teleporter");
                                     break;
                                 }
                             }
                         }
-                        break;
                     default:
                         break;
                 }
@@ -92,12 +87,10 @@ public class Update implements IUpdate {
                                 Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
                                 if (nextToTeleporter != null) {
                                     entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
-                                    // System.out.println("Ghost teleported to another teleporter");
                                     break;
                                 }
                             }
                         }
-                        break;
                     default:
                         break;    
                 }

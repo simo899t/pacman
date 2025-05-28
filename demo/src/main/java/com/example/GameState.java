@@ -51,7 +51,10 @@ public class GameState{
         
         // Set up initial key press detection for game start
         scene.setOnKeyPressed(event -> {
-            if (gameState == mode.NOTSTARTEDYET) {
+        
+            if (gameState == mode.NOTSTARTEDYET
+                && event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN
+                || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
                 startText.setVisible(false);
                 logoImageView.setVisible(false);
                 controller.keyPressed(event);
