@@ -15,10 +15,10 @@ enum BlockType {
 }
 
 public class Block {
-    protected int x;
-    protected int y;
-    protected BlockType type;
-    protected Image image;
+    private int x;
+    private int y;
+    private BlockType type;
+    private Image image;
 
     public Block(Image image, int x, int y) {
         this.image = image;

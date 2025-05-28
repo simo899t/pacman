@@ -1,7 +1,8 @@
 package com.example;
 
-public interface Eatable {
+public interface IEatableBehavior {
     boolean isEaten();
     void setEaten(boolean eaten);
+    void setPoints(int points);
     int getPoints();
 }

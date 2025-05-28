@@ -8,14 +8,14 @@ import javafx.scene.input.KeyCode;
 
 public class GameState{
 
-    public enum State {
+    public enum mode {
         NOTSTARTEDYET,
         PLAYING,
         GAME_OVER,
         WIN
     }
 
-    private State gameState;
+    private mode gameState;
     private final AnimationTimer gameLoop;
     private final IGameLives gameLives;
     private final IGameScore gameScore;
@@ -33,7 +33,7 @@ public class GameState{
                 ImageView logoImageView, IController controller, Scene scene) {
 
         this.map = map;
-        this.gameState = State.NOTSTARTEDYET;
+        this.gameState = mode.NOTSTARTEDYET;
         this.gameLoop = gameLoop;
         this.gameLives = gameLives;
         this.gameScore = gameScore;
@@ -51,26 +51,27 @@ public class GameState{
         
         // Set up initial key press detection for game start
         scene.setOnKeyPressed(event -> {
-            if (gameState == State.NOTSTARTEDYET) {
+            if (gameState == mode.NOTSTARTEDYET) {
                 startText.setVisible(false);
                 logoImageView.setVisible(false);
                 controller.keyPressed(event);
-                gameState = State.PLAYING;
+                gameState = mode.PLAYING;
                 setupGameControls(); // Setup regular game controls
+                map.resetAllGhosts();
                 gameLoop.start();
             }
         });
     }
 
-    public State getGameState() {
+    public mode getGameState() {
         return this.gameState;
     }
 
     public void updateGameState() {
         if (gameLives.getLives() < 0) {
-            gameState = State.GAME_OVER;
+            gameState = mode.GAME_OVER;
         } else if (map.getPelletsLeft() == 0) {
-            gameState = State.WIN;
+            gameState = mode.WIN;
         }
         checkGameState();
     }
@@ -83,11 +84,11 @@ public class GameState{
     }
 
     private void checkGameState() {
-        if (gameState == State.PLAYING) {
+        if (gameState == mode.PLAYING) {
             // Already handled by the gameLoop
-        } else if (gameState == State.GAME_OVER) {
+        } else if (gameState == mode.GAME_OVER) {
             gameOver();
-        } else if (gameState == State.WIN) {
+        } else if (gameState == mode.WIN) {
             gameWin();
         }
         // NOTSTARTEDYET is handled by the initial key handler
@@ -101,7 +102,7 @@ public class GameState{
         gameOverText.setVisible(true);
         restartText.setVisible(true);
 
-        gameState = State.NOTSTARTEDYET;
+        gameState = mode.NOTSTARTEDYET;
 
         // Set up event handler for restarting the game
         scene.setOnKeyPressed(event -> {
@@ -129,7 +130,7 @@ public class GameState{
         // Restore original controls with the updated controller
         scene.setOnKeyPressed(event -> {
             controller.keyPressed(event);
-            gameState = State.PLAYING;
+            gameState = mode.PLAYING;
         });
     }
 
@@ -150,19 +151,16 @@ public class GameState{
     private void nextLevel() {
         // Reset game state
         map.resetMap();
-
-        System.out.println();
         winText.setVisible(false);
         nextLevelText.setVisible(false);
         
-        gameState = State.NOTSTARTEDYET;
+        gameState = mode.NOTSTARTEDYET;
 
         gameLoop.start();
         // Restore original controls with the updated controller
         scene.setOnKeyPressed(event -> {
             controller.keyPressed(event);
-            
-            gameState = State.PLAYING;
+            gameState = mode.PLAYING;
         });
     }
     

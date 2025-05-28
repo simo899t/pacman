@@ -9,7 +9,7 @@ public class GhostMovementPathfinding {
 
     GhostMovementPathfinding(IMap map, IGrid grid) {
         this.map = map;
-        this.randomWalk = new RandomWalk(map, grid); // Initialize here after map is set
+        this.randomWalk = new RandomWalk(grid); // Initialize here after map is set
         this.bfs = new BFS(grid); // Initialize here after map is set
     }
 
@@ -24,6 +24,7 @@ public class GhostMovementPathfinding {
         }
     }
 
+    
     private void directGhost(Block entity, Pacman pacman, Block ghostHome) {
         Ghost ghost = (Ghost) entity;
         if (null != ghost.getState()) switch (ghost.getState()) {

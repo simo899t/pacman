@@ -9,7 +9,7 @@ public class RandomWalk {
     private final IGrid grid;
     private final Random random = new Random();
 
-    public RandomWalk(IMap map, IGrid grid) {
+    public RandomWalk(IGrid grid) {
         this.grid = grid;
     }
 

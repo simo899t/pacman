@@ -31,7 +31,7 @@ public class CollideHandler implements ICollideHandler {
 
     @Override
     public void homeCollision(Ghost ghost) {
-        revive.reviveGhost(ghost);
+        revive.tryReviveGhost(ghost);
     }
 
     @Override

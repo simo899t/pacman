@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 public class UpdateImages {
     private final IMap map;
 
-    public UpdateImages(IMap map, GameTimer loadImageTimer) {
+    public UpdateImages(IMap map) {
         this.map = map;
     }  
 
@@ -71,7 +71,7 @@ public class UpdateImages {
                         default:
                             break;
                     }
-                    if (pacmanAnimationChangeCount >= pacmanMouthSpeed) {
+                    if (pacmanAnimationChangeCount >= pacmanMouthSpeed && ((Pacman) entity).alive()) {
                         pacmanAnimationStep = 1;
                         pacmanAnimationChangeCount = 0;
                     }
@@ -129,7 +129,7 @@ public class UpdateImages {
                                 break;
                         }
                     } else if (ghost.getState() == Ghost.states.STILL) {
-                        GhostImage = "/com/example/images/"+GhostColor+"GhostRight.png";
+                        GhostImage = "/com/example/images/" + GhostColor + "GhostRight.png";
                     }
                     if (GhostImage != null) {
                         Image updatedGhost = new Image(getClass().getResource(GhostImage).toExternalForm());

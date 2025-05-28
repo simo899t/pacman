@@ -18,14 +18,15 @@ import javafx.scene.text.FontWeight;
 
 public class UI {
     private Label scoreLabel;
-    private Label livesLabel;
     private Label startText;
     private Label gameOverText;
     private Label restartText;
     private Label winText;
     private Label nextLevelText;
+    private ImageView lifeImageView;
     private ImageView logoImageView;
     private final HBox scorePanel;
+    private final HBox livesPanel;
     private final VBox root;
     private final int canvasWidth;
     private final int canvasHeight;
@@ -34,11 +35,12 @@ public class UI {
     public UI(Group canvasContainer, int canvasWidth, int canvasHeight) {
         this.root = new VBox();
         this.scorePanel = new HBox();
+        this.livesPanel = new HBox();
         this.canvasContainer = canvasContainer;
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
         loadPanels();
-        loadLogo();
+        loadImages();
         loadAlltext();
     }
 
@@ -61,18 +63,41 @@ public class UI {
         if (scoreLabel != null) {
             scoreLabel.setText(text);
         }
-    }
-    public void setLivesLabelText(String text) {
-        if (livesLabel != null) {
-            livesLabel.setText(text);
-        }        
+    }  
+    public void updateLives(int livesLeft) {
+        // First remove livesPanel from scorePanel if present
+        scorePanel.getChildren().remove(livesPanel);
+        
+        // Clear any existing content in livesPanel
+        livesPanel.getChildren().clear();
+        
+        // Set vertical alignment and padding for the livesPanel
+        livesPanel.setPadding(new Insets(10, 0, 0, 0)); // Top padding of 10px
+        livesPanel.setAlignment(Pos.BOTTOM_LEFT); // Align to bottom-left
+        
+        // Add new life icons to livesPanel
+        for (int i = 0; i < livesLeft; i++) { 
+            Image lifeImage = new Image(getClass().getResource("/com/example/images/life.png").toExternalForm());
+            ImageView lifeIcon = new ImageView(lifeImage);
+            lifeIcon.setFitWidth(40);
+            lifeIcon.setFitHeight(40);
+            
+            // Add margin to individual icons if needed
+            // HBox.setMargin(lifeIcon, new Insets(5, 0, 0, 0));
+            
+            // Add to livesPanel
+            livesPanel.getChildren().add(lifeIcon);
+        }
+        
+        // Add livesPanel to scorePanel
+        scorePanel.getChildren().add(livesPanel);
     }
     public ImageView getLogoImageView() {
         return logoImageView;
     }
 
 
-    public void loadPanels() {
+    private void loadPanels() {
         root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         scorePanel.setPrefHeight(30); // Set height for score panel
         scorePanel.setMinHeight(30);
@@ -88,15 +113,9 @@ public class UI {
 
         // Add some spacing between labels
         scorePanel.setSpacing(30);
-
-        // Create lives label
-        livesLabel = new Label("LIVES: 2");
-        livesLabel.setTextFill(Color.WHITE);
-        livesLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        scorePanel.getChildren().add(livesLabel);
     }
 
-    public void loadLogo() {
+    private void loadImages() {
         Image logoImage = new Image(getClass().getResource("/com/example/images/logo.png").toExternalForm());
         logoImageView = new ImageView(logoImage);
         
@@ -106,13 +125,17 @@ public class UI {
         
         // Position the image above the start text
         logoImageView.setX((canvasWidth - 400) / 2);  // Center horizontally
-        logoImageView.setY(canvasHeight / 4);         // Position in top half
-        
+        logoImageView.setY(canvasHeight / 10);         // Position in top half
         logoImageView.setVisible(true);  // Make visible at start
+
+        Image lifeImage = new Image(getClass().getResource("/com/example/images/life.png").toExternalForm());
+        lifeImageView = new ImageView(lifeImage);
+        lifeImageView.setFitWidth(50);
+        lifeImageView.setFitHeight(50);
         canvasContainer.getChildren().addAll(logoImageView);
     }
 
-    public void loadAlltext() {
+    private void loadAlltext() {
         startText = new Label("Press any button to start");
         startText.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         startText.setTextFill(Color.YELLOW);

@@ -9,7 +9,6 @@ public class Update implements IUpdate {
     private final Collision collision;
     private final ICollideHandler collideHandler;
 
-
     public Update(IMap map, ICollideHandler collideHandler, Collision collision) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
@@ -22,7 +21,7 @@ public class Update implements IUpdate {
     public void updateGame(IMap map) {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
-                if (block.getType() == BlockType.PACMAN || block.getType() == BlockType.GHOST) {
+                if (block.getType() == BlockType.GHOST || block.getType() == BlockType.PACMAN) {
                     updateEntity((MoveableBlock) block);
                 }
             }
@@ -102,39 +101,50 @@ public class Update implements IUpdate {
                     default:
                         break;    
                 }
-        }
+            }
 
 
-        if (entity.getType() == BlockType.PACMAN) {
-            if (isReverse) {
-                Block reverseNextBlock = nextBlock(entity, bufferDirection);
-                if (reverseNextBlock == null) {
-                    entity.setDirection(bufferDirection);
-                }
-                else if (reverseNextBlock.getType() != BlockType.WALL) {
-                    entity.setDirection(bufferDirection);
+            if (entity.getType() == BlockType.PACMAN) {
+                if (isReverse) {
+                    Block reverseNextBlock = nextBlock(entity, bufferDirection);
+                    if (reverseNextBlock == null) {
+                        entity.setDirection(bufferDirection);
+                    }
+                    else if (reverseNextBlock.getType() != BlockType.WALL) {
+                        entity.setDirection(bufferDirection);
+                    }
                 }
             }
-        }
 
-        if (canITurn(entity, bufferDirection)) {
-            Block bufferedNextBlock = nextBlock(entity, bufferDirection);
-            whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
-        }
+            // Add this check right before movement processing
+            if (entityType == BlockType.PACMAN && !((Pacman) entity).alive()) {
+                ((Pacman) entity).setAlive(true);
+                return; // Skip movement if Pacman was killed during collision
+            } else if (entity.getType() == BlockType.GHOST && ((Ghost) entity).getState() == Ghost.states.STILL) {
+                // If the ghost is eaten, it should not move
+                entity.setDirection(direction.NONE);
+                continue; // Skip further processing for this ghost
+            }
 
-        // mby place this in the collide handler???
-        Block moveNextBlock = nextBlock(entity, entity.getDirection());
-        if (moveNextBlock == null) {
-            move.move(entity);
-        } else if (
-            (entity.getType() == BlockType.GHOST && moveNextBlock.getType() != BlockType.WALL) ||
-            (entity.getType() == BlockType.PACMAN && moveNextBlock.getType() != BlockType.WALL && moveNextBlock.getType() != BlockType.DOOR)
-        ) {
-            move.move(entity);
-        } else {
-            entity.setDirection(direction.NONE);
+            // Handle buffer direction changes
+            if (canITurn(entity, bufferDirection)) {
+                Block bufferedNextBlock = nextBlock(entity, bufferDirection);
+                whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
+            }
+
+            // Handle movement
+            Block moveNextBlock = nextBlock(entity, entity.getDirection());
+            if (moveNextBlock == null) {
+                move.move(entity);
+            } else if (
+                (entity.getType() == BlockType.GHOST && moveNextBlock.getType() != BlockType.WALL) ||
+                (entity.getType() == BlockType.PACMAN && moveNextBlock.getType() != BlockType.WALL && moveNextBlock.getType() != BlockType.DOOR)
+            ) {
+                move.move(entity);
+            } else {
+                entity.setDirection(direction.NONE);
+            }
         }
-    }
     }
 
 

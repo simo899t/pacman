@@ -15,10 +15,12 @@ public class App extends Application {
     private IGameScore gameScore;
     private Revive revive;
     private IMap map;
+    private UI ui;
     private IGrid grid;
     private IController controller;
     private IDraw draw; 
     private IUpdate update;
+    private GhostMovementPathfinding ghostMovementPathfinding;
     private UpdateImages updateImages;
     private GameState gameState;
     private AnimationTimer gameLoop;
@@ -52,7 +54,7 @@ public class App extends Application {
         canvasContainer.getChildren().add(canvas);
 
         // load all ui (panels, labels, images)
-        UI ui = new UI(canvasContainer, canvasWidth, canvasHeight);
+        ui = new UI(canvasContainer, canvasWidth, canvasHeight);
         scene = ui.setScene();
         // Show the scene
         stage.setScene(scene);
@@ -67,11 +69,11 @@ public class App extends Application {
             }
         });
 
-        GhostMovementPathfinding ghostMovementPathfinding = new GhostMovementPathfinding(map, grid);
+        ghostMovementPathfinding = new GhostMovementPathfinding(map, grid);
         gameLives = new GameLives();
         gameScore = new GameScore();
         draw = new Draw(map, canvas);
-        updateImages = new UpdateImages(map, gameTimer);
+        updateImages = new UpdateImages(map);
         revive = new Revive(map);
         eater = new Eater(map, gameScore, gameTimer);
         killEntity = new KillEntity(map, gameScore, gameLives, gameTimer);
@@ -81,7 +83,8 @@ public class App extends Application {
         update = new Update(map, collideHandler, collision);
         
 
-        // Initialize gameLoop BEFORE creating GameState
+        // Initialize gameLoop with the initial lives
+        ui.updateLives(gameLives.getLives());
         gameLoop = new AnimationTimer() {
 
             @Override
@@ -94,10 +97,10 @@ public class App extends Application {
                 updateImages.updateAllImages();
                 gameState.updateGameState();
                 ui.setScoreLabelText("SCORE: " + gameScore.getScore());
-                ui.setLivesLabelText("LIVES: " + gameLives.getLives());
+                ui.updateLives(gameLives.getLives());
                 
 
-                if (gameState.getGameState() == GameState.State.PLAYING) {
+                if (gameState.getGameState() == GameState.mode.PLAYING) {
                     gameTimer.runFunctionList(gameTimer.getFunctionList());
                 }
 

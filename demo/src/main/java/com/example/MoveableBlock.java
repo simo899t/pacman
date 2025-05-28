@@ -7,11 +7,11 @@ public class MoveableBlock extends Block {
         UP, DOWN, LEFT, RIGHT, NONE
     }
 
-    protected int stepSize = 2;
-    protected direction direction;
-    protected direction bufferDirection;
-    protected int startX;
-    protected int startY;
+    private int stepSize = 2;
+    private direction direction;
+    public direction bufferDirection;
+    private int startX;
+    private int startY;
 
     public MoveableBlock(Image image, int x, int y) {
         super(image, x, y);

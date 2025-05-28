@@ -2,9 +2,9 @@ package com.example;
 
 import javafx.scene.image.Image;
 
-public class Ghost extends MoveableBlock implements Eatable {
+public class Ghost extends MoveableBlock implements IEatableBehavior {
 
-    private final Eatable eatableBehavior = new EatableBehavior(200);
+    private final IEatableBehavior eatableBehavior = new EatableBehavior();
     private states state;
     private final color color;
 
@@ -40,7 +40,7 @@ public class Ghost extends MoveableBlock implements Eatable {
         if (state == states.EATEN) {
             this.setPos(this.getX() - this.getX()%2 , this.getY() - this.getY()%2);
             setStepSize(2);
-        } else setStepSize(1);
+        } else setStepSize(1); // måske en ny klasse
     }
 
     @Override
@@ -51,11 +51,11 @@ public class Ghost extends MoveableBlock implements Eatable {
     @Override
     public void setEaten(boolean eaten) {
         eatableBehavior.setEaten(eaten);
-        if (eaten) {
-            setState(states.EATEN);
-        } else {
-            setState(states.STILL);
-        }
+    }
+
+    @Override
+    public void setPoints(int points) {
+        eatableBehavior.setPoints(points);
     }
 
     @Override

@@ -38,38 +38,21 @@ public class KillEntity implements IKillEntity {
         lives.removeLife();
         ghostResetTimer.gameTimerReset();
         
+        pacman.setAlive(false);
         pacman.setDirection(direction.NONE);
         pacman.setBufferDirection(direction.NONE);
-        redGhost.setDirection(direction.NONE);
-        redGhost.setBufferDirection(direction.NONE);
-        blueGhost.setDirection(direction.NONE);
-        blueGhost.setBufferDirection(direction.NONE);
-        pinkGhost.setDirection(direction.NONE);
-        pinkGhost.setBufferDirection(direction.NONE);
-        orangeGhost.setDirection(direction.NONE);
-        orangeGhost.setBufferDirection(direction.NONE);
-
         pacman.setPos(pacman.getStartX(), pacman.getStartY());
-        redGhost.setPos(redGhost.getStartX(), redGhost.getStartY());
-        blueGhost.setPos(blueGhost.getStartX(), blueGhost.getStartY());
-        pinkGhost.setPos(pinkGhost.getStartX(), pinkGhost.getStartY());
-        orangeGhost.setPos(orangeGhost.getStartX(), orangeGhost.getStartY());
-
-        redGhost.setState(states.CHASE);
-        pinkGhost.resetState(8000L, ghostResetTimer);
-        blueGhost.resetState(12000L, ghostResetTimer);
-        orangeGhost.resetState(15000L, ghostResetTimer);
+        
+        map.resetAllGhosts();
         
         pinkGhost.setImage(pinkGhostImage);
         blueGhost.setImage(blueGhostImage);
         orangeGhost.setImage(orangeGhostImage);
-
-        
     }
 
     @Override
     public void killGhost(Ghost ghost) {
         ghost.setState(states.EATEN);
-
+        ghost.setEaten(true);
     }
 }

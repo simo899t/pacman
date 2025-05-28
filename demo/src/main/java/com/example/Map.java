@@ -41,6 +41,10 @@ public class Map implements IMap {
         "XXXXXXXXXXXXXXXXXXX"
     };
 
+    private final int pelletValue = 10; // Points for each pellet
+    private final int bigPelletValue = 50; // Points for each big pellet
+    private final int ghostValue = 200; // Points for eating a ghost
+
     int rowCount = map.length; // Gameboard is 21 rows
     int columnCount = map[0].length(); // Gameboard is 19 columns
     long currentTime = System.currentTimeMillis();
@@ -108,18 +112,6 @@ public class Map implements IMap {
 
     private void loadAllBlocks(String[] map) {
         String[] tileMap = map;
-        
-        // Load images
-        Image pacmanImage = new Image(getClass().getResource("/com/example/images/pacman.png").toExternalForm());
-        Image wallImage = new Image(getClass().getResource("/com/example/images/wall.png").toExternalForm());
-        Image doorClosed = new Image(getClass().getResource("/com/example/images/doorClosed.png").toExternalForm());
-        Image redGhostImage = new Image(getClass().getResource("/com/example/images/redGhostRight.png").toExternalForm());
-        Image blueGhostImage = new Image(getClass().getResource("/com/example/images/blueGhostRight.png").toExternalForm());
-        Image pinkGhostImage = new Image(getClass().getResource("/com/example/images/pinkGhostRight.png").toExternalForm());
-        Image orangeGhostImage = new Image(getClass().getResource("/com/example/images/orangeGhostRight.png").toExternalForm());
-        Image smallFoodImage = new Image(getClass().getResource("/com/example/images/smallFood.png").toExternalForm());
-        Image bigFoodImage = new Image(getClass().getResource("/com/example/images/bigFood.png").toExternalForm());
-
 
         // Draw the pellet and door map 
         for (int row = 0; row < rowCount; row++) {
@@ -127,20 +119,14 @@ public class Map implements IMap {
                 char tile = tileMap[row].charAt(col);
                 switch (tile) {
                     case ' ':
-                        Pellet pellet = new Pellet(smallFoodImage, col * tileSize, row * tileSize);
-                        pellet.setType(BlockType.PELLET);
-                        allBlocks.add(pellet);
+                        allBlocks.add(BlockFactory.createPellet(col * tileSize, row * tileSize, pelletValue));
                         addPellet();
                         break;
                     case 'D':
-                        Door door = new Door(doorClosed, col * tileSize, row * tileSize);
-                        door.setType(BlockType.DOOR);
-                        allBlocks.add(door);
+                        allBlocks.add(BlockFactory.createDoor(col * tileSize, row * tileSize));
                         break;
                     case 'B':
-                        Pellet bigPellet = new Pellet(bigFoodImage, col * tileSize, row * tileSize);
-                        bigPellet.setType(BlockType.BIGPELLET);
-                        allBlocks.add(bigPellet);
+                        allBlocks.add(BlockFactory.createBigPellet(col * tileSize, row * tileSize, bigPelletValue));
                         addPellet();
                         break;
                     default:
@@ -155,61 +141,38 @@ public class Map implements IMap {
                 char tile = tileMap[row].charAt(col);
                 switch (tile) {
                     case 'X':
-                        Block wall = new Block(wallImage, col * tileSize, row * tileSize);
-                        wall.setType(BlockType.WALL);
-                        allBlocks.add(wall);
+                        allBlocks.add(BlockFactory.createWall(col * tileSize, row * tileSize));
                         break;
                     case 'P':
-                        pacman = new Pacman(pacmanImage, col * tileSize, row * tileSize);
-                        pacman.setType(BlockType.PACMAN);
+                        pacman = BlockFactory.createPacman(col * tileSize, row * tileSize);
                         allBlocks.add(pacman);
-                        EmptyBlock emptyBehindPacman = new EmptyBlock(col * tileSize, row * tileSize);
-                        allBlocks.add(emptyBehindPacman);
+                        allBlocks.add(BlockFactory.createEmptyBlock(col * tileSize, row * tileSize));
+                        
                         break;
                     case 'r':
-                        redGhost = new Ghost(redGhostImage, col * tileSize, row * tileSize, Ghost.color.RED);
-                        redGhost.setType(BlockType.GHOST);
-                        redGhost.setState(Ghost.states.CHASE);
+                        redGhost = BlockFactory.createRedGhost(col * tileSize, row * tileSize, ghostValue);
                         allBlocks.add(redGhost);
-                        
-                        ghostHome = new Block(null, col * tileSize, row * tileSize);
-                        ghostHome.setType(BlockType.GHOSTHOME);
+                        ghostHome = BlockFactory.createGhostHome(col * tileSize, row * tileSize);
                         allBlocks.add(ghostHome);
-                        
-                        EmptyBlock emptyBlockBehindRed = new EmptyBlock(col * tileSize, row * tileSize);
-                        allBlocks.add(emptyBlockBehindRed);
+                        allBlocks.add(BlockFactory.createEmptyBlock(col * tileSize, row * tileSize));
                         break;
                     case 'b':
-                        blueGhost = new Ghost(blueGhostImage, col * tileSize, row * tileSize, Ghost.color.BLUE);
-                        blueGhost.setType(BlockType.GHOST);
+                        blueGhost = BlockFactory.createBlueGhost(col * tileSize, row * tileSize, ghostValue);
                         allBlocks.add(blueGhost);
-                        blueGhost.resetState(12000L,gameTimer);
-                        
-                        EmptyBlock emptyBlockBehindBlue = new EmptyBlock(col * tileSize, row * tileSize);
-                        allBlocks.add(emptyBlockBehindBlue);
+                        allBlocks.add(BlockFactory.createEmptyBlock(col * tileSize, row * tileSize));
                         break;
                     case 'p':
-                        pinkGhost = new Ghost(pinkGhostImage, col * tileSize, row * tileSize, Ghost.color.PINK);
-                        pinkGhost.setType(BlockType.GHOST);
+                        pinkGhost = BlockFactory.createPinkGhost(col * tileSize, row * tileSize, ghostValue);
                         allBlocks.add(pinkGhost);
-                        pinkGhost.resetState(8000L, gameTimer);
-                        
-                        EmptyBlock emptyBlockBehindPink = new EmptyBlock(col * tileSize, row * tileSize);
-                        allBlocks.add(emptyBlockBehindPink);
+                        allBlocks.add(BlockFactory.createEmptyBlock(col * tileSize, row * tileSize));
                         break;
                     case 'o':
-                        orangeGhost = new Ghost(orangeGhostImage, col * tileSize, row * tileSize, Ghost.color.ORANGE);
-                        orangeGhost.setType(BlockType.GHOST);
+                        orangeGhost = BlockFactory.createOrangeGhost(col * tileSize, row * tileSize, ghostValue);
                         allBlocks.add(orangeGhost);
-                        orangeGhost.resetState(15000L, gameTimer);
-                        
-                        EmptyBlock emptyBlockBehindOrange = new EmptyBlock(col * tileSize, row * tileSize);
-                        allBlocks.add(emptyBlockBehindOrange);
+                        allBlocks.add(BlockFactory.createEmptyBlock(col * tileSize, row * tileSize));
                         break;
                     case 'O':
-                        Block teleporter = new Block(null, col * tileSize, row * tileSize);
-                        teleporter.setType(BlockType.TELEPORTER);
-                        allBlocks.add(teleporter);
+                        allBlocks.add(BlockFactory.createTeleporterBlock(col * tileSize, row * tileSize));
                     default:
                         break;
                 }
@@ -236,28 +199,8 @@ public class Map implements IMap {
                 }
             }
             
-            if (block instanceof Ghost) {
-                Ghost ghost = (Ghost) block;
-                switch (ghost.getColor()) {
-                    case Ghost.color.RED:
-                        ghost.setState(Ghost.states.CHASE);
-                        break;
-                    case Ghost.color.BLUE:
-                        blueGhost.resetState(12000L,gameTimer);
-                        break;
-                    case Ghost.color.PINK:
-                        pinkGhost.resetState(8000L, gameTimer);
-                        break;
-                    case Ghost.color.ORANGE:
-                        orangeGhost.resetState(15000L, gameTimer);
-                        break;
-                    default:
-                        ghost.setState(Ghost.states.STILL);
-                        break;
-                }
-                
-                ghost.setPos(ghost.getStartX(), ghost.getStartY());
-            }
+            resetAllGhosts();
+            
             
             if (block instanceof Pacman) {
                 Pacman pacman = (Pacman) block;
@@ -278,5 +221,32 @@ public class Map implements IMap {
             }
         }
         return null;
+    }
+
+    public void resetAllGhosts() {
+        for (Block block : allBlocks) {
+            if (block.getType() == BlockType.GHOST) {
+                Ghost ghost = (Ghost) block;
+                ghost.setPos(ghost.getStartX(), ghost.getStartY());
+                switch (ghost.getColor()) {
+                    case RED:
+                        ghost.setState(Ghost.states.CHASE);
+                        break;
+                    case BLUE:
+                        ghost.setState(Ghost.states.STILL);
+                        blueGhost.resetState(12000L, gameTimer);
+                        break;
+                    case PINK:
+                    ghost.setState(Ghost.states.STILL);
+                        pinkGhost.resetState(8000L, gameTimer);
+                        break;
+                    case ORANGE:
+                        ghost.setState(Ghost.states.STILL);
+                        orangeGhost.resetState(15000L, gameTimer);
+                        break;
+                    default:
+                }
+            }
+        }
     }
 }

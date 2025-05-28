@@ -7,9 +7,10 @@ public class Revive {
         this.map = map;
     }
 
-    public void reviveGhost(Ghost ghost) {
+    public void tryReviveGhost(Ghost ghost) {
         if (ghost.getState() == Ghost.states.EATEN) {
             ghost.setState(Ghost.states.CHASE);
+            ghost.setEaten(false);
         }
     }
 }
