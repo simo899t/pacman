@@ -3,22 +3,14 @@ package com.example;
 import javafx.scene.image.Image;
 
 public class Eater implements IEater {
-    private IMap map;
-    private Block pellet;
-    private IGameScore score;
-    private IGameLives lives;
+    private final IMap map;
+    private final IGameScore score;
     private final GameTimer gameTimer;
-    private final App game;
-    private final UpdateImages updateImages;
 
-    
-    public Eater(IMap map, IGameScore score, IGameLives lives, GameTimer gameTimer, App game, UpdateImages updateImages) {
+    public Eater(IMap map, IGameScore score, GameTimer gameTimer) {
         this.map = map;
         this.score = score;
-        this.lives = lives;
         this.gameTimer = gameTimer;
-        this.game = game;
-        this.updateImages = updateImages;
     }
 
     private boolean tryEat(Pellet pellet, int points) {
@@ -103,6 +95,7 @@ public class Eater implements IEater {
     /* 
      * This method is called when Pacman eats a ghost. It checks if the ghost is in the frightened state and if so, it sets it to eaten state.
      */
+    @Override
     public void eatGhost(Pellet ghost) {
         tryEat(ghost, ghost.getPoints());
     }

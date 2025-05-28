@@ -17,19 +17,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class UI {
-    public Label scoreLabel;
-    public Label livesLabel;
+    private Label scoreLabel;
+    private Label livesLabel;
     private Label startText;
     private Label gameOverText;
     private Label restartText;
     private Label winText;
     private Label nextLevelText;
     private ImageView logoImageView;
-    private HBox scorePanel;
-    private VBox root;
-    private int canvasWidth;
-    private int canvasHeight;
-    private Group canvasContainer;
+    private final HBox scorePanel;
+    private final VBox root;
+    private final int canvasWidth;
+    private final int canvasHeight;
+    private final Group canvasContainer;
 
     public UI(Group canvasContainer, int canvasWidth, int canvasHeight) {
         this.root = new VBox();
@@ -57,9 +57,20 @@ public class UI {
     public Label getNextLevelText() {
         return nextLevelText;
     }
+    public void setScoreLabelText(String text) {
+        if (scoreLabel != null) {
+            scoreLabel.setText(text);
+        }
+    }
+    public void setLivesLabelText(String text) {
+        if (livesLabel != null) {
+            livesLabel.setText(text);
+        }        
+    }
     public ImageView getLogoImageView() {
         return logoImageView;
     }
+
 
     public void loadPanels() {
         root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -86,7 +97,7 @@ public class UI {
     }
 
     public void loadLogo() {
-        Image logoImage = new Image(getClass().getResource("/com/example/images/logo2.png").toExternalForm());
+        Image logoImage = new Image(getClass().getResource("/com/example/images/logo.png").toExternalForm());
         logoImageView = new ImageView(logoImage);
         
         // Set image size (adjust as needed)

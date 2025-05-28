@@ -3,7 +3,7 @@ package com.example;
 import java.util.ArrayList;
 
 import com.example.MoveableBlock.direction;
-import com.example.Node.neighborDirection;
+import com.example.Node.neighbourDirection;
 
 public class BFS {
     private final IGrid grid;
@@ -19,7 +19,7 @@ public class BFS {
         // Reset all nodes for a clean search
         for (Node node : grid.getAllNodes()) {
             node.setSeen(false);
-            node.setNeighborsNodeDirection(null);
+            node.setNeighboursNodeDirection(null);
         }
         
         ArrayList<Node> queue = new ArrayList<>();
@@ -31,11 +31,11 @@ public class BFS {
         seenNodes.add(startNode);
         
         // Add initial neighbors with directions
-        Node[] startneighbors = startNode.getNeighbourgs();
+        Node[] startneighbors = startNode.getNeighbours();
         for (int i = 0; i < startneighbors.length; i++) {
             if (startneighbors[i] != null) {
                 // Check if this neighbor is already Pacman
-                if (startneighbors[i] == targetNode) {
+                if (startneighbors[i].equals(targetNode)) {
                     // Found Pacman at startnode neighbors!
                     switch (i) {
                         case 0: return direction.UP;
@@ -52,10 +52,10 @@ public class BFS {
                 
                 // Set direction based on index
                 switch (i) {
-                    case 0: startneighbors[i].setNeighborsNodeDirection(neighborDirection.UP); break;
-                    case 1: startneighbors[i].setNeighborsNodeDirection(neighborDirection.DOWN); break;
-                    case 2: startneighbors[i].setNeighborsNodeDirection(neighborDirection.LEFT); break;
-                    case 3: startneighbors[i].setNeighborsNodeDirection(neighborDirection.RIGHT); break;
+                    case 0: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.UP); break;
+                    case 1: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.DOWN); break;
+                    case 2: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.LEFT); break;
+                    case 3: startneighbors[i].setNeighboursNodeDirection(neighbourDirection.RIGHT); break;
                 }
             }
         }
@@ -65,7 +65,7 @@ public class BFS {
             Node current = queue.remove(0);
             
             // Check all neighbors of current node
-            Node[] neighbors = current.getNeighbourgs();
+            Node[] neighbors = current.getNeighbours();
             for (int i = 0; i < neighbors.length; i++) {
                 Node neighbor = neighbors[i];
                 if (neighbor != null && !neighbor.isSeen()) {
@@ -73,12 +73,12 @@ public class BFS {
                     seenNodes.add(neighbor);
                     
                     // Inherit direction from current node
-                    neighbor.setNeighborsNodeDirection(current.getNeighborsNodeDirection());
+                    neighbor.setNeighboursNodeDirection(current.getNeighboursNodeDirection());
                     
                     // Check if this is Pacman
-                    if (neighbor == targetNode) {
+                    if (neighbor.equals(targetNode)) {
                         found = true;
-                        return directionFromNeighborDirection(current.getNeighborsNodeDirection());
+                        return directionFromNeighborDirection(current.getNeighboursNodeDirection());
                     }
                     
                     // Add to queue for processing
@@ -92,8 +92,8 @@ public class BFS {
         return direction.NONE;
     }
 
-    private direction directionFromNeighborDirection(neighborDirection nd) {
-        switch (nd) {
+    private direction directionFromNeighborDirection(neighbourDirection neighbourDirection) {
+        switch (neighbourDirection) {
             case UP: return direction.UP;
             case DOWN: return direction.DOWN;
             case LEFT: return direction.LEFT;
@@ -102,29 +102,4 @@ public class BFS {
         }
     }
 
-    public boolean isPacman(Node node, Node targetNode) {
-        return node.equals(targetNode);
-    }
-
-    public ArrayList<Node> validNeibours(Node node, ArrayList<Node> seenNodes) {
-        System.out.println("checking valid neighbours");
-        Node[] neighbours = node.getNeighbourgs();
-        System.out.println("Neighbours: " + neighbours.length);
-        for (Node n : neighbours) {
-            if (n != null) {
-                System.out.println(n.isSeen());
-            }
-        }
-        ArrayList<Node> validNeibours = new ArrayList<>();
-        for (int i = 0; i < neighbours.length; i++) {
-            if (neighbours[i] != null && !neighbours[i].isSeen()) {
-                neighbours[i].setSeen(true);
-                neighbours[i].setNeighborsNodeDirection(node.getNeighborsNodeDirection());
-                seenNodes.add(neighbours[i]);
-                validNeibours.add(neighbours[i]);
-            }
-        }
-        System.out.println("Valid neighbours: " + validNeibours.size());
-        return validNeibours;
-    }
 }

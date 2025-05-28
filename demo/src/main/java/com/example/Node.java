@@ -2,29 +2,34 @@ package com.example;
 
 
 public class Node {
+    private final int x;
+    private final int y;
+    private final Node[] neighbours = new Node[4]; // up, down, left, right
+    private boolean isSeen;
+    private neighbourDirection neighboursNodeDirection;
 
-    public enum neighborDirection {
+
+    public enum neighbourDirection {
         UP,
         DOWN,
         LEFT,
         RIGHT
     }
 
-    int x;
-    int y;
-    Node[] neighbourgs = new Node[4]; // up, down, left, right
-    boolean isSeen;
-    neighborDirection neighborsNodeDirection;
 
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
         this.isSeen = false;
-        this.neighborsNodeDirection = null; // Default direction
+        this.neighboursNodeDirection = null; // Default direction
     }
 
-    public Node[] getNeighbourgs() {
-        return neighbourgs;
+    public Node[] getNeighbours() {
+        return neighbours;
+    }
+
+    public void setNeighbours(Node node, int iterator) {
+        neighbours[iterator] = node;
     }
     
     public int getX() {
@@ -42,11 +47,11 @@ public class Node {
         return isSeen;
     }
 
-    public void setNeighborsNodeDirection(neighborDirection direction) {
-        this.neighborsNodeDirection = direction;
+    public void setNeighboursNodeDirection(neighbourDirection direction) {
+        this.neighboursNodeDirection = direction;
     }
 
-    public neighborDirection getNeighborsNodeDirection() {
-        return neighborsNodeDirection;
+    public neighbourDirection getNeighboursNodeDirection() {
+        return neighboursNodeDirection;
     }
 }

@@ -6,19 +6,14 @@ import java.util.Random;
 import com.example.MoveableBlock.direction;
 
 public class RandomWalk {
-    Ghost ghost;
-    IGrid grid;
-    IMap map;
-    int tileSize;
-    Random random = new Random();
+    private final IGrid grid;
+    private final Random random = new Random();
 
     public RandomWalk(IMap map, IGrid grid) {
         this.grid = grid;
-        this.map = map;
-        this.tileSize = map.getTileSize();
     }
 
-    public direction seach(Ghost ghost) {
+    public direction search(Ghost ghost) {
         // Convert pixel coordinates to grid coordinates
         int col = grid.toCol(ghost.getX());
         int row = grid.toRow(ghost.getY());
@@ -28,7 +23,7 @@ public class RandomWalk {
             return direction.NONE; // Safety check
         }
         
-        Node[] neighbours = currentNode.getNeighbourgs();
+        Node[] neighbours = currentNode.getNeighbours();
         
         // Create a list of valid (non-null) neighbors
         ArrayList<Integer> validIndices = new ArrayList<>();

@@ -2,7 +2,7 @@ package com.example;
 
 public class EatableBehavior implements Eatable {
     private boolean eaten;
-    private int points;
+    private final int points;
 
     public EatableBehavior(int points) {
         this.eaten = false;

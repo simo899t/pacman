@@ -4,10 +4,8 @@ import javafx.scene.image.Image;
 
 public class UpdateImages {
     private final IMap map;
-    private GameTimer loadImageTimer;
 
     public UpdateImages(IMap map, GameTimer loadImageTimer) {
-        this.loadImageTimer = loadImageTimer;
         this.map = map;
     }  
 

@@ -21,7 +21,6 @@ public class Block {
     protected Image image;
 
     public Block(Image image, int x, int y) {
-        this.type = type;
         this.image = image;
         this.x = x;
         this.y = y;

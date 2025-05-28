@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 public class Ghost extends MoveableBlock implements Eatable {
 
     private final Eatable eatableBehavior = new EatableBehavior(200);
+    private states state;
+    private final color color;
 
     public enum states {
         STILL,
@@ -12,7 +14,6 @@ public class Ghost extends MoveableBlock implements Eatable {
         FRIGHTENED,
         EATEN
     }
-    private states state;
 
     public enum color {
         BLUE,
@@ -20,7 +21,6 @@ public class Ghost extends MoveableBlock implements Eatable {
         ORANGE,
         RED
     }
-    private final color color;
 
     public Ghost(Image image, int x, int y, color colour) {
         super(image, x, y);

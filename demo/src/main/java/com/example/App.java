@@ -6,8 +6,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
@@ -17,6 +15,7 @@ public class App extends Application {
     private IGameScore gameScore;
     private Revive revive;
     private IMap map;
+    private IGrid grid;
     private IController controller;
     private IDraw draw; 
     private IUpdate update;
@@ -27,14 +26,8 @@ public class App extends Application {
     private Collision collision;
     private IEater eater;
     private IKillEntity killEntity;
-    
-    private Label startText;
-    private Label gameOverText;
-    private Label restartText;
-    private Label winText;
     private Scene scene;
     private GameTimer gameTimer;
-    private ImageView logoImageView;
 
     @Override
     public void start(Stage stage) {
@@ -44,7 +37,7 @@ public class App extends Application {
         // Load the map
         gameTimer = new GameTimer();
         map = new Map(gameTimer);
-        IGrid grid = new Grid(map);
+        grid = new Grid(map);
 
         // Define the dimensions of the game with current map
         int tileSize = map.getTileSize();
@@ -66,7 +59,7 @@ public class App extends Application {
         stage.centerOnScreen();
         stage.show();
 
-        controller = new Controller(map.getPacman(), map.getRedGhost());
+        controller = new Controller(map.getPacman());
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -80,12 +73,12 @@ public class App extends Application {
         draw = new Draw(map, canvas);
         updateImages = new UpdateImages(map, gameTimer);
         revive = new Revive(map);
-        eater = new Eater(map, gameScore, gameLives, gameTimer, null, updateImages);
+        eater = new Eater(map, gameScore, gameTimer);
         killEntity = new KillEntity(map, gameScore, gameLives, gameTimer);
         collision = new Collision(map);
 
-        collideHandler = new CollideHandler(map, gameScore, gameLives, gameTimer, this, updateImages, revive, eater, killEntity);
-        update = new Update(map, gameScore, gameLives, gameTimer, this, updateImages, revive, collideHandler, collision);
+        collideHandler = new CollideHandler(gameTimer, revive, eater, killEntity);
+        update = new Update(map, collideHandler, collision);
         
 
         // Initialize gameLoop BEFORE creating GameState
@@ -100,12 +93,12 @@ public class App extends Application {
                 update.updateGame(map);
                 updateImages.updateAllImages();
                 gameState.updateGameState();
-                ui.scoreLabel.setText("SCORE: " + gameScore.getScore());
-                ui.livesLabel.setText("LIVES: " + gameLives.getLives());
+                ui.setScoreLabelText("SCORE: " + gameScore.getScore());
+                ui.setLivesLabelText("LIVES: " + gameLives.getLives());
                 
 
                 if (gameState.getGameState() == GameState.State.PLAYING) {
-                    gameTimer.runFunctionList(gameTimer.functionList);
+                    gameTimer.runFunctionList(gameTimer.getFunctionList());
                 }
 
                 long diff = System.currentTimeMillis() - startOfLoopTime;
