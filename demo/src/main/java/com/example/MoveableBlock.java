@@ -9,7 +9,7 @@ public class MoveableBlock extends Block {
 
     private int stepSize = 2;
     private direction direction;
-    public direction bufferDirection;
+    private direction bufferDirection;
     private int startX;
     private int startY;
 

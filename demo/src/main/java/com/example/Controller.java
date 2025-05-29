@@ -8,20 +8,19 @@ public class Controller implements IController {
     public Controller(Pacman pacman) {
         this.pacman = pacman;
     }
-
     public void keyPressed(KeyEvent key) {
         switch (key.getCode()) {
             case UP:
-                pacman.setBufferDirection(pacman.bufferDirection.UP);
+                pacman.setBufferDirection(MoveableBlock.direction.UP);
                 break;
             case DOWN:
-                pacman.setBufferDirection(pacman.bufferDirection.DOWN);
+                pacman.setBufferDirection(MoveableBlock.direction.DOWN);
                 break;
             case LEFT:
-                pacman.setBufferDirection(pacman.bufferDirection.LEFT);
+                pacman.setBufferDirection(MoveableBlock.direction.LEFT);
                 break;
             case RIGHT:
-                pacman.setBufferDirection(pacman.bufferDirection.RIGHT);
+                pacman.setBufferDirection(MoveableBlock.direction.RIGHT);
                 break;
             default:
                 break;
