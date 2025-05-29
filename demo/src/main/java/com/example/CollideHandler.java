@@ -21,6 +21,7 @@ public class CollideHandler implements ICollideHandler {
                 break;
             case FRIGHTENED:
                 killEntity.killGhost(ghost);
+                eater.eatGhost(ghost);
                 break;
             case EATEN:
                 break;
