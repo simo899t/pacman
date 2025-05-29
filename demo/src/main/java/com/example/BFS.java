@@ -2,7 +2,7 @@ package com.example;
 
 import java.util.ArrayList;
 
-import com.example.MoveableBlock.direction;
+import com.example.MoveableBlock.directions;
 import com.example.Node.neighbourDirection;
 
 public class BFS {
@@ -12,7 +12,7 @@ public class BFS {
         this.grid = grid;
     }
 
-    public direction search(Ghost ghost, Block target) {
+    public directions search(Ghost ghost, Block target) {
         Node startNode = grid.getNode(grid.toCol(ghost.getX()), grid.toRow(ghost.getY()));
         Node targetNode = grid.getNode(grid.toCol(target.getX()), grid.toRow(target.getY()));
         
@@ -38,11 +38,11 @@ public class BFS {
                 if (startneighbors[i].equals(targetNode)) {
                     // Found Pacman at startnode neighbors!
                     switch (i) {
-                        case 0: return direction.UP;
-                        case 1: return direction.DOWN;
-                        case 2: return direction.LEFT;
-                        case 3: return direction.RIGHT;
-                        default: return direction.NONE;
+                        case 0: return directions.UP;
+                        case 1: return directions.DOWN;
+                        case 2: return directions.LEFT;
+                        case 3: return directions.RIGHT;
+                        default: return directions.NONE;
                     }
                 }
                 
@@ -89,16 +89,16 @@ public class BFS {
         
         // If we get here, no path exists (should never happen in a proper maze)
         System.out.println("WARNING: No path found to Pacman!");
-        return direction.NONE;
+        return directions.NONE;
     }
 
-    private direction directionFromNeighborDirection(neighbourDirection neighbourDirection) {
+    private directions directionFromNeighborDirection(neighbourDirection neighbourDirection) {
         switch (neighbourDirection) {
-            case UP: return direction.UP;
-            case DOWN: return direction.DOWN;
-            case LEFT: return direction.LEFT;
-            case RIGHT: return direction.RIGHT;
-            default: return direction.NONE;
+            case UP: return directions.UP;
+            case DOWN: return directions.DOWN;
+            case LEFT: return directions.LEFT;
+            case RIGHT: return directions.RIGHT;
+            default: return directions.NONE;
         }
     }
 

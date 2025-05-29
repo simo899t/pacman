@@ -3,7 +3,7 @@ package com.example;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.example.MoveableBlock.direction;
+import com.example.MoveableBlock.directions;
 
 public class RandomWalk {
     private final IGrid grid;
@@ -13,14 +13,14 @@ public class RandomWalk {
         this.grid = grid;
     }
 
-    public direction search(Ghost ghost) {
+    public directions search(Ghost ghost) {
         // Convert pixel coordinates to grid coordinates
         int col = grid.toCol(ghost.getX());
         int row = grid.toRow(ghost.getY());
         
         Node currentNode = grid.getNode(col, row);
         if (currentNode == null) {
-            return direction.NONE; // Safety check
+            return directions.NONE; // Safety check
         }
         
         Node[] neighbours = currentNode.getNeighbours();
@@ -38,7 +38,7 @@ public class RandomWalk {
         
         // UPDATED BUFFER DIRECTION LOGIC:
         // Always set a buffer direction when the ghost is not moving
-        if (ghost.getDirection() == direction.NONE) {
+        if (ghost.getDirection() == directions.NONE) {
             int bufferIndex = validIndices.get(random.nextInt(validIndices.size()));
             ghost.setBufferDirection(indexToDirection(bufferIndex));
         } 
@@ -52,13 +52,13 @@ public class RandomWalk {
     }
     
     // Helper method to convert index to direction
-    private direction indexToDirection(int index) {
+    private directions indexToDirection(int index) {
         switch (index) {
-            case 0: return direction.UP;
-            case 1: return direction.DOWN;
-            case 2: return direction.LEFT;
-            case 3: return direction.RIGHT;
-            default: return direction.NONE;
+            case 0: return directions.UP;
+            case 1: return directions.DOWN;
+            case 2: return directions.LEFT;
+            case 3: return directions.RIGHT;
+            default: return directions.NONE;
         }
     }
 }

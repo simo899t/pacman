@@ -7,7 +7,6 @@ public class BigPellet extends Block implements IEatableBehavior {
 
     public BigPellet(Image image, int x, int y) {
         super(image, x, y);
-        boolean eaten = false;
     }
 
     @Override

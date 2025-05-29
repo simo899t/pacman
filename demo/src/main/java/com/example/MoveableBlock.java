@@ -3,20 +3,18 @@ package com.example;
 import javafx.scene.image.Image;
 
 public class MoveableBlock extends Block {
-    public enum direction {
+    public enum directions {
         UP, DOWN, LEFT, RIGHT, NONE
     }
 
     private int stepSize = 2;
-    private direction direction;
-    private direction bufferDirection;
+    private directions direction = directions.NONE;
+    private directions bufferDirection = directions.NONE;
     private int startX;
     private int startY;
 
     public MoveableBlock(Image image, int x, int y) {
         super(image, x, y);
-        this.direction = direction.NONE;
-        this.bufferDirection = direction.NONE;
         this.startX = x;
         this.startY = y;
     }
@@ -33,19 +31,19 @@ public class MoveableBlock extends Block {
         this.stepSize = stepSize;
     }
 
-    public direction getDirection() {
+    public directions getDirection() {
         return direction;
     }
 
-    public void setDirection(direction direction) {
+    public void setDirection(directions direction) {
         this.direction = direction;
     }
     
-    public direction getBufferDirection() {
+    public directions getBufferDirection() {
         return bufferDirection;
     }
 
-    public void setBufferDirection(direction bufferDirection) {
+    public void setBufferDirection(directions bufferDirection) {
         this.bufferDirection = bufferDirection;
     }
 

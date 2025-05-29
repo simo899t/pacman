@@ -1,7 +1,7 @@
 package com.example;
 
 import com.example.Ghost.states;
-import com.example.MoveableBlock.direction;
+import com.example.MoveableBlock.directions;
 
 import javafx.scene.image.Image;
 
@@ -35,8 +35,8 @@ public class KillEntity implements IKillEntity {
         ghostResetTimer.gameTimerReset();
         
         pacman.setAlive(false);
-        pacman.setDirection(direction.NONE);
-        pacman.setBufferDirection(direction.NONE);
+        pacman.setDirection(directions.NONE);
+        pacman.setBufferDirection(directions.NONE);
         pacman.setPos(pacman.getStartX(), pacman.getStartY());
         
         map.resetAllGhosts();

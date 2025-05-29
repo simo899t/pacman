@@ -11,16 +11,16 @@ public class Controller implements IController {
     public void keyPressed(KeyEvent key) {
         switch (key.getCode()) {
             case UP:
-                pacman.setBufferDirection(MoveableBlock.direction.UP);
+                pacman.setBufferDirection(MoveableBlock.directions.UP);
                 break;
             case DOWN:
-                pacman.setBufferDirection(MoveableBlock.direction.DOWN);
+                pacman.setBufferDirection(MoveableBlock.directions.DOWN);
                 break;
             case LEFT:
-                pacman.setBufferDirection(MoveableBlock.direction.LEFT);
+                pacman.setBufferDirection(MoveableBlock.directions.LEFT);
                 break;
             case RIGHT:
-                pacman.setBufferDirection(MoveableBlock.direction.RIGHT);
+                pacman.setBufferDirection(MoveableBlock.directions.RIGHT);
                 break;
             default:
                 break;

@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.MoveableBlock.direction;
+import com.example.MoveableBlock.directions;
 
 public class Update implements IUpdate {
     private final IMap map;
@@ -30,15 +30,15 @@ public class Update implements IUpdate {
 
     @Override
     public void updateEntity(MoveableBlock entity) {
-        direction bufferDirection = entity.getBufferDirection();
-        direction currentDirection = entity.getDirection();
+        directions bufferDirection = entity.getBufferDirection();
+        directions currentDirection = entity.getDirection();
         BlockType entityType = entity.getType();
         BlockType blockType;
 
-        boolean isReverse = (currentDirection == direction.LEFT && bufferDirection == direction.RIGHT) ||
-                            (currentDirection == direction.RIGHT && bufferDirection == direction.LEFT) ||
-                            (currentDirection == direction.UP && bufferDirection == direction.DOWN) ||
-                            (currentDirection == direction.DOWN && bufferDirection == direction.UP);
+        boolean isReverse = (currentDirection == directions.LEFT && bufferDirection == directions.RIGHT) ||
+                            (currentDirection == directions.RIGHT && bufferDirection == directions.LEFT) ||
+                            (currentDirection == directions.UP && bufferDirection == directions.DOWN) ||
+                            (currentDirection == directions.DOWN && bufferDirection == directions.UP);
 
         
         for (Block block : map.getAllBlocks()) {
@@ -115,7 +115,7 @@ public class Update implements IUpdate {
                 return; // Skip movement if Pacman was killed during collision
             } else if (entity.getType() == BlockType.GHOST && ((Ghost) entity).getState() == Ghost.states.STILL) {
                 // If the ghost is eaten, it should not move
-                entity.setDirection(direction.NONE);
+                entity.setDirection(directions.NONE);
                 continue; // Skip further processing for this ghost
             }
 
@@ -135,14 +135,14 @@ public class Update implements IUpdate {
             ) {
                 move.move(entity);
             } else {
-                entity.setDirection(direction.NONE);
+                entity.setDirection(directions.NONE);
             }
         }
     }
 
 
     @Override
-    public Block nextBlock(Block block, direction direction) {
+    public Block nextBlock(Block block, directions direction) {
         switch (direction) {
             case UP:
                 return map.getBlock(block.getX(), block.getY() - map.getTileSize());
@@ -157,7 +157,7 @@ public class Update implements IUpdate {
         }
     }
 
-    public void newBufferDirection(MoveableBlock entity, direction bufferDirection) {
+    public void newBufferDirection(MoveableBlock entity, directions bufferDirection) {
         if (bufferDirection == entity.getDirection()) {
             return;
         }
@@ -166,11 +166,11 @@ public class Update implements IUpdate {
         }
     }
     
-    public boolean canITurn(MoveableBlock entity, direction bufferDirection) {
+    public boolean canITurn(MoveableBlock entity, directions bufferDirection) {
         return entity.getX() % tileSize == 0 && entity.getY() % tileSize == 0;
     }
 
-    public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, direction currentDirection, direction bufferDirection) {
+    public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, directions currentDirection, directions bufferDirection) {
         if (entity.getType() == BlockType.GHOST) {
             // Ghosts can turn into anything except walls
             if (bufferedNextBlock.getType() != BlockType.WALL) {
@@ -186,19 +186,19 @@ public class Update implements IUpdate {
     }
 }
 
-    public void whatToDCurrent(MoveableBlock entity, Block currentNextBlock, direction currentDirection, direction bufferDirection) {
+    public void whatToDCurrent(MoveableBlock entity, Block currentNextBlock, directions currentDirection, directions bufferDirection) {
     
         switch (currentNextBlock.getType()) {
             case WALL:
                 if (bufferDirection == currentDirection) {
-                    entity.setDirection(direction.NONE);
+                    entity.setDirection(directions.NONE);
                 }
                 break;
             case DOOR:
                 if (entity.getType() == BlockType.GHOST) {
                 }
                 if (entity.getType() == BlockType.PACMAN) {
-                    entity.setDirection(direction.NONE);
+                    entity.setDirection(directions.NONE);
                 }
                 break;
             default:

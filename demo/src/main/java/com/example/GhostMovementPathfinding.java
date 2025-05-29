@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.MoveableBlock.direction;
+import com.example.MoveableBlock.directions;
 
 public class GhostMovementPathfinding {
     private final IMap map;
@@ -54,7 +54,7 @@ public class GhostMovementPathfinding {
 
     private void RandomWalkDirectGhost(Ghost ghost) {
         if (ghost.getX() % map.getTileSize() == 0 && ghost.getY() % map.getTileSize() == 0) {
-            direction newDirection = randomWalk.search(ghost);
+            directions newDirection = randomWalk.search(ghost);
             ghost.setDirection(newDirection);
         }
     }
