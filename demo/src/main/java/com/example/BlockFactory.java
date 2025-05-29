@@ -17,7 +17,7 @@ public class BlockFactory {
         public BlockFactory() {
         }
 
-        public static Block createPellet(int x, int y, int points) {
+        public static Pellet createPellet(int x, int y, int points) {
             Pellet pellet = new Pellet(smallFoodImage, x, y);
             pellet.setType(BlockType.PELLET);
             pellet.setEaten(false);
