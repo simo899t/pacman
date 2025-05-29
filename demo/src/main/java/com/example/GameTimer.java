@@ -32,8 +32,6 @@ public class GameTimer {
         functionList = new ArrayList<>();
     }
 
-    // Example usage for delayed execution
-    // Example usage for delayed execution
     public static IGameTask atTimeRunFunction(String name, long startTime, long wantedDuration, Runnable function) {
         return new GameTask(name, startTime, wantedDuration, function);
     }
