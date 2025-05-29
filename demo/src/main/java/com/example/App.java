@@ -73,7 +73,7 @@ public class App extends Application {
         gameScore = new GameScore();
         draw = new Draw(map, canvas);
         updateImages = new UpdateImages(map);
-        revive = new Revive(map);
+        revive = new Revive();
         eater = new Eater(map, gameScore, gameTimer);
         killEntity = new KillEntity(map, gameScore, gameLives, gameTimer);
         collision = new Collision(map);

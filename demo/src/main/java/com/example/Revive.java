@@ -1,10 +1,7 @@
 package com.example;
 
 public class Revive {
-    private final IMap map;
-
-    Revive(IMap map) {
-        this.map = map;
+    Revive() {
     }
 
     public void tryReviveGhost(Ghost ghost) {
