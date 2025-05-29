@@ -75,7 +75,7 @@ public class App extends Application {
         updateImages = new UpdateImages(map);
         revive = new Revive();
         eater = new Eater(map, gameScore, gameTimer);
-        killEntity = new KillEntity(map, gameScore, gameLives, gameTimer);
+        killEntity = new KillEntity(map, gameLives, gameTimer);
         collision = new Collision(map);
 
         collideHandler = new CollideHandler(gameTimer, revive, eater, killEntity);

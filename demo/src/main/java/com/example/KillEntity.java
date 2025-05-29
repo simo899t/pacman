@@ -12,22 +12,18 @@ public class KillEntity implements IKillEntity {
     private final Image orangeGhostImage = new Image(getClass().getResource("/com/example/images/orangeGhostRight.png").toExternalForm());
 
     private final IMap map;
-    private final IGameScore score;
     private final IGameLives lives;
     private final Pacman pacman;
-    private final Ghost redGhost;
     private final Ghost blueGhost;
     private final Ghost pinkGhost;
     private final Ghost orangeGhost;
     private final GameTimer ghostResetTimer;
 
-    public KillEntity(IMap map, IGameScore score, IGameLives lives, GameTimer ghostResetTimer) {
+    public KillEntity(IMap map, IGameLives lives, GameTimer ghostResetTimer) {
         this.map = map;
-        this.score = score;
         this.lives = lives;
         this.ghostResetTimer = ghostResetTimer;
         this.pacman = map.getPacman();
-        this.redGhost = map.getRedGhost();
         this.blueGhost = map.getBlueGhost();
         this.pinkGhost = map.getPinkGhost();
         this.orangeGhost = map.getOrangeGhost();
