@@ -1,7 +1,7 @@
 package com.example;
 
 import java.util.ArrayList;
-
+import com.example.Block.BlockType;
 import javafx.scene.image.Image;
 
 public class Map implements IMap {

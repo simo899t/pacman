@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.Block.BlockType;
 import com.example.MoveableBlock.directions;
 
 public class GhostMovementPathfinding {

@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.Block.BlockType;
 import javafx.scene.image.Image;
 
 public class Eater implements IEater {

@@ -1,24 +1,25 @@
 package com.example;
 import javafx.scene.image.Image;
 
-enum BlockType {
-    PACMAN,
-    WALL,
-    GHOST,
-    BIGPELLET,
-    PELLET,
-    DOOR,
-    FRUIT,
-    TELEPORTER,
-    GHOSTHOME,
-    EMPTY
-}
 
 public class Block {
     private int x;
     private int y;
     private BlockType type;
     private Image image;
+
+    public enum BlockType {
+        PACMAN,
+        WALL,
+        GHOST,
+        BIGPELLET,
+        PELLET,
+        DOOR,
+        FRUIT,
+        TELEPORTER,
+        GHOSTHOME,
+        EMPTY
+    }
 
     public Block(Image image, int x, int y) {
         this.image = image;
