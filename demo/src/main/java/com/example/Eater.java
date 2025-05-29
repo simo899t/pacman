@@ -6,6 +6,7 @@ public class Eater implements IEater {
     private final IMap map;
     private final IGameScore score;
     private final GameTimer gameTimer;
+    private final long howLongGhostFrightened = 5000L;
 
     public Eater(IMap map, IGameScore score, GameTimer gameTimer) {
         this.map = map;
@@ -47,7 +48,7 @@ public class Eater implements IEater {
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            ghostBlinkTitle+"Start", currentTime, 3000L, () -> {
+                            ghostBlinkTitle+"Start", currentTime, howLongGhostFrightened-2000L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(whiteScaredGhost);
                             }
                         )
@@ -55,7 +56,7 @@ public class Eater implements IEater {
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            ghostBlinkTitle+"1", currentTime, 3500L, () -> {
+                            ghostBlinkTitle+"1", currentTime, howLongGhostFrightened-1500L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(blueScaredGhost);
                             }
                         )
@@ -63,7 +64,7 @@ public class Eater implements IEater {
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            ghostBlinkTitle+"2", currentTime, 4000L, () -> {
+                            ghostBlinkTitle+"2", currentTime, howLongGhostFrightened-1000L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(whiteScaredGhost);
                             }
                         )
@@ -71,7 +72,7 @@ public class Eater implements IEater {
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            ghostBlinkTitle+"3", currentTime, 4500L, () -> {
+                            ghostBlinkTitle+"3", currentTime, howLongGhostFrightened-500L, () -> {
                                 if (ghost.getState() == Ghost.states.FRIGHTENED) ghost.setImage(blueScaredGhost);
                             }
                         )
@@ -79,7 +80,7 @@ public class Eater implements IEater {
                 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
-                            "BigPelletEaten", currentTime, 5000L, () -> {        
+                            "BigPelletEaten", currentTime, howLongGhostFrightened, () -> {        
                                 setAllGhostsToChase();       
                             }
                         )
