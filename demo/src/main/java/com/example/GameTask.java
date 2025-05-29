@@ -14,7 +14,7 @@ public class GameTask implements IGameTask {
     }
 
     @Override
-    public boolean run() {
+    public boolean runFunction() {
         long currentTime = System.currentTimeMillis();
         if (currentTime - startTime >= wantedDuration) {
             function.run();

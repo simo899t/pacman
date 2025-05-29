@@ -30,13 +30,14 @@ public class Eater implements IEater {
     }
 
     public void eatBigPellet(Pellet pellet) {
-        if (!tryEat(pellet, pellet.getPoints())) 
+        if (!tryEat(pellet, pellet.getPoints())) {
             return;
+        }
 
         for (Block block : map.getAllBlocks()) {
             if (block.getType() == BlockType.GHOST) {
                 Ghost ghost = (Ghost) block;
-                if (ghost.getState() == Ghost.states.CHASE) {
+                if (ghost.getState() != Ghost.states.EATEN && ghost.getState() != Ghost.states.STILL) {
                     ghost.setState(Ghost.states.FRIGHTENED);
 
                     Image whiteScaredGhost = new Image(getClass().getResource("/com/example/images/scaredGhostnegative.png").toExternalForm());
@@ -45,6 +46,8 @@ public class Eater implements IEater {
                     long currentTime = System.currentTimeMillis();
                     ghost.setImage(blueScaredGhost);
                     String ghostBlinkTitle = ghost.getColor().toString() + "GhostFrightenedBlink";
+
+                    
 
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(

@@ -7,8 +7,8 @@ public class GameTimer {
     // Interface for tasks that can report completion
     private List<IGameTask> functionList = new ArrayList<>();
 
+
     public void addFunctionToList(IGameTask function) {
-        // Remove any existing task with the same name
         functionList.removeIf(f -> f.getName().equals(function.getName()));
         functionList.add(function);
     }
@@ -18,7 +18,7 @@ public class GameTimer {
         Iterator<IGameTask> iterator = copy.iterator();
         while (iterator.hasNext()) {
             IGameTask function = iterator.next();
-            if (function.run()) {
+            if (function.runFunction()) {
                 this.functionList.remove(function); // Remove from the original list
             }
         }
