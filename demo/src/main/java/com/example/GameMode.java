@@ -53,10 +53,11 @@ public class GameMode{
 
         // Set up initial key press detection for game start
         scene.setOnKeyPressed(event -> {
-        
             if (gameMode == mode.NOTSTARTEDYET
-                && event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN
-                || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+                && (event.getCode() == KeyCode.UP
+                    || event.getCode() == KeyCode.DOWN
+                    || event.getCode() == KeyCode.LEFT
+                    || event.getCode() == KeyCode.RIGHT)) {
                 startText.setVisible(false);
                 logoImageView.setVisible(false);
                 controller.keyPressed(event);
@@ -104,20 +105,21 @@ public class GameMode{
         } else if (gameMode == mode.WIN) {
             gameWin();
         } else if (gameMode == mode.NOTSTARTEDYET) {
-            System.out.println("I am here");
             gameLoop.stop();
             scene.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN
-                    || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
-                    
-                    gameMode = mode.PLAYING;
-                    controller.keyPressed(event);
-                    gameLoop.start();
-                    map.resetAllGhosts();
-                    System.out.println("All ghosts reset");
-                    System.out.println("Pacman is alive: " + pacman.isAlive());
-                    
-                    pacman.setAlive(true); 
+                if (event.getCode() == KeyCode.UP
+                    || event.getCode() == KeyCode.DOWN
+                    || event.getCode() == KeyCode.LEFT
+                    || event.getCode() == KeyCode.RIGHT) {
+
+                    if (gameMode == mode.NOTSTARTEDYET) {
+                        gameMode = mode.PLAYING;
+                        controller.keyPressed(event);
+                        gameLoop.start();
+                        map.resetAllGhosts();
+                        setupGameControls();
+                        pacman.setAlive(true);
+                    }
                 }
             });
         }
