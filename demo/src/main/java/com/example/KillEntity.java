@@ -19,6 +19,12 @@ public class KillEntity implements IKillEntity {
     private final Ghost orangeGhost;
     private final GameTimer ghostResetTimer;
 
+    /**
+     * Constructor for KillEntity.
+     * @param map The game map.
+     * @param lives The game lives. (needs to change when player dies)
+     * @param ghostResetTimer The game timer for resetting ghosts.
+     */
     public KillEntity(IMap map, IGameLives lives, GameTimer ghostResetTimer) {
         this.map = map;
         this.lives = lives;
@@ -28,7 +34,12 @@ public class KillEntity implements IKillEntity {
         this.pinkGhost = map.getPinkGhost();
         this.orangeGhost = map.getOrangeGhost();
     }
-        
+    
+    /**
+     * When the player dies, this method is called.
+     * It resets the player's position, lives, position and alive state.
+     * It also resets the ghosts' positions and images.
+     */
     @Override
     public void killPlayer() {
         lives.removeLife();
@@ -50,6 +61,12 @@ public class KillEntity implements IKillEntity {
         pacman.setAlive(false);
     }   
 
+    /**
+     * This method is called when a ghost is killed by Pacman.
+     * It sets the ghost's state to EATEN and marks it as eaten.
+     * 
+     * @param ghost The ghost
+     */
     @Override
     public void killGhost(Ghost ghost) {
         ghost.setState(states.EATEN);
