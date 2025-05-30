@@ -21,7 +21,7 @@ public class App extends Application {
     private IUpdate update;
     private GhostMovementPathfinding ghostMovementPathfinding;
     private UpdateImages updateImages;
-    private GameState gameState;
+    private GameMode gameMode;
     private AnimationTimer gameLoop;
     private ICollideHandler collideHandler;
     private Collision collision;
@@ -90,16 +90,16 @@ public class App extends Application {
             public void handle(long now) {
                 long startOfLoopTime = System.currentTimeMillis();
                 
+                gameMode.updateGameState();
                 draw.drawAllBlocks();
                 ghostMovementPathfinding.directAllGhosts();
                 update.updateGame(map);
                 updateImages.updateAllImages();
-                gameState.updateGameState();
                 ui.setScoreLabelText("SCORE: " + gameScore.getScore());
                 ui.updateLives(gameLives.getLives());
                 
 
-                if (gameState.getGameState() == GameState.mode.PLAYING) {
+                if (gameMode.getGameState() == GameMode.mode.PLAYING) {
                     gameTimer.runFunctionList(gameTimer.getFunctionList());
                 }
 
@@ -116,8 +116,8 @@ public class App extends Application {
         };
         
         // Create GameState instance
-        gameState = new GameState(gameLoop, gameLives, gameScore, map, ui.getGameOverText(), ui.getRestartText(), 
-                                  ui.getWinText(), ui.getStartText(), ui.getNextLevelText(), ui.getLogoImageView(), controller, scene);
+        gameMode = new GameMode(gameLoop, gameLives, gameScore, map, ui.getGameOverText(), ui.getRestartText(), 
+                                  ui.getWinText(), ui.getStartText(), ui.getNextLevelText(), ui.getLogoImageView(), controller, scene, map.getPacman());
     }
 
     public static void main(String[] args) {

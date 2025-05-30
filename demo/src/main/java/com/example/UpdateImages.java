@@ -71,7 +71,7 @@ public class UpdateImages {
                     default:
                         break;
                 }
-                if (pacmanAnimationChangeCount >= pacmanMouthSpeed && ((Pacman) entity).alive()) {
+                if (pacmanAnimationChangeCount >= pacmanMouthSpeed && ((Pacman) entity).isAlive()) {
                     pacmanAnimationStep = 1;
                     pacmanAnimationChangeCount = 0;
                 }
@@ -89,10 +89,7 @@ public class UpdateImages {
                 Ghost ghost = (Ghost) entity;
                 String GhostColor = ghost.getColor().toString();
                 String GhostImage = null;
-                if (ghost.getState() == Ghost.states.FRIGHTENED) {
-                    // GhostImage = "/com/example/images/"+GhostColor+"GhostUp.png";
-                    // done in eater right now.
-                } else if (ghost.getState() == Ghost.states.CHASE) {
+                if (ghost.getState() == Ghost.states.CHASE) {
                     switch (entity.getDirection()){
                         case UP:
                             GhostImage = "/com/example/images/"+GhostColor+"GhostUp.png";

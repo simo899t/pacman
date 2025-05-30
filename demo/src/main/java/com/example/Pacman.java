@@ -9,7 +9,7 @@ public class Pacman extends MoveableBlock {
         super(image, x, y);
     }
     
-    public boolean alive() {
+    public boolean isAlive() {
         return alive;
     }
     

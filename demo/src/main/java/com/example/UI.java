@@ -136,7 +136,7 @@ public class UI {
     }
 
     private void loadAlltext() {
-        startText = new Label("Press any button to start");
+        startText = new Label("Press Arrow Key To Start");
         startText.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         startText.setTextFill(Color.YELLOW);
         startText.setVisible(true);
@@ -156,7 +156,7 @@ public class UI {
         gameOverText.setLayoutY((canvasHeight / 2) - 60); // Position above center
 
         // Create a restart text (also initially hidden)
-        restartText = new Label("Press ENTER to restart");
+        restartText = new Label("Press ENTER To Restart");
         restartText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         restartText.setTextFill(Color.YELLOW);
         restartText.setVisible(false);
@@ -176,7 +176,7 @@ public class UI {
         winText.setLayoutY((canvasHeight / 2) - 50); // Position above center
 
         // Create a next level text (also initially hidden)
-        nextLevelText = new Label("Press any button to go to continue");
+        nextLevelText = new Label("Press Any Button To Continue");
         nextLevelText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         nextLevelText.setTextFill(Color.YELLOW);
         nextLevelText.setVisible(false);

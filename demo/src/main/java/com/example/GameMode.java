@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
-public class GameState{
+public class GameMode{
 
     public enum mode {
         NOTSTARTEDYET,
@@ -15,7 +15,7 @@ public class GameState{
         WIN
     }
 
-    private mode gameState;
+    private mode gameMode;
     private final AnimationTimer gameLoop;
     private final IGameLives gameLives;
     private final IGameScore gameScore;
@@ -27,13 +27,14 @@ public class GameState{
     private final Label nextLevelText;
     private final IController controller;
     private final Scene scene;
+    private final Pacman pacman;
 
-    public GameState(AnimationTimer gameLoop, IGameLives gameLives, IGameScore gameScore, IMap map, 
+    public GameMode(AnimationTimer gameLoop, IGameLives gameLives, IGameScore gameScore, IMap map, 
                 Label gameOverText, Label restartText, Label winText, Label startText, Label nextLevelText,
-                ImageView logoImageView, IController controller, Scene scene) {
+                ImageView logoImageView, IController controller, Scene scene, Pacman pacman) {
 
         this.map = map;
-        this.gameState = mode.NOTSTARTEDYET;
+        this.gameMode = mode.NOTSTARTEDYET;
         this.gameLoop = gameLoop;
         this.gameLives = gameLives;
         this.gameScore = gameScore;
@@ -48,17 +49,18 @@ public class GameState{
         this.restartText.setVisible(false);
         this.winText.setVisible(false);
         this.winText.setVisible(false);
-        
+        this.pacman = pacman;
+
         // Set up initial key press detection for game start
         scene.setOnKeyPressed(event -> {
         
-            if (gameState == mode.NOTSTARTEDYET
+            if (gameMode == mode.NOTSTARTEDYET
                 && event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN
                 || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
                 startText.setVisible(false);
                 logoImageView.setVisible(false);
                 controller.keyPressed(event);
-                gameState = mode.PLAYING;
+                gameMode = mode.PLAYING;
                 setupGameControls(); // Setup regular game controls
                 map.resetAllGhosts();
                 gameLoop.start();
@@ -67,14 +69,20 @@ public class GameState{
     }
 
     public mode getGameState() {
-        return this.gameState;
+        return this.gameMode;
+    }
+
+    public void setGameState(mode newState) {
+        this.gameMode = newState;
     }
 
     public void updateGameState() {
         if (gameLives.getLives() < 0) {
-            gameState = mode.GAME_OVER;
+            gameMode = mode.GAME_OVER;
         } else if (map.getPelletsLeft() == 0) {
-            gameState = mode.WIN;
+            gameMode = mode.WIN;
+        } else if (!pacman.isAlive()) {
+            gameMode = mode.NOTSTARTEDYET;            
         }
         checkGameState();
     }
@@ -87,12 +95,31 @@ public class GameState{
     }
 
     private void checkGameState() {
-        if (gameState == mode.PLAYING) {
+        System.out.println("Game mode set to " + gameMode);
+
+        if (gameMode == mode.PLAYING) {
             // Already handled by the gameLoop
-        } else if (gameState == mode.GAME_OVER) {
+        } else if (gameMode == mode.GAME_OVER) {
             gameOver();
-        } else if (gameState == mode.WIN) {
+        } else if (gameMode == mode.WIN) {
             gameWin();
+        } else if (gameMode == mode.NOTSTARTEDYET) {
+            System.out.println("I am here");
+            gameLoop.stop();
+            scene.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN
+                    || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+                    
+                    gameMode = mode.PLAYING;
+                    controller.keyPressed(event);
+                    gameLoop.start();
+                    map.resetAllGhosts();
+                    System.out.println("All ghosts reset");
+                    System.out.println("Pacman is alive: " + pacman.isAlive());
+                    
+                    pacman.setAlive(true); 
+                }
+            });
         }
         // NOTSTARTEDYET is handled by the initial key handler
     }
@@ -105,7 +132,7 @@ public class GameState{
         gameOverText.setVisible(true);
         restartText.setVisible(true);
 
-        gameState = mode.NOTSTARTEDYET;
+        gameMode = mode.NOTSTARTEDYET;
 
         // Set up event handler for restarting the game
         scene.setOnKeyPressed(event -> {
@@ -133,7 +160,7 @@ public class GameState{
         // Restore original controls with the updated controller
         scene.setOnKeyPressed(event -> {
             controller.keyPressed(event);
-            gameState = mode.PLAYING;
+            gameMode = mode.PLAYING;
         });
     }
 
@@ -157,13 +184,13 @@ public class GameState{
         winText.setVisible(false);
         nextLevelText.setVisible(false);
         
-        gameState = mode.NOTSTARTEDYET;
+        gameMode = mode.NOTSTARTEDYET;
 
         gameLoop.start();
         // Restore original controls with the updated controller
         scene.setOnKeyPressed(event -> {
             controller.keyPressed(event);
-            gameState = mode.PLAYING;
+            gameMode = mode.PLAYING;
         });
     }
     

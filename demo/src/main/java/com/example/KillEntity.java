@@ -34,17 +34,19 @@ public class KillEntity implements IKillEntity {
         lives.removeLife();
         ghostResetTimer.gameTimerReset();
         
-        pacman.setAlive(false);
         pacman.setDirection(directions.NONE);
         pacman.setBufferDirection(directions.NONE);
         pacman.setPos(pacman.getStartX(), pacman.getStartY());
-        
+
         map.resetAllGhosts();
-        
+
         pinkGhost.setImage(pinkGhostImage);
         blueGhost.setImage(blueGhostImage);
         orangeGhost.setImage(orangeGhostImage);
-    }
+
+        pacman.setAlive(false);
+        System.out.println("Pacman is alive:" + pacman.isAlive());
+    }   
 
     @Override
     public void killGhost(Ghost ghost) {

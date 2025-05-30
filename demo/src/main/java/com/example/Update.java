@@ -111,8 +111,7 @@ public class Update implements IUpdate {
             }
 
             // Add this check right before movement processing
-            if (entityType == BlockType.PACMAN && !((Pacman) entity).alive()) {
-                ((Pacman) entity).setAlive(true);
+            if (entityType == BlockType.PACMAN && !((Pacman) entity).isAlive()) {
                 return; // Skip movement if Pacman was killed during collision
             } else if (entity.getType() == BlockType.GHOST && ((Ghost) entity).getState() == Ghost.states.STILL) {
                 // If the ghost is eaten, it should not move
