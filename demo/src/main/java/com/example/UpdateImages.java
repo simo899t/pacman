@@ -1,15 +1,22 @@
 package com.example;
 
-import javafx.scene.image.Image;
 import com.example.Block.BlockType;
+
+import javafx.scene.image.Image;
 
 public class UpdateImages {
     private final IMap map;
 
+    /**
+     * Constructor for UpdateImages that initializes the map.
+     * 
+     * @param map The map containing all blocks to update images for.
+     */
     public UpdateImages(IMap map) {
         this.map = map;
     }  
 
+    // Initialization of images and animation variables.
     int pacmanAnimationStep = 0;
     int pacmanAnimationChangeCount = 0;
     int pacmanMouthSpeed = 8;
@@ -37,7 +44,10 @@ public class UpdateImages {
     Image orangeGhostImageUp = new Image(getClass().getResource("/com/example/images/orangeGhostUp.png").toExternalForm());
     Image orangeGhostImageDown = new Image(getClass().getResource("/com/example/images/orangeGhostDown.png").toExternalForm());
 
-    
+    /**
+     * Updates the images of all moveable blocks in the map.
+     * This method should be called within a gameloop to refresh the images based on their current state.
+     */
     public void updateAllImages() {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
@@ -47,14 +57,15 @@ public class UpdateImages {
     }
 
 
-
+    /**
+     * Updates the image of a specific moveable block based on its type and state.
+     * 
+     * @param entity The moveable block whose image is to be updated.
+     */
     public void updateImage(MoveableBlock entity) {
-        // int animationImage = block.getAnimationImage();
-        // if (animationImage == 1) {
-        //     animationImage = 1;
-
         if (entity.getType() == BlockType.PACMAN) {
             if (pacmanAnimationStep == 0) {
+                // Setting the direction based on pacman's current direction.
                 switch (entity.getDirection()) {
                     case UP:
                         entity.setImage(pacmanImageUp);
@@ -71,12 +82,15 @@ public class UpdateImages {
                     default:
                         break;
                 }
+                // Doing the actual pacman animation, making it open and close its mouth.
                 if (pacmanAnimationChangeCount >= pacmanMouthSpeed && ((Pacman) entity).isAlive()) {
+                    // If it is here then mouth is open.
                     pacmanAnimationStep = 1;
                     pacmanAnimationChangeCount = 0;
                 }
                 pacmanAnimationChangeCount++;
                 } else {
+                    // If it is here then mouth is closed.
                     entity.setImage(pacmanImage);
                     if (pacmanAnimationChangeCount >= pacmanMouthSpeed) {
                         pacmanAnimationStep = 0;
@@ -87,6 +101,7 @@ public class UpdateImages {
         } else if (entity.getType() == BlockType.GHOST) {
             if (entity instanceof Ghost) {
                 Ghost ghost = (Ghost) entity;
+                // The color of the ghost is determined by its type and used for the image path.
                 String GhostColor = ghost.getColor().toString();
                 String GhostImage = null;
                 if (ghost.getState() == Ghost.states.CHASE) {
@@ -128,6 +143,7 @@ public class UpdateImages {
                 } else if (ghost.getState() == Ghost.states.STILL) {
                     GhostImage = "/com/example/images/" + GhostColor + "GhostRight.png";
                 }
+                // If a GhostImage is determined, update the entity's image.
                 if (GhostImage != null) {
                     Image updatedGhost = new Image(getClass().getResource(GhostImage).toExternalForm());
                     entity.setImage(updatedGhost);

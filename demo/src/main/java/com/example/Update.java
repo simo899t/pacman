@@ -10,6 +10,13 @@ public class Update implements IUpdate {
     private final Collision collision;
     private final ICollideHandler collideHandler;
 
+    /**
+     * Constructor for Update that initializes the map, move handler, collision checker, and collide handler.
+     * 
+     * @param map The map containing all blocks to update.
+     * @param collideHandler The handler for collision events.
+     * @param collision The collision checker to determine block collisions.
+     */
     public Update(IMap map, ICollideHandler collideHandler, Collision collision) {
         this.map = map;
         this.tileSize = map.getTileSize(); 
@@ -19,6 +26,14 @@ public class Update implements IUpdate {
   
     }
 
+    /**
+     * Updates the state of all moveable blocks in the game.
+     * This includes handling collisions, movement, and direction changes for Pacman and Ghosts.
+     * It ensures that only moveable blocks are processed, and their interactions with other blocks are handled appropriately.
+     * This method should be called within a game loop to refresh the movement and interactions of entities.
+     * 
+     * @param map The map containing all blocks to update.
+     */
     public void updateGame(IMap map) {
         for (Block block : map.getAllBlocks()) {
             if (block instanceof MoveableBlock) {
@@ -29,6 +44,12 @@ public class Update implements IUpdate {
         }
     }
 
+    /**
+     * Updates the state of a specific moveable block (Pacman or Ghost).
+     * This method handles collisions, direction changes, and movement logic.
+     * 
+     * @param entity The moveable block to update.
+     */
     @Override
     public void updateEntity(MoveableBlock entity) {
         directions bufferDirection = entity.getBufferDirection();
@@ -36,6 +57,7 @@ public class Update implements IUpdate {
         BlockType entityType = entity.getType();
         BlockType blockType;
 
+        // If the entity wants to turn around 180, it should be able to do so.
         boolean isReverse = (currentDirection == directions.LEFT && bufferDirection == directions.RIGHT) ||
                             (currentDirection == directions.RIGHT && bufferDirection == directions.LEFT) ||
                             (currentDirection == directions.UP && bufferDirection == directions.DOWN) ||
@@ -59,7 +81,8 @@ public class Update implements IUpdate {
                     case GHOST:
                         collideHandler.ghostCollision((Ghost) block);
                         break;
-                    case TELEPORTER: // this could be a method by itself, but need nextblock
+                    case TELEPORTER:
+                        // Teleport Pacman to the next teleporter block.
                         for (Block otherTeleporter : map.getAllBlocks()) {
                             if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
                                 Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
@@ -82,7 +105,8 @@ public class Update implements IUpdate {
                     case GHOSTHOME:
                         collideHandler.homeCollision((Ghost) entity);
                         break;
-                    case TELEPORTER: // this also could be a method by itself, but need nextblock
+                    case TELEPORTER: 
+                        // Teleport Ghost to the next teleporter block.
                         for (Block otherTeleporter : map.getAllBlocks()) {
                             if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
                                 Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
@@ -140,7 +164,13 @@ public class Update implements IUpdate {
         }
     }
 
-
+    /**
+     * Returns the next block in the specified direction from the given block.
+     * 
+     * @param block The current block.
+     * @param direction The direction to move to the next block.
+     * @return The next block in the specified direction, or the current block if no valid next block exists.
+     */
     @Override
     public Block nextBlock(Block block, directions direction) {
         switch (direction) {
@@ -157,6 +187,12 @@ public class Update implements IUpdate {
         }
     }
 
+    /**
+     * Sets a new buffer direction for the entity if it differs from the current direction.
+     * 
+     * @param entity The moveable block whose direction is to be updated.
+     * @param bufferDirection The new direction to set as the buffer.
+     */
     public void newBufferDirection(MoveableBlock entity, directions bufferDirection) {
         if (bufferDirection == entity.getDirection()) {
             return;
@@ -166,10 +202,27 @@ public class Update implements IUpdate {
         }
     }
     
+    /**
+     * Checks if the entity can turn based on its current position and tile size.
+     * Making sure that the entity is aligned with the grid before allowing a turn.
+     * 
+     * @param entity The moveable block to check.
+     * @param bufferDirection The direction to check for turning.
+     * @return true if the entity can turn, false otherwise.
+     */
     public boolean canITurn(MoveableBlock entity, directions bufferDirection) {
         return entity.getX() % tileSize == 0 && entity.getY() % tileSize == 0;
     }
 
+    /**
+     * Determines what to do with the buffered next block based on the entity's type and direction.
+     * Allowing ghosts to turn into any block except walls, and Pacman to turn into any block except walls or doors.
+     * 
+     * @param entity The moveable block whose direction is to be updated.
+     * @param bufferedNextBlock The next block in the buffered direction.
+     * @param currentDirection The current direction of the entity.
+     * @param bufferDirection The buffered direction to check against.
+     */
     public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, directions currentDirection, directions bufferDirection) {
         if (bufferedNextBlock == null) {
             return; // No next block to check
@@ -178,28 +231,34 @@ public class Update implements IUpdate {
             // Ghosts can turn into anything except walls
             if (bufferedNextBlock.getType() != BlockType.WALL) {
                 entity.setDirection(bufferDirection);
-                return;
             }
         } else {
             // Pacman can't turn into walls or doors
             if (bufferedNextBlock.getType() != BlockType.WALL && bufferedNextBlock.getType() != BlockType.DOOR) {
                 entity.setDirection(bufferDirection);
-                return;
             }
-    }
-}
+        }
+    }   
 
+    /**
+     * Determines what to do with the current next block based on the entity's type and direction.
+     * This method handles collisions with walls and doors, ensuring that Pacman and Ghosts behave correctly.
+     * 
+     * @param entity The moveable block whose direction is to be updated.
+     * @param currentNextBlock The next block in the current direction.
+     * @param currentDirection The current direction of the entity.
+     * @param bufferDirection The buffered direction to check against.
+     */
     public void whatToDCurrent(MoveableBlock entity, Block currentNextBlock, directions currentDirection, directions bufferDirection) {
-    
         switch (currentNextBlock.getType()) {
             case WALL:
+                // No entity can pass through walls, so the direction is set to NONE.
                 if (bufferDirection == currentDirection) {
                     entity.setDirection(directions.NONE);
                 }
                 break;
             case DOOR:
-                if (entity.getType() == BlockType.GHOST) {
-                }
+                // Pacman cannot pass through doors, so the direction is set to NONE.
                 if (entity.getType() == BlockType.PACMAN) {
                     entity.setDirection(directions.NONE);
                 }
