@@ -45,7 +45,6 @@ public class KillEntity implements IKillEntity {
         orangeGhost.setImage(orangeGhostImage);
 
         pacman.setAlive(false);
-        System.out.println("Pacman is alive:" + pacman.isAlive());
     }   
 
     @Override

@@ -96,8 +96,6 @@ public class GameMode{
     }
 
     private void checkGameState() {
-        System.out.println("Game mode set to " + gameMode);
-
         if (gameMode == mode.PLAYING) {
             // Already handled by the gameLoop
         } else if (gameMode == mode.GAME_OVER) {

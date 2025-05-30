@@ -90,10 +90,10 @@ public class App extends Application {
             public void handle(long now) {
                 long startOfLoopTime = System.currentTimeMillis();
                 
-                gameMode.updateGameState();
-                draw.drawAllBlocks();
                 ghostMovementPathfinding.directAllGhosts();
                 update.updateGame(map);
+                gameMode.updateGameState();
+                draw.drawAllBlocks();
                 updateImages.updateAllImages();
                 ui.setScoreLabelText("SCORE: " + gameScore.getScore());
                 ui.updateLives(gameLives.getLives());
