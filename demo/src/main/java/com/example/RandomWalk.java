@@ -9,10 +9,16 @@ public class RandomWalk {
     private final IGrid grid;
     private final Random random = new Random();
 
+    /**
+     * Constructor for RandomWalk that initializes the grid.
+     * 
+     * @param grid The grid to perform random walk on.
+     */
     public RandomWalk(IGrid grid) {
         this.grid = grid;
     }
 
+    
     public directions search(Ghost ghost) {
         // Convert pixel coordinates to grid coordinates
         int col = grid.toCol(ghost.getX());

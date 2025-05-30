@@ -32,6 +32,13 @@ public class UI {
     private final int canvasHeight;
     private final Group canvasContainer;
 
+    /**
+     * Constructor for UI that initializes the UI components.
+     * 
+     * @param canvasContainer The container for the canvas where the game is displayed.
+     * @param canvasWidth The width of the canvas.
+     * @param canvasHeight The height of the canvas.
+     */
     public UI(Group canvasContainer, int canvasWidth, int canvasHeight) {
         this.root = new VBox();
         this.scorePanel = new HBox();
@@ -44,6 +51,7 @@ public class UI {
         loadAlltext();
     }
 
+    // Getters for UI components
     public Label getStartText() {
         return startText;
     }
@@ -59,11 +67,28 @@ public class UI {
     public Label getNextLevelText() {
         return nextLevelText;
     }
+    public ImageView getLogoImageView() {
+        return logoImageView;
+    }
+
+    /**
+     * Sets the text of the score label.
+     * This method updates the score label with the provided text.
+     * 
+     * @param text The text to set for the score label.
+     */
     public void setScoreLabelText(String text) {
         if (scoreLabel != null) {
             scoreLabel.setText(text);
         }
     }  
+
+    /**
+     * Updates the lives panel with the current number of lives left.
+     * This method clears the existing lives panel and repopulates it with new life icons.
+     * 
+     * @param livesLeft The number of lives left to display.
+     */
     public void updateLives(int livesLeft) {
         // First remove livesPanel from scorePanel if present
         scorePanel.getChildren().remove(livesPanel);
@@ -72,8 +97,8 @@ public class UI {
         livesPanel.getChildren().clear();
         
         // Set vertical alignment and padding for the livesPanel
-        livesPanel.setPadding(new Insets(10, 0, 0, 0)); // Top padding of 10px
-        livesPanel.setAlignment(Pos.BOTTOM_LEFT); // Align to bottom-left
+        livesPanel.setPadding(new Insets(10, 0, 0, 0)); 
+        livesPanel.setAlignment(Pos.BOTTOM_LEFT);
         
         // Add new life icons to livesPanel
         for (int i = 0; i < livesLeft; i++) { 
@@ -82,9 +107,6 @@ public class UI {
             lifeIcon.setFitWidth(40);
             lifeIcon.setFitHeight(40);
             
-            // Add margin to individual icons if needed
-            // HBox.setMargin(lifeIcon, new Insets(5, 0, 0, 0));
-            
             // Add to livesPanel
             livesPanel.getChildren().add(lifeIcon);
         }
@@ -92,11 +114,11 @@ public class UI {
         // Add livesPanel to scorePanel
         scorePanel.getChildren().add(livesPanel);
     }
-    public ImageView getLogoImageView() {
-        return logoImageView;
-    }
 
-
+    /**
+     * Loads the panels and sets their properties.
+     * This method initializes the score panel and sets its background and alignment.
+     */
     private void loadPanels() {
         root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         scorePanel.setPrefHeight(30); // Set height for score panel
@@ -115,6 +137,10 @@ public class UI {
         scorePanel.setSpacing(30);
     }
 
+    /**
+     * Loads the images used in the UI.
+     * This method initializes the logo image and positions it above the start text.
+     */
     private void loadImages() {
         Image logoImage = new Image(getClass().getResource("/com/example/images/logo.png").toExternalForm());
         logoImageView = new ImageView(logoImage);
@@ -135,6 +161,11 @@ public class UI {
         canvasContainer.getChildren().addAll(logoImageView);
     }
 
+    /**
+     * Loads all text labels used in the UI.
+     * This method initializes the start text, game over text, restart text, win text, and next level text.
+     * It positions them appropriately within the canvas container.
+     */
     private void loadAlltext() {
         startText = new Label("Press Arrow Key To Start");
         startText.setFont(Font.font("Arial", FontWeight.BOLD, 30));
@@ -189,6 +220,12 @@ public class UI {
         canvasContainer.getChildren().addAll(gameOverText, restartText, winText, startText, nextLevelText);
     }
 
+    /**
+     * Sets the scene for the UI.
+     * This method adds the score panel and canvas container to the root layout and returns a new Scene.
+     * 
+     * @return A new Scene containing the UI components.
+     */
     public Scene setScene() {
         root.getChildren().addAll(scorePanel, canvasContainer);
         Scene scene = new Scene(root, canvasWidth, Math.max(canvasHeight + 30, 30));
