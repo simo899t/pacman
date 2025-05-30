@@ -8,10 +8,22 @@ import com.example.Node.neighbourDirection;
 public class BFS {
     private final IGrid grid;
 
+    /**
+     * Constructor for BFS that initializes the grid.
+     * 
+     * @param grid The grid to perform BFS on.
+     */
     public BFS(IGrid grid) {
         this.grid = grid;
     }
 
+    /**
+     * Searches for the shortest path from the ghost to the target block using BFS.
+     * 
+     * @param ghost The ghost to search from.
+     * @param target The target block (Pacman).
+     * @return The direction to move towards Pacman, or NONE if no path exists.
+     */
     public directions search(Ghost ghost, Block target) {
         Node startNode = grid.getNode(grid.toCol(ghost.getX()), grid.toRow(ghost.getY()));
         Node targetNode = grid.getNode(grid.toCol(target.getX()), grid.toRow(target.getY()));
@@ -37,15 +49,16 @@ public class BFS {
                 // Check if this neighbor is already Pacman
                 if (startneighbors[i].equals(targetNode)) {
                     // Found Pacman at startnode neighbors!
-                    switch (i) {
-                        case 0: return directions.UP;
-                        case 1: return directions.DOWN;
-                        case 2: return directions.LEFT;
-                        case 3: return directions.RIGHT;
-                        default: return directions.NONE;
-                    }
+                     return switch (i) {
+                        case 0 -> directions.UP;
+                        case 1 -> directions.DOWN;
+                        case 2 -> directions.LEFT;
+                        case 3 -> directions.RIGHT;
+                        default -> directions.NONE;
+                    };
                 }
                 
+                // Mark neighbor as seen and add to queue
                 queue.add(startneighbors[i]);
                 startneighbors[i].setSeen(true);
                 seenNodes.add(startneighbors[i]);
@@ -87,19 +100,25 @@ public class BFS {
             }
         }
         
-        // If we get here, no path exists (should never happen in a proper maze)
+        // If BFS gets here, no path exists (should never happen in a proper maze)
         System.out.println("WARNING: No path found to Pacman!");
         return directions.NONE;
     }
 
+    /**
+     * Converts the neighbourDirection to the corresponding directions enum.
+     * 
+     * @param neighbourDirection The direction from the neighbor node.
+     * @return The corresponding directions enum.
+     */
     private directions directionFromNeighborDirection(neighbourDirection neighbourDirection) {
-        switch (neighbourDirection) {
-            case UP: return directions.UP;
-            case DOWN: return directions.DOWN;
-            case LEFT: return directions.LEFT;
-            case RIGHT: return directions.RIGHT;
-            default: return directions.NONE;
-        }
+        return switch (neighbourDirection) {
+            case UP -> directions.UP;
+            case DOWN -> directions.DOWN;
+            case LEFT -> directions.LEFT;
+            case RIGHT -> directions.RIGHT;
+            default -> directions.NONE;
+        };
     }
 
 }

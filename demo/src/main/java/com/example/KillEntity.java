@@ -40,9 +40,12 @@ public class KillEntity implements IKillEntity {
 
         map.resetAllGhosts();
 
-        pinkGhost.setImage(pinkGhostImage);
-        blueGhost.setImage(blueGhostImage);
-        orangeGhost.setImage(orangeGhostImage);
+        if (pinkGhost != null) 
+            pinkGhost.setImage(pinkGhostImage);
+        if (blueGhost != null)
+            blueGhost.setImage(blueGhostImage);
+        if (orangeGhost != null)
+            orangeGhost.setImage(orangeGhostImage);
 
         pacman.setAlive(false);
     }   

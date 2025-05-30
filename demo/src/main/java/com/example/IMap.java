@@ -15,8 +15,6 @@ public interface IMap {
     public int getRows();
     public int getPelletsLeft();
     public void decreasePelletsLeft();
-    public void addPellet();
-    public void resetPelletsLeft();
     public void resetMap();
     public String[] getMap();
     public Block getBlock(int x, int y);

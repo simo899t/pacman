@@ -30,6 +30,13 @@ public class App extends Application {
     private Scene scene;
     private GameTimer gameTimer;
 
+
+    /**
+     * The main entry point for the JavaFX application.
+     * Initializes the game components and starts the game loop.
+     *
+     * @param stage The primary stage for this application, onto which the application scene is set.
+     */
     @Override
     public void start(Stage stage) {
         stage.setTitle("Pac-Man Game");
@@ -68,6 +75,7 @@ public class App extends Application {
             }
         });
 
+        // Initialize game components
         ghostMovementPathfinding = new GhostMovementPathfinding(map, grid);
         gameLives = new GameLives();
         gameScore = new GameScore();
@@ -77,7 +85,6 @@ public class App extends Application {
         eater = new Eater(map, gameScore, gameTimer);
         killEntity = new KillEntity(map, gameLives, gameTimer);
         collision = new Collision(map);
-
         collideHandler = new CollideHandler(gameTimer, revive, eater, killEntity);
         update = new Update(map, collideHandler, collision);
         
@@ -90,19 +97,29 @@ public class App extends Application {
             public void handle(long now) {
                 long startOfLoopTime = System.currentTimeMillis();
                 
+                // update ghost pathfinding
                 ghostMovementPathfinding.directAllGhosts();
+
+                // update pacman and ghost movement
                 update.updateGame(map);
+
+                // update game state
                 gameMode.updateGameState();
+
+                // draw all blocks
                 draw.drawAllBlocks();
+
+                // update images (& animation) and UI
                 updateImages.updateAllImages();
                 ui.setScoreLabelText("SCORE: " + gameScore.getScore());
                 ui.updateLives(gameLives.getLives());
                 
-
+                // play game-functions for ghost start, animation, etc.
                 if (gameMode.getGameState() == GameMode.mode.PLAYING) {
                     gameTimer.runFunctionList(gameTimer.getFunctionList());
                 }
 
+                // make sure the game loop runs at a consistent frame rate
                 long diff = System.currentTimeMillis() - startOfLoopTime;
                 if (diff < 800 / 60) {
                     try {
@@ -120,6 +137,11 @@ public class App extends Application {
                                   ui.getWinText(), ui.getStartText(), ui.getNextLevelText(), ui.getLogoImageView(), controller, scene, map.getPacman());
     }
 
+    /**
+     * The main method to launch the JavaFX application.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         launch(args);
     }

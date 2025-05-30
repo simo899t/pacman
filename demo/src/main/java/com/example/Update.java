@@ -171,6 +171,9 @@ public class Update implements IUpdate {
     }
 
     public void whatToDoBuffer(MoveableBlock entity, Block bufferedNextBlock, directions currentDirection, directions bufferDirection) {
+        if (bufferedNextBlock == null) {
+            return; // No next block to check
+        }
         if (entity.getType() == BlockType.GHOST) {
             // Ghosts can turn into anything except walls
             if (bufferedNextBlock.getType() != BlockType.WALL) {

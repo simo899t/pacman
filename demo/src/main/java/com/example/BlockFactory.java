@@ -4,19 +4,26 @@ import com.example.Block.BlockType;
 import javafx.scene.image.Image;
 
 public class BlockFactory {
-    static Image pacmanImage = new Image(BlockFactory.class.getResource("/com/example/images/pacman.png").toExternalForm());
-    static Image wallImage = new Image(BlockFactory.class.getResource("/com/example/images/wall.png").toExternalForm());
-    static Image doorClosed = new Image(BlockFactory.class.getResource("/com/example/images/doorClosed.png").toExternalForm());
-    static Image redGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/redGhostRight.png").toExternalForm());
-    static Image blueGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/blueGhostRight.png").toExternalForm());
-    static Image pinkGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/pinkGhostRight.png").toExternalForm());
-    static Image orangeGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/orangeGhostRight.png").toExternalForm());
-    static Image smallFoodImage = new Image(BlockFactory.class.getResource("/com/example/images/smallFood.png").toExternalForm());
-    static Image bigFoodImage = new Image(BlockFactory.class.getResource("/com/example/images/bigFood.png").toExternalForm());
-  
-        public BlockFactory() {
-        }
 
+
+    // Static initial images for different blocks
+    private static Image pacmanImage = new Image(BlockFactory.class.getResource("/com/example/images/pacman.png").toExternalForm());
+    private static Image wallImage = new Image(BlockFactory.class.getResource("/com/example/images/wall.png").toExternalForm());
+    private static Image doorClosed = new Image(BlockFactory.class.getResource("/com/example/images/doorClosed.png").toExternalForm());
+    private static Image redGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/redGhostRight.png").toExternalForm());
+    private static Image blueGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/blueGhostRight.png").toExternalForm());
+    private static Image pinkGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/pinkGhostRight.png").toExternalForm());
+    private static Image orangeGhostImage = new Image(BlockFactory.class.getResource("/com/example/images/orangeGhostRight.png").toExternalForm());
+    private static Image smallFoodImage = new Image(BlockFactory.class.getResource("/com/example/images/smallFood.png").toExternalForm());
+    private static Image bigFoodImage = new Image(BlockFactory.class.getResource("/com/example/images/bigFood.png").toExternalForm());
+
+        /**
+         * Factory method for crating a Pellet block.
+         * @param x
+         * @param y
+         * @param points
+         * @return Pellet
+         */
         public static Pellet createPellet(int x, int y, int points) {
             Pellet pellet = new Pellet(smallFoodImage, x, y);
             pellet.setType(BlockType.PELLET);
@@ -25,32 +32,63 @@ public class BlockFactory {
             return pellet;
         }
 
+        /**
+         * Factory method for creating a GhostHome block.
+         * @param x
+         * @param y
+         * @return GhostHome
+         */
         public static GhostHome createGhostHome(int x, int y) {
             GhostHome ghostHome = new GhostHome(x, y);
             ghostHome.setType(BlockType.GHOSTHOME);
             return ghostHome;
         }
 
+        /**
+         * Factory method for creating a Door block.
+         * @param x
+         * @param y
+         * @return Door
+         */
         public static Door createDoor(int x, int y) {
             Door door = new Door(doorClosed, x, y);
             door.setType(BlockType.DOOR);
             return door;
         }
 
-        public static Pellet createBigPellet(int x, int y, int points) {
-            Pellet bigPellet = new Pellet(bigFoodImage, x, y);
+        /**
+         * Factory method for creating a Big Pellet block.
+         * @param x
+         * @param y
+         * @param points
+         * @return BigPellet
+         */
+        public static BigPellet createBigPellet(int x, int y, int points) {
+            BigPellet bigPellet = new BigPellet(bigFoodImage, x, y);
             bigPellet.setType(BlockType.BIGPELLET);
             bigPellet.setEaten(false);
             bigPellet.setPoints(points);
             return bigPellet;
         }
 
+        /**
+         * Factory method for creating a EmptyBlock.
+         * @param x
+         * @param y
+         * @return EmptyBlock
+         */
         public static EmptyBlock createEmptyBlock(int x, int y) {
             EmptyBlock eatenPellet = new EmptyBlock(x, y);
             eatenPellet.setType(BlockType.EMPTY);
             return eatenPellet;
         }
 
+        /**
+         * Factory method for creating a Wall block
+         * @param x
+         * @param y
+         * @return Wall
+         */
         static Wall createWall(int x, int y) {
             Wall wall = new Wall(wallImage, x, y);
             wall.setType(BlockType.WALL);
