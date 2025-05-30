@@ -10,16 +10,26 @@ public class Grid implements IGrid {
     private final int tileSize;
     private Node currentNode;
 
+    /**
+     * Constructor for the Grid class.
+     * Initializes the grid based on the provided map.
+     * 
+     * @param map The map to create the grid from.
+     */
     public Grid(IMap map) {
         this.map = map;
-        this.cols  = map.getCols();
-        this.rows  = map.getRows();
-        this.tileSize = map.getTileSize();
-        this.grid  = new Node[cols][rows];
+        this.cols  = map.getCols(); // Get the number of columns from the map
+        this.rows  = map.getRows(); // Get the number of rows from the map
+        this.tileSize = map.getTileSize(); // Get the tile size from the map
+        this.grid  = new Node[cols][rows]; // Initialize the grid with the number of columns and rows
         makeGrid();
     }
 
-    public void makeGrid() {
+    /**
+     * Creates the grid based on the map.
+     * Initializes nodes for each tile and connects them to their neighbors.
+     */
+    private void makeGrid() {
         String[] gridMap = map.getMap();  
         
         for (int row = 0; row < rows; row++) {
@@ -33,7 +43,7 @@ public class Grid implements IGrid {
             }
         }
         
-        // Second pass: Connect all nodes properly
+        // Second pass: Connect all nodes to their neighbors with the connectNodeNeighbors method
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (grid[col][row] != null) {
@@ -43,6 +53,13 @@ public class Grid implements IGrid {
         }
     }
 
+    /**
+     * Connects the neighbors of a given node based on its position in the grid.
+     * 
+     * @param node The node to connect neighbors for.
+     * @param col  The column index of the node.
+     * @param row  The row index of the node.
+     */
     @Override
     public void connectNodeNeighbors(Node node, int col, int row) {
         // Check all four directions

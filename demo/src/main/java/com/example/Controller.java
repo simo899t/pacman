@@ -5,9 +5,18 @@ import javafx.scene.input.KeyEvent;
 public class Controller implements IController {
     private final Pacman pacman;
 
+    /**
+     * Constructor for the Controller class.
+     * @param pacman The Pacman instance that this controller will control.
+     */
     public Controller(Pacman pacman) {
         this.pacman = pacman;
     }
+
+    /**
+     * Handles key press events to change the direction of Pacman.
+     * @param key The KeyEvent that contains the key pressed information.
+     */
     public void keyPressed(KeyEvent key) {
         switch (key.getCode()) {
             case UP:

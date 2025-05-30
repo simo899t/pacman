@@ -9,12 +9,28 @@ public class Eater implements IEater {
     private final GameTimer gameTimer;
     private final long howLongGhostFrightened = 5000L;
 
+    /**
+     * Constructor for Eater.
+     *
+     * @param map The game map.
+     * @param score The game score.
+     * @param gameTimer The game timer.
+     */
     public Eater(IMap map, IGameScore score, GameTimer gameTimer) {
         this.map = map;
         this.score = score;
         this.gameTimer = gameTimer;
     }
 
+    /**
+     * This method tries to eat a pellet. If the pellet is already eaten, it returns false.
+     * If the pellet is successfully eaten, it updates the score and the pellesLeft
+     * Then returns true.
+     *
+     * @param pellet The pellet to be eaten.
+     * @param points The points awarded for eating the pellet.
+     * @return true if the pellet was successfully eaten, false otherwise.
+     */
     private boolean tryEat(Pellet pellet, int points) {
         if (pellet.isEaten()){
             return false;
@@ -26,15 +42,27 @@ public class Eater implements IEater {
         return true;
     }
 
+    /**
+     * This method uses tryEat to eat a pellet.
+     *
+     * @param pellet The pellet to be eaten.
+     */
     public void eatPellet(Pellet pellet) {
         tryEat(pellet, pellet.getPoints());
     }
 
-    public void eatBigPellet(Pellet pellet) {
-        if (!tryEat(pellet, pellet.getPoints())) {
+    /**
+     * This method uses tryEat to eat a big pellet.
+     * If the pellet is successfully eaten, it sets all ghosts to frightened state
+     *
+     * @param pellet The big pellet to be eaten.
+     */
+    public void eatBigPellet(BigPellet bigPellet) {
+        if (!tryEat((Pellet) bigPellet, ((Pellet) bigPellet).getPoints())) {
             return;
         }
 
+        // If the pellet was successfully eaten, set all ghosts to frightened state
         for (Block block : map.getAllBlocks()) {
             if (block.getType() == BlockType.GHOST) {
                 Ghost ghost = (Ghost) block;
@@ -49,7 +77,8 @@ public class Eater implements IEater {
                     String ghostBlinkTitle = ghost.getColor().toString() + "GhostFrightenedBlink";
 
                     
-
+                    // Schedule the ghost to blink while frightened with functions in the game timer
+                    // The ghost will switch 4 times, starting 2 seconds after it is frightened
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
                             ghostBlinkTitle+"Start", currentTime, howLongGhostFrightened-2000L, () -> {
@@ -82,6 +111,7 @@ public class Eater implements IEater {
                         )
                     );
                 
+                    // After the frightened time has passed, set all ghosts to chase state
                     gameTimer.addFunctionToList(
                         GameTimer.atTimeRunFunction(
                             "BigPelletEaten", currentTime, howLongGhostFrightened, () -> {        

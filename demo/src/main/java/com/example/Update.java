@@ -54,7 +54,7 @@ public class Update implements IUpdate {
                         collideHandler.pelletCollision((Pellet) block);
                         break;
                     case BIGPELLET:
-                        collideHandler.bigPelletCollision((Pellet) block);
+                        collideHandler.bigPelletCollision((BigPellet) block);
                         break;
                     case GHOST:
                         collideHandler.ghostCollision((Ghost) block);

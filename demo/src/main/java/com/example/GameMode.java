@@ -34,7 +34,7 @@ public class GameMode{
                 ImageView logoImageView, IController controller, Scene scene, Pacman pacman) {
 
         this.map = map;
-        this.gameMode = mode.NOTSTARTEDYET;
+        this.gameMode = mode.NOTSTARTEDYET;     // Initial game state
         this.gameLoop = gameLoop;
         this.gameLives = gameLives;
         this.gameScore = gameScore;
@@ -45,7 +45,7 @@ public class GameMode{
         this.nextLevelText = nextLevelText;
         this.controller = controller;
         this.scene = scene;
-        this.gameOverText.setVisible(false);
+        this.gameOverText.setVisible(false); // Hide gameover and win text initially
         this.restartText.setVisible(false);
         this.winText.setVisible(false);
         this.winText.setVisible(false);
@@ -69,6 +69,7 @@ public class GameMode{
         });
     }
 
+    //getter and setter for gameMode
     public mode getGameState() {
         return this.gameMode;
     }
@@ -77,6 +78,11 @@ public class GameMode{
         this.gameMode = newState;
     }
 
+    /**
+     * Updates the game state based on the current conditions.
+     * This method checks if the game is over, if the player has won, or if Pacman is dead.
+     * It updates the gameMode accordingly and calls checkGameState to handle the state changes.
+     */
     public void updateGameState() {
         if (gameLives.getLives() < 0) {
             gameMode = mode.GAME_OVER;
@@ -88,6 +94,11 @@ public class GameMode{
         checkGameState();
     }
 
+    /**
+     * Sets up the game controls for the player.
+     * This method binds the key press events to the controller's keyPressed method,
+     * allowing the player to control Pacman using the arrow keys.
+     */
     private void setupGameControls() {
         // Set up game controls with the controller
         scene.setOnKeyPressed(event -> {
@@ -95,6 +106,11 @@ public class GameMode{
         });
     }
 
+    /**
+     * Checks the current game state and performs actions based on it.
+     * This method handles the different game modes: PLAYING, GAME_OVER, WIN, and NOTSTARTEDYET.
+     * It updates the game loop and sets up key event handlers as needed.
+     */
     private void checkGameState() {
         if (gameMode == mode.PLAYING) {
             // Already handled by the gameLoop
@@ -102,7 +118,9 @@ public class GameMode{
             gameOver();
         } else if (gameMode == mode.WIN) {
             gameWin();
-        } else if (gameMode == mode.NOTSTARTEDYET) {
+        } else if (gameMode == mode.NOTSTARTEDYET) { // Game not started yet either after game over or death
+
+            // ensures that the game loop is stopped when the game is not started yet
             gameLoop.stop();
             scene.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.UP
@@ -121,9 +139,13 @@ public class GameMode{
                 }
             });
         }
-        // NOTSTARTEDYET is handled by the initial key handler
     }
 
+    /**
+     * Handles the game over state.
+     * This method stops the game loop, displays the game over text and restart text,
+     * and sets up an event handler to restart the game when the Enter key is pressed.
+     */
     private void gameOver() {
         // Stop the game loop
         gameLoop.stop();
@@ -132,6 +154,7 @@ public class GameMode{
         gameOverText.setVisible(true);
         restartText.setVisible(true);
 
+        // ensure that the game loop is stopped when the game is not started yet
         gameMode = mode.NOTSTARTEDYET;
 
         // Set up event handler for restarting the game
@@ -143,6 +166,11 @@ public class GameMode{
         });
     }
 
+    /**
+     * Resets the game state to start a new game.
+     * This method resets lives, score, and map, hides the game over text,
+     * and starts a new game loop. It also restores the original controls.
+     */
     private void resetGame() {
         // Reset game state
         gameLives.resetLives();
@@ -164,6 +192,11 @@ public class GameMode{
         });
     }
 
+    /**
+     * Handles the game win state.
+     * This method stops the game loop, displays the win text and next level text,
+     * and sets up an event handler to proceed to the next level when a key is pressed.
+     */
     private void gameWin() {
         // Stop the game loop
         gameLoop.stop();
@@ -178,12 +211,18 @@ public class GameMode{
         });
     }
 
+    /**
+     * Proceeds to the next level by resetting the game state.
+     * This method resets the map, hides the win text and next level text,
+     * and starts a new game loop. It also restores the original controls.
+     */
     private void nextLevel() {
         // Reset game state
         map.resetMap();
         winText.setVisible(false);
         nextLevelText.setVisible(false);
         
+        // ensure that the game loop is stopped when the game is not started yet
         gameMode = mode.NOTSTARTEDYET;
 
         gameLoop.start();

@@ -95,12 +95,26 @@ public class BlockFactory {
             return wall;
         }
 
+        /**
+         * Factory method for creating a Pacman block.
+         * @param x
+         * @param y
+         * @return Pacman
+         */
         public static Pacman createPacman(int x, int y) {
             Pacman pacman = new Pacman(pacmanImage, x, y);
             pacman.setType(BlockType.PACMAN);
             return pacman;
         }
 
+        /**
+         * Factory methods for creating different types of Ghosts.
+         * Each ghost has a specific color and initial state (RED).
+         * @param x
+         * @param y
+         * @param points
+         * @return Ghost
+         */
         public static Ghost createRedGhost(int x, int y, int points) {
             Ghost redGhost = new Ghost(redGhostImage, x, y, Ghost.color.RED);
             redGhost.setType(BlockType.GHOST);
@@ -109,6 +123,14 @@ public class BlockFactory {
             return redGhost;
         }
 
+        /**
+         * Factory methods for creating different types of Ghosts.
+         * Each ghost has a specific color and initial state (BLUE).
+         * @param x
+         * @param y
+         * @param points
+         * @return Ghost
+         */
         public static Ghost createBlueGhost(int x, int y, int points) {
             Ghost blueGhost = new Ghost(blueGhostImage, x, y, Ghost.color.BLUE);
             blueGhost.setType(BlockType.GHOST);
@@ -117,6 +139,14 @@ public class BlockFactory {
             return blueGhost;
         }
 
+        /**
+         * Factory methods for creating different types of Ghosts.
+         * Each ghost has a specific color and initial state (PINK).
+         * @param x
+         * @param y
+         * @param points
+         * @return Ghost
+         */
         public static Ghost createPinkGhost(int x, int y, int points) {
             Ghost pinkGhost = new Ghost(pinkGhostImage, x, y, Ghost.color.PINK);
             pinkGhost.setType(BlockType.GHOST);
@@ -125,6 +155,14 @@ public class BlockFactory {
             return pinkGhost;
         }
 
+        /**
+         * Factory methods for creating different types of Ghosts.
+         * Each ghost has a specific color and initial state (ORANGE).
+         * @param x
+         * @param y
+         * @param points
+         * @return Ghost
+         */
         public static Ghost createOrangeGhost(int x, int y, int points) {
             Ghost orangeGhost = new Ghost(orangeGhostImage, x, y, Ghost.color.ORANGE);
             orangeGhost.setType(BlockType.GHOST);
@@ -133,6 +171,12 @@ public class BlockFactory {
             return orangeGhost;
         }
 
+        /**
+         * Factory method for creating a Teleporter block.
+         * @param x
+         * @param y
+         * @return Teleporter
+         */
         public static Teleporter createTeleporterBlock(int x, int y) {
             Teleporter teleporter = new Teleporter(x, y);
             teleporter.setType(BlockType.TELEPORTER);
