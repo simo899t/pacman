@@ -15,7 +15,6 @@ public class EatableBehavior implements IEatableBehavior {
 
     
     // getters and setters for the eaten state and points.
-
     public boolean isEaten() {
         return eaten;
     }

@@ -3,7 +3,7 @@ package com.example;
 import javafx.scene.image.Image;
 
 public class Pellet extends Block implements IEatableBehavior {
-    private final IEatableBehavior eatableBehavior = new EatableBehavior();
+    private IEatableBehavior eatableBehavior;
 
     /**
      * Constructor for Pellet that initializes the block with an image and position.
@@ -12,8 +12,9 @@ public class Pellet extends Block implements IEatableBehavior {
      * @param x The x-coordinate of the pellet.
      * @param y The y-coordinate of the pellet.
      */
-    public Pellet(Image image, int x, int y) {
+    public Pellet(Image image, int x, int y, IEatableBehavior eatableBehavior) {
         super(image, x, y);
+        this.eatableBehavior = eatableBehavior;
     }
 
     /**

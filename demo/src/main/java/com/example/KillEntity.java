@@ -51,6 +51,7 @@ public class KillEntity implements IKillEntity {
 
         map.resetAllGhosts();
 
+        // Reset ghost images to their original state if they have been loaded
         if (pinkGhost != null) 
             pinkGhost.setImage(pinkGhostImage);
         if (blueGhost != null)

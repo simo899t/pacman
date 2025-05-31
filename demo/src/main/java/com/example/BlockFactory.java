@@ -4,8 +4,6 @@ import com.example.Block.BlockType;
 import javafx.scene.image.Image;
 
 public class BlockFactory {
-
-
     // Static initial images for different blocks
     private static Image pacmanImage = new Image(BlockFactory.class.getResource("/com/example/images/pacman.png").toExternalForm());
     private static Image wallImage = new Image(BlockFactory.class.getResource("/com/example/images/wall.png").toExternalForm());
@@ -17,6 +15,8 @@ public class BlockFactory {
     private static Image smallFoodImage = new Image(BlockFactory.class.getResource("/com/example/images/smallFood.png").toExternalForm());
     private static Image bigFoodImage = new Image(BlockFactory.class.getResource("/com/example/images/bigFood.png").toExternalForm());
 
+    private static IEatableBehavior eatableBehavior = new EatableBehavior();
+
         /**
          * Factory method for crating a Pellet block.
          * @param x
@@ -25,7 +25,7 @@ public class BlockFactory {
          * @return Pellet
          */
         public static Pellet createPellet(int x, int y, int points) {
-            Pellet pellet = new Pellet(smallFoodImage, x, y);
+            Pellet pellet = new Pellet(smallFoodImage, x, y, eatableBehavior);
             pellet.setType(BlockType.PELLET);
             pellet.setEaten(false);
             pellet.setPoints(points);
@@ -64,7 +64,7 @@ public class BlockFactory {
          * @return BigPellet
          */
         public static BigPellet createBigPellet(int x, int y, int points) {
-            BigPellet bigPellet = new BigPellet(bigFoodImage, x, y);
+            BigPellet bigPellet = new BigPellet(bigFoodImage, x, y, eatableBehavior);
             bigPellet.setType(BlockType.BIGPELLET);
             bigPellet.setEaten(false);
             bigPellet.setPoints(points);
@@ -116,7 +116,7 @@ public class BlockFactory {
          * @return Ghost
          */
         public static Ghost createRedGhost(int x, int y, int points) {
-            Ghost redGhost = new Ghost(redGhostImage, x, y, Ghost.color.RED);
+            Ghost redGhost = new Ghost(redGhostImage, x, y, Ghost.color.RED, eatableBehavior);
             redGhost.setType(BlockType.GHOST);
             redGhost.setState(Ghost.states.CHASE);
             redGhost.setPoints(points);
@@ -132,7 +132,7 @@ public class BlockFactory {
          * @return Ghost
          */
         public static Ghost createBlueGhost(int x, int y, int points) {
-            Ghost blueGhost = new Ghost(blueGhostImage, x, y, Ghost.color.BLUE);
+            Ghost blueGhost = new Ghost(blueGhostImage, x, y, Ghost.color.BLUE, eatableBehavior);
             blueGhost.setType(BlockType.GHOST);
             blueGhost.setState(Ghost.states.STILL);
             blueGhost.setPoints(points);
@@ -148,7 +148,7 @@ public class BlockFactory {
          * @return Ghost
          */
         public static Ghost createPinkGhost(int x, int y, int points) {
-            Ghost pinkGhost = new Ghost(pinkGhostImage, x, y, Ghost.color.PINK);
+            Ghost pinkGhost = new Ghost(pinkGhostImage, x, y, Ghost.color.PINK, eatableBehavior);
             pinkGhost.setType(BlockType.GHOST);
             pinkGhost.setState(Ghost.states.STILL);
             pinkGhost.setPoints(points);
@@ -164,7 +164,8 @@ public class BlockFactory {
          * @return Ghost
          */
         public static Ghost createOrangeGhost(int x, int y, int points) {
-            Ghost orangeGhost = new Ghost(orangeGhostImage, x, y, Ghost.color.ORANGE);
+            
+            Ghost orangeGhost = new Ghost(orangeGhostImage, x, y, Ghost.color.ORANGE, eatableBehavior);
             orangeGhost.setType(BlockType.GHOST);
             orangeGhost.setState(Ghost.states.STILL);
             orangeGhost.setPoints(points);

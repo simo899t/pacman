@@ -4,10 +4,9 @@ import javafx.scene.image.Image;
 
 public class Ghost extends MoveableBlock implements IEatableBehavior {
 
-    //helperclass for eatable behavior
-    private final IEatableBehavior eatableBehavior = new EatableBehavior();
     private states state;
     private final color color;
+    private IEatableBehavior eatableBehavior;
 
     // Enum to represent the different states of the ghost
     public enum states {
@@ -32,10 +31,11 @@ public class Ghost extends MoveableBlock implements IEatableBehavior {
      * @param y
      * @param colour color of the ghost
      */
-    public Ghost(Image image, int x, int y, color colour) {
+    public Ghost(Image image, int x, int y, color colour, IEatableBehavior eatableBehavior) {
         super(image, x, y);
         this.state = states.STILL; // Initial state is STILL so the ghost does not move before the game starts
         this.color = colour;
+        this.eatableBehavior = eatableBehavior;
     }
 
     /**
