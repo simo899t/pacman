@@ -7,6 +7,8 @@ public class GhostMovementPathfinding {
     private final IMap map;
     private final RandomWalk randomWalk;
     private final BFS bfs;
+    private int counter;
+    private final ILevel level;
 
     /**
      * Constructor for GhostMovementPathfinding class.
@@ -15,10 +17,11 @@ public class GhostMovementPathfinding {
      * @param map  The game map containing all blocks and entities.
      * @param grid The grid used for pathfinding calculations.
      */
-    GhostMovementPathfinding(IMap map, IGrid grid) {
+    GhostMovementPathfinding(IMap map, IGrid grid, ILevel level) {
         this.map = map;
         this.randomWalk = new RandomWalk(grid); // Initialize randomwalk algorithm here after map is set
         this.bfs = new BFS(grid); // Initialize breadth first seach here after map is set
+        this.level = level;
     }
 
     /**
@@ -47,7 +50,26 @@ public class GhostMovementPathfinding {
         Ghost ghost = (Ghost) entity;
         switch (ghost.getState()) {
             case CHASE:
-                BFSDirectGhost(ghost, pacman);
+                if (level.getLevel() % 2 == 1) {
+                    BFSDirectGhost(ghost, pacman);
+                } else {
+                    switch (ghost.getColor()) {
+                        case RED:
+                            BFSDirectGhost(ghost, pacman);
+                            break;
+                        case PINK:
+                            NewDirectGhost(ghost, pacman, ghostHome);
+                            break;
+                        case BLUE:
+                            BFSDirectGhost(ghost, pacman);
+                            break;
+                        case ORANGE:
+                            NewDirectGhost(ghost, pacman, ghostHome);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 break;
             case FRIGHTENED:
                 RandomWalkDirectGhost(ghost);
@@ -83,6 +105,20 @@ public class GhostMovementPathfinding {
         if (ghost.getX() % map.getTileSize() == 0 && ghost.getY() % map.getTileSize() == 0) {
             directions newDirection = randomWalk.search(ghost);
             ghost.setDirection(newDirection);
+        }
+    }
+
+    private void NewDirectGhost(Block ghost, Pacman pacman, Block ghostHome) {
+        if (counter == 35) {
+            counter = 0; // Reset counter after 100 iterations
+        }
+        if (ghost.getX() % map.getTileSize() == 0 && ghost.getY() % map.getTileSize() == 0) {
+            if (counter < 5) {
+                BFSDirectGhost((Ghost) ghost, pacman);
+            } else {
+                RandomWalkDirectGhost((Ghost) ghost);
+            }
+            counter++;
         }
     }
 

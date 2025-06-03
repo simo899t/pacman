@@ -19,37 +19,39 @@ public class GameMode{
     private final AnimationTimer gameLoop;
     private final IGameLives gameLives;
     private final IGameScore gameScore;
+    private final ILevel level;
     private final IMap map;
     private final Label gameOverText;
     private final Label restartText;
     private final Label winText;
     private final Label startText;
     private final Label nextLevelText;
+    private final ImageView logoImageView;
     private final IController controller;
     private final Scene scene;
     private final Pacman pacman;
 
-    public GameMode(AnimationTimer gameLoop, IGameLives gameLives, IGameScore gameScore, IMap map, 
-                Label gameOverText, Label restartText, Label winText, Label startText, Label nextLevelText,
-                ImageView logoImageView, IController controller, Scene scene, Pacman pacman) {
-
+    public GameMode(AnimationTimer gameLoop, IGameLives gameLives, IGameScore gameScore, ILevel level, IMap map, IController controller, Scene scene, UI ui) {
         this.map = map;
         this.gameMode = mode.NOTSTARTEDYET;     // Initial game state
         this.gameLoop = gameLoop;
         this.gameLives = gameLives;
         this.gameScore = gameScore;
-        this.gameOverText = gameOverText;
-        this.restartText = restartText;
-        this.winText = winText;
-        this.startText = startText;
-        this.nextLevelText = nextLevelText;
+        this.level = level;
+        this.gameOverText = ui.getGameOverText();
+        this.restartText = ui.getRestartText();
+        this.winText = ui.getWinText();
+        this.startText = ui.getStartText();
+        this.nextLevelText = ui.getNextLevelText();
+        this.logoImageView = ui.getLogoImageView();
         this.controller = controller;
         this.scene = scene;
+        
         this.gameOverText.setVisible(false); // Hide gameover and win text initially
         this.restartText.setVisible(false);
         this.winText.setVisible(false);
         this.winText.setVisible(false);
-        this.pacman = pacman;
+        this.pacman = map.getPacman();
 
         // Set up initial key press detection for game start
         scene.setOnKeyPressed(event -> {
@@ -58,6 +60,7 @@ public class GameMode{
                     || event.getCode() == KeyCode.DOWN
                     || event.getCode() == KeyCode.LEFT
                     || event.getCode() == KeyCode.RIGHT)) {
+                ui.setGamePanelsVisible(true);
                 startText.setVisible(false);
                 logoImageView.setVisible(false);
                 controller.keyPressed(event);
@@ -112,17 +115,17 @@ public class GameMode{
      * It updates the game loop and sets up key event handlers as needed.
      */
     private void checkGameState() {
-        if (gameMode == mode.PLAYING) {
-            // Already handled by the gameLoop
-        } else if (gameMode == mode.GAME_OVER) {
-            gameOver();
-        } else if (gameMode == mode.WIN) {
-            gameWin();
-        } else if (gameMode == mode.NOTSTARTEDYET) { // Game not started yet either after game over or death
-
-            // ensures that the game loop is stopped when the game is not started yet
-            gameLoop.stop();
-            scene.setOnKeyPressed(event -> {
+        switch (gameMode) {
+            case GAME_OVER:
+                gameOver();
+                break;
+            case WIN:
+                gameWin();
+                break;
+            case NOTSTARTEDYET:
+                // ensures that the game loop is stopped when the game is not started yet
+                gameLoop.stop();
+                scene.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.UP
                     || event.getCode() == KeyCode.DOWN
                     || event.getCode() == KeyCode.LEFT
@@ -137,7 +140,9 @@ public class GameMode{
                         pacman.setAlive(true);
                     }
                 }
-            });
+                });
+            default:
+                break;
         }
     }
 
@@ -175,6 +180,7 @@ public class GameMode{
         // Reset game state
         gameLives.resetLives();
         gameScore.resetScore();
+        level.resetLevel();
         map.resetMap();
         
         // Hide game over text
@@ -221,6 +227,7 @@ public class GameMode{
         map.resetMap();
         winText.setVisible(false);
         nextLevelText.setVisible(false);
+        level.incrementLevel();
         
         // ensure that the game loop is stopped when the game is not started yet
         gameMode = mode.NOTSTARTEDYET;

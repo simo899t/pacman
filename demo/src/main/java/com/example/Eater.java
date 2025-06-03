@@ -47,7 +47,7 @@ public class Eater implements IEater {
      *
      * @param pellet The pellet to be eaten.
      */
-    public void eatPellet(Pellet pellet) {
+    public void eat(Pellet pellet) {
         tryEat(pellet, pellet.getPoints());
     }
 
@@ -57,7 +57,7 @@ public class Eater implements IEater {
      *
      * @param pellet The big pellet to be eaten.
      */
-    public void eatBigPellet(BigPellet bigPellet) {
+    public void eat(BigPellet bigPellet) {
         if (!tryEat((Pellet) bigPellet, ((Pellet) bigPellet).getPoints())) {
             return;
         }
@@ -131,7 +131,7 @@ public class Eater implements IEater {
      * This method is called when Pacman eats a ghost. It checks if the ghost is in the frightened state and if so, it sets it to eaten state.
      */
     @Override
-    public void eatGhost(Ghost ghost) {
+    public void eat(Ghost ghost) {
         score.addScore(ghost.getPoints());
     }
 

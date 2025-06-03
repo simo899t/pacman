@@ -18,6 +18,7 @@ import javafx.scene.text.FontWeight;
 
 public class UI {
     private Label scoreLabel;
+    private Label levelLabel;
     private Label startText;
     private Label gameOverText;
     private Label restartText;
@@ -27,6 +28,7 @@ public class UI {
     private ImageView logoImageView;
     private final HBox scorePanel;
     private final HBox livesPanel;
+    private final HBox levelPanel;
     private final VBox root;
     private final int canvasWidth;
     private final int canvasHeight;
@@ -43,12 +45,18 @@ public class UI {
         this.root = new VBox();
         this.scorePanel = new HBox();
         this.livesPanel = new HBox();
+        this.levelPanel = new HBox();
         this.canvasContainer = canvasContainer;
         this.canvasHeight = canvasHeight;
         this.canvasWidth = canvasWidth;
         loadPanels();
         loadImages();
         loadAlltext();
+        
+        // Hide game panels initially
+        scorePanel.setVisible(false);
+        livesPanel.setVisible(false);
+        levelPanel.setVisible(false);
     }
 
     // Getters for UI components
@@ -83,6 +91,12 @@ public class UI {
         }
     }  
 
+    public void setLevelLabelText(String text) {
+        if (levelLabel != null) {
+            levelLabel.setText(text);
+        }
+    } 
+
     /**
      * Updates the lives panel with the current number of lives left.
      * This method clears the existing lives panel and repopulates it with new life icons.
@@ -90,29 +104,19 @@ public class UI {
      * @param livesLeft The number of lives left to display.
      */
     public void updateLives(int livesLeft) {
-        // First remove livesPanel from scorePanel if present
-        scorePanel.getChildren().remove(livesPanel);
-        
         // Clear any existing content in livesPanel
         livesPanel.getChildren().clear();
-        
-        // Set vertical alignment and padding for the livesPanel
-        livesPanel.setPadding(new Insets(10, 0, 0, 0)); 
-        livesPanel.setAlignment(Pos.BOTTOM_LEFT);
         
         // Add new life icons to livesPanel
         for (int i = 0; i < livesLeft; i++) { 
             Image lifeImage = new Image(getClass().getResource("/com/example/images/life.png").toExternalForm());
             ImageView lifeIcon = new ImageView(lifeImage);
-            lifeIcon.setFitWidth(40);
-            lifeIcon.setFitHeight(40);
+            lifeIcon.setFitWidth(30); // Slightly smaller to fit better
+            lifeIcon.setFitHeight(30);
             
             // Add to livesPanel
             livesPanel.getChildren().add(lifeIcon);
         }
-        
-        // Add livesPanel to scorePanel
-        scorePanel.getChildren().add(livesPanel);
     }
 
     /**
@@ -121,20 +125,47 @@ public class UI {
      */
     private void loadPanels() {
         root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-        scorePanel.setPrefHeight(30); // Set height for score panel
+        
+        // Configure main score panel to span full width
+        scorePanel.setPrefHeight(30);
         scorePanel.setMinHeight(30);
-        scorePanel.setAlignment(Pos.CENTER_LEFT);
+        scorePanel.setPrefWidth(canvasWidth); // Make it full width
         scorePanel.setPadding(new Insets(5, 10, 5, 10));
         scorePanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-
-        // Create score label
+        
+        // Create a 3-section layout with proper spacing
+        HBox leftSection = new HBox(); // For score
+        HBox centerSection = new HBox(); // For lives
+        HBox rightSection = new HBox(); // For level
+        
+        // Configure sections
+        leftSection.setAlignment(Pos.CENTER_LEFT);
+        leftSection.setPrefWidth(canvasWidth / 3);
+        
+        centerSection.setAlignment(Pos.CENTER);
+        centerSection.setPrefWidth(canvasWidth / 3);
+        
+        rightSection.setAlignment(Pos.CENTER_RIGHT);
+        rightSection.setPrefWidth(canvasWidth / 3);
+        
+        // Create score label in left section
         scoreLabel = new Label("SCORE: 0");
         scoreLabel.setTextFill(Color.WHITE);
         scoreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        scorePanel.getChildren().add(scoreLabel);
-
-        // Add some spacing between labels
-        scorePanel.setSpacing(30);
+        leftSection.getChildren().add(scoreLabel);
+        
+        // Lives will be added to center section in updateLives()
+        livesPanel.setAlignment(Pos.CENTER);
+        centerSection.getChildren().add(livesPanel);
+        
+        // Create level label in right section
+        levelLabel = new Label("LEVEL: 1");
+        levelLabel.setTextFill(Color.WHITE);
+        levelLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        rightSection.getChildren().add(levelLabel);
+        
+        // Add all three sections to the score panel
+        scorePanel.getChildren().addAll(leftSection, centerSection, rightSection);
     }
 
     /**
@@ -230,5 +261,12 @@ public class UI {
         root.getChildren().addAll(scorePanel, canvasContainer);
         Scene scene = new Scene(root, canvasWidth, Math.max(canvasHeight + 30, 30));
         return scene;
+    }
+
+    // Add this method to the UI class
+    public void setGamePanelsVisible(boolean visible) {
+        scorePanel.setVisible(visible);
+        livesPanel.setVisible(visible);
+        levelPanel.setVisible(visible);
     }
 }

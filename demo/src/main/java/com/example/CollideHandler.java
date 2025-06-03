@@ -1,10 +1,14 @@
 package com.example;
 
+import com.example.Block.BlockType;
+import com.example.MoveableBlock.directions;
+
 public class CollideHandler implements ICollideHandler {
     private final IKillEntity killEntity;
     private final IEater eater;
     private final GameTimer gameTimer;
     private final Revive revive;
+    private final IMap map;
 
     /**
      * Constructor for CollideHandler
@@ -14,31 +18,46 @@ public class CollideHandler implements ICollideHandler {
      * @param eater     The eater handler for eating logic
      * @param killEntity The entity responsible for killing players and ghosts
      */
-    public CollideHandler(GameTimer gameTimer, Revive revive, IEater eater, IKillEntity killEntity) {
+    public CollideHandler(GameTimer gameTimer, Revive revive, IEater eater, IKillEntity killEntity, IMap map) {
         this.killEntity = killEntity;
         this.eater = eater;
         this.gameTimer = gameTimer;
         this.revive = revive;
+        this.map = map;
     }
 
-    /**
-     * Handles the collision between the player and a ghost.
-     * @param ghost The ghost that the player collided with
-     */
     @Override
-    public void ghostCollision(Ghost ghost) {
-        switch (ghost.getState()) {
-            case CHASE:
-                killEntity.killPlayer(); // The player collides with a ghost in chase state and dies
-                break;
-            case FRIGHTENED:
-                killEntity.killGhost(ghost); // The player kills the ghost in frightened state
-                eater.eatGhost(ghost);       // The player eats the ghost (points awarded)
-                break;
-            case EATEN:
-                break;
-            default:
-                break;
+    public void collision(Block entity) {
+        if (entity.getType() == BlockType.GHOST) {
+            collision((Ghost) entity);
+        } else if (entity.getType() == BlockType.GHOSTHOME) {
+            homeCollision((Ghost) entity);
+        } else if (entity.getType() == BlockType.DOOR) {
+            collision((Door) entity);
+        } else if (entity.getType() == BlockType.PELLET) {
+            collision((Pellet) entity);
+        } else if (entity.getType() == BlockType.BIGPELLET) {
+            collision((BigPellet) entity);
+        } else if (entity.getType() == BlockType.TELEPORTER) {
+            for (Block otherTeleporter : map.getAllBlocks()) {
+                            if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != entity) {
+                                Block nextToTeleporter = nextBlock(otherTeleporter, ((MoveableBlock) entity).getDirection());
+                                if (nextToTeleporter != null) {
+                                    entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
+                                    break;
+                                }
+                            }
+                        }
+        }
+    }
+
+    private void collision(Ghost ghost) {
+        if (ghost.getState() == Ghost.states.FRIGHTENED) {
+            killEntity.killGhost(ghost); // The ghost is killed by the player
+            eater.eat(ghost); // The player eats the ghost (points awarded)
+        } else if (ghost.getState() == Ghost.states.CHASE) {
+            // If the ghost is in chase state, the player loses
+            killEntity.killPlayer(); // The player is killed by the ghost
         }
     }
 
@@ -55,8 +74,7 @@ public class CollideHandler implements ICollideHandler {
      * Handles the collision between the player and a door.
      * @param door The door that the enitity collided with
      */
-    @Override
-    public void doorCollision(Door door) {
+    private void collision(Door door) {
         door.openDoor();
 
         // Schedule the door to close after 1 second
@@ -75,17 +93,30 @@ public class CollideHandler implements ICollideHandler {
      * Handles the collision between the player and a pellet.
      * @param pellet The pellet that the player collided with
      */
-    @Override
-    public void pelletCollision(Pellet pellet) {
-        eater.eatPellet(pellet); // The player eats the pellet (points awarded)
+    private void collision(Pellet pellet) {
+        eater.eat(pellet); // The player eats the pellet (points awarded)
     }
 
     /**
      * Handles the collision between the player and a big pellet.
      * @param pellet The big pellet that the player collided with
      */
-    @Override
-    public void bigPelletCollision(BigPellet pellet) {
-        eater.eatBigPellet(pellet); // The player eats the big pellet (points awarded and ghosts frightened)
-    }    
+    private void collision(BigPellet bigPellet) {
+        eater.eat(bigPellet); // The player eats the big pellet (points awarded and ghosts frightened)
+    }  
+    
+    public Block nextBlock(Block block, directions direction) {
+        switch (direction) {
+            case UP:
+                return map.getBlock(block.getX(), block.getY() - map.getTileSize());
+            case DOWN:
+                return map.getBlock(block.getX(), block.getY() + map.getTileSize());
+            case LEFT:
+                return map.getBlock(block.getX() - map.getTileSize(), block.getY());
+            case RIGHT:
+                return map.getBlock(block.getX() + map.getTileSize(), block.getY());
+            default:
+                return map.getBlock(block.getX(), block.getY());
+        }
+    }
 }

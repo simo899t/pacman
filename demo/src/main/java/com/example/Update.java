@@ -73,19 +73,19 @@ public class Update implements IUpdate {
             if (entityType == BlockType.PACMAN) {
                 switch (blockType) {
                     case PELLET:
-                        collideHandler.pelletCollision((Pellet) block);
+                        collideHandler.collision((Pellet) block);
                         break;
                     case BIGPELLET:
-                        collideHandler.bigPelletCollision((BigPellet) block);
+                        collideHandler.collision((BigPellet) block);
                         break;
                     case GHOST:
-                        collideHandler.ghostCollision((Ghost) block);
+                        collideHandler.collision((Ghost) block);
                         break;
                     case TELEPORTER:
                         // Teleport Pacman to the next teleporter block.
                         for (Block otherTeleporter : map.getAllBlocks()) {
                             if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
-                                Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
+                                Block nextToTeleporter = collideHandler.nextBlock(otherTeleporter, entity.getDirection());
                                 if (nextToTeleporter != null) {
                                     entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
                                     break;
@@ -100,22 +100,14 @@ public class Update implements IUpdate {
             if (entityType == BlockType.GHOST) {
                 switch (blockType) {
                     case DOOR:
-                        collideHandler.doorCollision((Door) block);
+                        collideHandler.collision((Door) block);
                         break;
                     case GHOSTHOME:
                         collideHandler.homeCollision((Ghost) entity);
                         break;
                     case TELEPORTER: 
                         // Teleport Ghost to the next teleporter block.
-                        for (Block otherTeleporter : map.getAllBlocks()) {
-                            if (otherTeleporter.getType() == BlockType.TELEPORTER && otherTeleporter != block) {
-                                Block nextToTeleporter = nextBlock(otherTeleporter, entity.getDirection());
-                                if (nextToTeleporter != null) {
-                                    entity.setPos(nextToTeleporter.getX(), nextToTeleporter.getY());
-                                    break;
-                                }
-                            }
-                        }
+                        
                     default:
                         break;    
                 }
@@ -124,7 +116,7 @@ public class Update implements IUpdate {
 
             if (entity.getType() == BlockType.PACMAN) {
                 if (isReverse) {
-                    Block reverseNextBlock = nextBlock(entity, bufferDirection);
+                    Block reverseNextBlock = collideHandler.nextBlock(entity, bufferDirection);
                     if (reverseNextBlock == null) {
                         entity.setDirection(bufferDirection);
                     }
@@ -145,12 +137,12 @@ public class Update implements IUpdate {
 
             // Handle buffer direction changes
             if (canITurn(entity, bufferDirection)) {
-                Block bufferedNextBlock = nextBlock(entity, bufferDirection);
+                Block bufferedNextBlock = collideHandler.nextBlock(entity, bufferDirection);
                 whatToDoBuffer(entity, bufferedNextBlock, currentDirection, bufferDirection);
             }
 
             // Handle movement
-            Block moveNextBlock = nextBlock(entity, entity.getDirection());
+            Block moveNextBlock = collideHandler.nextBlock(entity, entity.getDirection());
             if (moveNextBlock == null) {
                 move.move(entity);
             } else if (
@@ -171,21 +163,6 @@ public class Update implements IUpdate {
      * @param direction The direction to move to the next block.
      * @return The next block in the specified direction, or the current block if no valid next block exists.
      */
-    @Override
-    public Block nextBlock(Block block, directions direction) {
-        switch (direction) {
-            case UP:
-                return map.getBlock(block.getX(), block.getY() - map.getTileSize());
-            case DOWN:
-                return map.getBlock(block.getX(), block.getY() + map.getTileSize());
-            case LEFT:
-                return map.getBlock(block.getX() - map.getTileSize(), block.getY());
-            case RIGHT:
-                return map.getBlock(block.getX() + map.getTileSize(), block.getY());
-            default:
-                return map.getBlock(block.getX(), block.getY());
-        }
-    }
 
     /**
      * Sets a new buffer direction for the entity if it differs from the current direction.

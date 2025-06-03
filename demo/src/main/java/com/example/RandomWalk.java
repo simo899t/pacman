@@ -18,7 +18,12 @@ public class RandomWalk {
         this.grid = grid;
     }
 
-    
+    /**
+     * Returns a random valid direction for the ghost.
+     * 
+     * @param ghost The ghost to perform the random walk for.
+     * @return A random direction from the valid neighbors of the ghost's current position.
+     */
     public directions search(Ghost ghost) {
         // Convert pixel coordinates to grid coordinates
         int col = grid.toCol(ghost.getX());

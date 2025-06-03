@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     private IGameLives gameLives;
     private IGameScore gameScore;
+    private ILevel level;
     private Revive revive;
     private IMap map;
     private UI ui;
@@ -76,21 +77,24 @@ public class App extends Application {
         });
 
         // Initialize game components
-        ghostMovementPathfinding = new GhostMovementPathfinding(map, grid);
+        level = new Level();
         gameLives = new GameLives();
         gameScore = new GameScore();
+        ghostMovementPathfinding = new GhostMovementPathfinding(map, grid, level);
         draw = new Draw(map, canvas);
         updateImages = new UpdateImages(map);
         revive = new Revive();
         eater = new Eater(map, gameScore, gameTimer);
         killEntity = new KillEntity(map, gameLives, gameTimer);
         collision = new Collision(map);
-        collideHandler = new CollideHandler(gameTimer, revive, eater, killEntity);
+        collideHandler = new CollideHandler(gameTimer, revive, eater, killEntity, map);
         update = new Update(map, collideHandler, collision);
         
 
         // Initialize gameLoop with the initial lives
         ui.updateLives(gameLives.getLives());
+    
+
         gameLoop = new AnimationTimer() {
 
             @Override
@@ -112,6 +116,7 @@ public class App extends Application {
                 // update images (& animation) and UI
                 updateImages.updateAllImages();
                 ui.setScoreLabelText("SCORE: " + gameScore.getScore());
+                ui.setLevelLabelText("LEVEL: " + level.getLevel());
                 ui.updateLives(gameLives.getLives());
                 
                 // play game-functions for ghost start, animation, etc.
@@ -131,10 +136,9 @@ public class App extends Application {
             }
 
         };
-        
-        // Create GameState instance
-        gameMode = new GameMode(gameLoop, gameLives, gameScore, map, ui.getGameOverText(), ui.getRestartText(), 
-                                  ui.getWinText(), ui.getStartText(), ui.getNextLevelText(), ui.getLogoImageView(), controller, scene, map.getPacman());
+
+        // Create GameState instance (remove AnimationTimer from constructor)
+        gameMode = new GameMode(gameLoop, gameLives, gameScore, level, map, controller, scene, ui);
     }
 
     /**
