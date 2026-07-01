@@ -8,3 +8,7 @@ Specifications for Java Version:
 - Maven Compiler Plugin: 3.8.0
 
 - JavaFX Maven Plugin: 0.0.6
+
+# Visual presentation
+<img width="2150" height="1456" alt="image" src="https://github.com/user-attachments/assets/b67d6dd2-0269-4aa1-afbb-5ba4b3069edd" />
+
